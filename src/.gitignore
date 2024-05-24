@@ -1,0 +1,3 @@
+out/*.bbl
+out/*.gz
+indent.log
