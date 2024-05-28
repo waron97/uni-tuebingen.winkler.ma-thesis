@@ -1,5 +1,15 @@
 {
   "latex-workshop.latex.autoClean.run": "onBuilt",
   "latex-workshop.latex.clean.subfolder.enabled": true,
-  "latex-workshop.latex.outDir": "out"
+  "latex-workshop.latex.outDir": "out",
+  "editor.wordWrap": "on",
+  "cSpell.language": "en-US",
+  "cSpell.words": [
+    "bigram",
+    "Dorwin",
+    "Hari",
+    "psychohistory",
+    "ruleset",
+    "Seldon"
+  ]
 }

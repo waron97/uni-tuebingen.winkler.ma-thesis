@@ -1,3 +1,50 @@
 \section{Introduction}
 
-Hello! \citep{creutz-2024-correcting}
+In 1951, Gnome Press published Isaac Asimov's \emph{Foundation} \citep{asimov1951foundation}, the first title of a trilogy that would go on to become one of the cornerstones of modern science fiction. In the novel, set in the distant future, scientist Hari Seldon predicts the fall of the Galactic Empire, an event that would pave the way to an era of barbarism in the story's fantastical universe.
+
+To preserve humanity's knowledge and technical skills, Hari Seldon establishes the Foundation on an uninhabited planet on the periphery of the Empire, a sort of outpost dedicated to being the home to the archival effort. The novel follows the political and technological adventures of the Foundation and its leaders, with one of the first plot points being the first conflict between the Foundation and a major local power in the periphery, Anacreon, which declared its independence as the Empire's influence in the periphery weakened. Seeking protection from the Empire against Anacreon's expansionary stance, the Foundation hosts a diplomatic emissary from the Empire, a Lord Dorwin, finally obtaining a convoluted treaty between the Empire and Anacreon over their respective spheres of influence.
+
+\begin{quote}
+    "Before you now you see a copy of the treaty between the Empire and Anacreon – a treaty, incidentally, which is signed on the Emperor's behalf by the same Lord Dorwin who was here last week – and with it a symbolic analysis."
+
+    The treaty ran through five pages of fine print and the analysis was scrawled out in just under half a page.
+
+    "As you see, gentlemen, something like ninety percent of the treaty boiled right out of the analysis as being meaningless, and what we end up with can be described in the following interesting manner:
+
+    "Obligations of Anacreon to the Empire: None!"
+
+    "Powers of the Empire over Anacreon: None!"
+
+    \vspace{0.2cm}
+
+    \begin{flushright}
+        \small \emph{Isaac Asimov, Foundation,\\Part II: The Encyclopedists}
+    \end{flushright}
+\end{quote}
+
+At this point the Foundation's scientists, through a technique they call \emph{"symbolic analysis"}, condense several pages of treaty into a few lines, revealing the hidden meaning behind the layers of legal dissimulation. By doing so, they expose the inability of the dying empire to exert its influence over its own periphery, and they realize that moving forward, they can only rely on themselves, marking perhaps the true starting point of the story in Asimov's \emph{Foundation}.
+
+Despite first reading this passage when I was a teenager, perhaps over a decade ago, these fictional twists stayed with me through the years. They were, after all, my first indirect exposure to the field of computational linguistics and natural language processing (NLP). I remember being mesmerized by the potential of machine computation applied to natural language, in what I would later learn to better define as a mixture of information retrieval and automatic text summarization.
+
+While Asimov's pen definitely hit the mark in predicting some of the most intriguing and successful applications of NLP in the years ahead, what granted computational linguistics perhaps its brightest moment in the limelight was one of its other, albeit related, subfields: language generation and modelling.
+
+\subsection{Language modelling}
+
+Teaching a machine to understand and produce natural language is intuitively a difficult task. Even if one could reliably collect all ingredients that make up human language, creating a system that emulates it even just well-enough is a very tall order, since there would likely be millions if not billions of cases to consider. Linguists have documented hundreds of languages, each with their own grammar, peculiarities, exceptions, all of which have yet to be described under one common ruleset. Manually building a program from the ground up for even just one language is beyond what current technology is capable of.
+
+The very first chatbot, ELIZA \citep{citationneeded}, simulated conversation through pattern matching and substitution, essentially repeating and paraphrasing their interlocutor's statements. While it successfully bypasses the necessity of programming a machine with \emph{intelligence}, such an approach does not result in a system that can be described as creative in any sense. In other words, ELIZA will never write a poem, or surprise their conversation partner with a witty turn of phrase. It would never be able to tell whether May has 30 or 31 days because it has no notion of what \emph{May} and \emph{days} are. Teaching language is, after all, not only an issue of grammar, but one of world knowledge as well.
+
+If \emph{teaching} language to machines as one would to humans is not possible, and rule-based approaches such as ELIZA inevitably reach a bottleneck, then it becomes necessary to adopt a new strategy, rooted in statistics. This new approach consists in the realization that the sentence "he's wearing a circumference jacket" is much less likely to be uttered than "he's wearing a yellow jacket". Extrapolating the pattern, the set of words that can fill the gap in "he's wearing a \_\_\_\_\_ jacket" is varied, but "yellow" will have a much higher \emph{probability} of showing up than "circumference". Language models are the tools that are employed to estimate these probabilities.
+
+Due to recent innovations in NLP, the phrase "language model" evokes big and expensive systems, trained on huge amounts of data and costing enormous amounts of money to develop. While this is certainly understandable, the label in itself has no presupposition of size or cost. In essence, language models break down the massively complex problem of "teaching language to machines", into the more manageable task of "statistically learning what words are likely to follow others". In other words, language models produce next-word (or, more generally, next-token) probabilities based on an input sequence \citep{citationneeded}.
+
+For example, for the completion "fifteen minutes of \_\_\_\_\_", one would expect a (good) language model to offer words such as "fame" or "overtime". One idea to achieve this is to collect some linguistic data and observe what words follow "fifteen minutes of" and extrapolate a probability distribution from the observed frequencies. So-called \emph{n-gram} language models \citep{citationneeded} are built in this fashion, with the \emph{n} in \emph{n-gram} specifying the amount of left context taken into consideration.
+
+The simplest of these models, the bigram (2-gram) language model, records co-occurring word pairs in the sample dataset. This means that for this model, only the last word of a sequence determines the prediction over the following word. This results in a model that can reliably generate short collocations, such as "Marie \emph{Curie}", but cannot generate coherent sentences, and would likely even fail to offer "fame" as a completion to "fifteen minutes of \_\_\_\_\_", since the only available context for the prediction is the word "of". To correctly predict "fame", one would need at least a 4-gram language model, which would finally allow for such a "long" context requirement. However, while taking more context tokens into consideration increases the performance of n-gram language models, it does so at a steep (especially memory) cost: for 4-gram LMs with a vocabulary size (i.e., how many words the model knows) of 1000, for example, implementations without optimizations would require the frequency counts for $10^{4}$ n-grams to be accessible for predictions.
+
+% \emph{"Just ask chatGPT"} is a commonplace phrase nowadays, sometimes uttered even with some contempt (more on that later). The intuition behind \emph{"Just ask chatGPT"} is, however, exactly what makes language models such a powerful and malleable tool in the hands of computational linguists.
+
+% As such, the simple question of language modelling is in itself quite simple: given a language sequence, what are the likely following entries?
+
+\subsection{Large Language Models}
+\subsection{Fears and reactions to LLMs}
