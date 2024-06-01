@@ -81,5 +81,17 @@ In contrast, neural language models draw upon their internal parameters - the we
 
 \subsection{Neural language modelling}
 
+Neural networks \citep{citationneeded} are an extremely powerful for many applications across several disciplines. Providing an effective summary of all neural networks is a difficult task, since they manifest themselves in different variations for different tasks.
+Still, they are generally understood as interconnected layers of \emph{neurons} that map an input vector of numbers to an output vector. Each neuron in the network is made up of a weight, a bias, and an activation function \citep{citationneeded}, which are used to transform an input vector to an output number \citep{citationneeded}.
+For the purposes of this work, it is more important to understand the overall network rather than its individual parts: neural models are a way to apply complex transformations to vectors.
+The \emph{parameters} of the model, i.e. the combined weights and biases of the individual neurons, can be used to encode knowledge in a way that simpler statistical models struggle to achieve.
+
+Above, the example of "trees need water" and "trees need hydration" was briefly discussed. While n-gram models have no structural way to note the similarity between "water" and "hydration", and thus fail to recognize that the admissible contexts for the two words have some overlap, neural networks have been employed to solve this problem exactly because of their capacity to progressively store knowledge.
+Word embeddings \emph{citationneeded} are a way of representing words as numerical vectors, such words with similar semantics will be close to each other in terms of vector distance. \citep{citationneeded} The embeddings for "water" and "hydration" would therefore be closer in vector space than "water" and "dog".
+Several ways have been developed to derive embeddings from text data --- for exmaple, the CBOW \emph{citationneeded} algorithm uses neural networks to predict the missing word given the surrounding context through the use of a neural network.
+For many iterations, the model is presented with a piece of text with a gap, and the objective of guessing the missing item. With each example, the model parameters are updated, or \emph{nudged} in the correct direction (for information on gradient descent, see \citealp{citationneeded}), i.e. towards a state that are more conducive to the correct prediction.
+Importantly, among the parameters of the neural network are the embeddings for every word, which are used by the model to compute the final prediction --- these are random at the beginning, but progressively more and more refined. At the end of training, most model parameters are discarded, but the embeddings are kept, and hopefully the result will have captured semantic similarities between the entries.
+
+
 \subsection{Large Language Models}
 \subsection{Fears and reactions to LLMs}
