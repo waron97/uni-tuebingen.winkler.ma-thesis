@@ -56,6 +56,7 @@ Due to recent innovations in NLP, the phrase "language model" evokes big and exp
 While this is certainly understandable, the label in itself has no presupposition of size or cost.
 In essence, language models break down the massively complex problem of "teaching language to machines", into the more manageable task of "statistically learning what words are likely to follow others".
 In other words, language models produce next-word (or, more generally, next-token) probabilities based on an input sequence \citep{citationneeded}.
+After this is achieved, the resulting model can be prompted over and over, one word at a time, in order to generate long pieces of text, by a process called autoregressive generation \citep{citationneeded}.
 
 For example, for the completion "fifteen minutes of \_\_\_\_\_", one would expect a (good) language model to offer words such as "fame" or "overtime".
 One idea to achieve this is to collect some linguistic data and observe what words follow "fifteen minutes of" and extrapolate a probability distribution from the observed frequencies.
@@ -90,8 +91,12 @@ Above, the example of "trees need water" and "trees need hydration" was briefly 
 Word embeddings \emph{citationneeded} are a way of representing words as numerical vectors, such words with similar semantics will be close to each other in terms of vector distance. \citep{citationneeded} The embeddings for "water" and "hydration" would therefore be closer in vector space than "water" and "dog".
 Several ways have been developed to derive embeddings from text data --- for exmaple, the CBOW \emph{citationneeded} algorithm uses neural networks to predict the missing word given the surrounding context through the use of a neural network.
 For many iterations, the model is presented with a piece of text with a gap, and the objective of guessing the missing item. With each example, the model parameters are updated, or \emph{nudged} in the correct direction (for information on gradient descent, see \citealp{citationneeded}), i.e. towards a state that are more conducive to the correct prediction.
-Importantly, among the parameters of the neural network are the embeddings for every word, which are used by the model to compute the final prediction across subsequent layers --- these are random at the beginning, but progressively more and more refined. At the end of training, most model parameters are discarded, but the embeddings are kept, and hopefully the result will have captured semantic similarities between the entries.
+Importantly, among the parameters of the neural network are the embeddings for every word, which are used by the model to compute the final prediction across subsequent layers --- these are random at the beginning, but progressively more and more refined.
+At the end of training, most model parameters are discarded, but the embeddings are kept, and hopefully the result will have captured semantic similarities between the entries.
 
+While the CBOW algorithm discards all model parameters aside from the embeddings, it is naturally possible to train the neural model with the objective of keeping all of them, still taking advantage of the architecture's capacity to learn and store information. This is the basis for modern, highly sophisticated language models, with billions or even trillions of parameters.
 
 \subsection{Large Language Models}
+
+
 \subsection{Fears and reactions to LLMs}
