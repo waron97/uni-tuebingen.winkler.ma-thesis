@@ -98,5 +98,25 @@ While the CBOW algorithm discards all model parameters aside from the embeddings
 
 \subsection{Large Language Models}
 
+Language models have a long and intricate history, having been iterated upon from different perspectives and with different atchitectural approaches. \citep{citationneeded}
+The introduction of the transformer \citep{citationneeded}, a model type that for more efficient training over extremely large text data, propelled language model quality forward considerably, to the point that all language models commonly known today follow this architecture.
+The ability to train models with relatively little expenses allowed models to grow further and further in perplexity, eventually resulting in what we identify today as Large Language Models (LLMs).
+In terms of research attention, BERT \citep{citationneeded} and GPT-2 \citep{citationneeded} have perhaps been the most resonant examples earlier on.
+
+Bidirectional Encoder Representations from Transformers (BERT) is slightly different from the language models discussed so far, in that its primary purpose is not generation.
+The word embeddings described above are a powerful tool for obtaining meaningful representations, but have the significant flaw of not being context-aware.
+For example, it's clear that the word "honey" should have different embeddings between "bees make honey" and "honey, wake up!".
+
+BERT is a solution to this problem: instead of training a model to then only keep the embedding layer (in other words, computing all embeddings \emph{offline}), BERT is a full-fledged language model that evaluates pieces of text as a whole to return their representations \emph{online}.
+As such, when evaluating "bees make honey" and "honey, wake up!" with BERT, "honey" will have vastly different embeddings to account for the different context.
+
+BERT was developed, in other words, to compute context-aware word representations, hence the name. It cannot be used for language generation, mostly because it's nature as a \emph{bidirectional} model.
+For the example language model architectures described above, there was an underlying assumption that only the \emph{left} context is visible to the model. This makes intuitive sense: when generating language, only what came before influences the probability distribution of the next word.
+This is not the case for BERT. Since the objective here is to evaluate finished productions, BERT may use all previous and subsequent tokens at each timestep.
+
+Despite being a fairly recent introduction to the scene, being made available in just 2018, BERT has made big waves in nearly all fields where processing natural language is even tangentially relevant.
+It even resulted in the birth of the somewhat jokingly named discipline of BERTology, which is meant to convey the detailed analysis of how BERT and its different variations exactly arrive at the high-quality embeddings that they are known for.
+
+In the same year as BERT was published, another historical language model also made its debut: OpenAI's GPT-2. \citep{citationneeded}
 
 \subsection{Fears and reactions to LLMs}
