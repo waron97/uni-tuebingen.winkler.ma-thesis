@@ -41,7 +41,7 @@ Even if one could reliably collect all ingredients that make up human language, 
 Linguists have documented hundreds of languages, each with their own grammar, peculiarities, exceptions, all of which have yet to be described under one common ruleset.
 Manually building a program from the ground up for even just one language is beyond what current technology is capable of.
 
-The very first chatbot, ELIZA \citep{citationneeded}, simulated conversation through pattern matching and substitution, essentially repeating and paraphrasing their interlocutor's statements.
+The very first chatbot, ELIZA \citep{weizenbaum1966eliza}, simulated conversation through pattern matching and substitution, essentially repeating and paraphrasing their interlocutor's statements.
 While it successfully bypasses the necessity of programming a machine with \emph{intelligence}, such an approach does not result in a system that can be described as creative in any sense.
 In other words, ELIZA will never write a poem, or surprise their conversation partner with a witty turn of phrase.
 It would never be able to tell whether May has 30 or 31 days because it has no notion of what \emph{May} and \emph{days} are.
@@ -55,12 +55,12 @@ Language models are the tools that are employed to estimate these probabilities.
 Due to recent innovations in NLP, the phrase "language model" evokes big and expensive systems, trained on huge amounts of data and costing enormous amounts of money to develop.
 While this is certainly understandable, the label in itself has no presupposition of size or cost.
 In essence, language models break down the massively complex problem of "teaching language to machines", into the more manageable task of "statistically learning what words are likely to follow others".
-In other words, language models produce next-word (or, more generally, next-token) probabilities based on an input sequence \citep{citationneeded}.
-After this is achieved, the resulting model can be prompted over and over, one word at a time, in order to generate long pieces of text, by a process called autoregressive generation \citep{citationneeded}.
+In other words, language models produce next-word (or, more generally, next-token) probabilities based on an input sequence \citep{gao2004introduction}.
+After this is achieved, the resulting model can be prompted over and over, one word at a time, in order to generate long pieces of text, by a process called autoregressive generation \citep{lin2021limitationsautoregressivemodelsalternatives}.
 
 For example, for the completion "fifteen minutes of \_\_\_\_\_", one would expect a (good) language model to offer words such as "fame" or "overtime".
 One idea to achieve this is to collect some linguistic data and observe what words follow "fifteen minutes of" and extrapolate a probability distribution from the observed frequencies.
-So-called \emph{n-gram} language models \citep{citationneeded} are built in this fashion, with the \emph{n} in \emph{n-gram} specifying the amount of left context taken into consideration.
+So-called \emph{n-gram} language models \citep{chen1999empirical} are built in this fashion, with the \emph{n} in \emph{n-gram} specifying the amount of left context taken into consideration.
 
 The simplest of these models, the bigram (2-gram) language model, records co-occurring word pairs in the sample dataset.
 Consequently, for this model, only the last word of a sequence determines the prediction over the following word.
@@ -68,29 +68,29 @@ This results in a model that can reliably generate short collocations, such as "
 To correctly predict "fame", one would need at least a 4-gram language model, which would finally allow for such a "long" context requirement.
 However, while taking more context tokens into consideration increases the performance of n-gram language models, it does so at a steep (especially memory) cost: for 4-gram LMs with a vocabulary size (i.e., how many words the model knows) of 1000, for example, implementations without optimizations would require the frequency counts for $10^{4}$ n-grams to be accessible for predictions.
 
-Another issue that presents itself with frequency-based models is the handling of unseen n-grams. For example, the 3-gram "duck goose pony" may never come up in the model training data, in which case some near-0 probability is assigned to the sequence (due to smoothing, see for example \citealp{citationneeded}).
+Another issue that presents itself with frequency-based models is the handling of unseen n-grams. For example, the 3-gram "duck goose pony" may never come up in the model training data, in which case some near-0 probability is assigned to the sequence (due to smoothing, see for example \citealp{chen1999empirical}).
 While some n-grams will fail to appear due to being ungrammatical or nonsensical like in "duck goose pony", others may be perfectly well-formed but either rare or just absent from the training data due to chance: if "trees need hydration" was never observed, then the model would fail to recognize this n-gram to be more likely than, for example, "trees need circumference" (assuming the latter was also not observed, which is quite likely in organic text).
-Even the n-gram "roundly faucet knowledge" would be equally is likely as "trees need hydration" if both were never observed in training. While the latter example can be solved by including lower-order n-grams in the probability calculation ("trees need" may have been observed even if "trees need hydration" wasn't, but "roundly faucet" is unlikely to have been observed; see for example \citealp{citationneeded}), the former case requires more subtle knowledge.
+Even the n-gram "roundly faucet knowledge" would be equally is likely as "trees need hydration" if both were never observed in training. While the latter example can be solved by including lower-order n-grams in the probability calculation ("trees need" may have been observed even if "trees need hydration" wasn't, but "roundly faucet" is unlikely to have been observed; see \citealp{katz1987estimation}), the former case requires more subtle knowledge.
 In order to correctly assess "trees need hydration" as a quite likely n-gram, the model would need to identify the similarity between the words "water" and "hydration", and infer that "trees need hydration" should have higher probability than, say, "trees need virtual", due to "water" and "hydration" being similar.
 
 Due to such limitations, n-gram language models aren't the piece of technology that propelled language modelling to the heights that we associate with it today.
-The missing piece of the puzzle are neural networks \citep{citationneeded}, which when applied to language generation give rise to \emph{neural language models}. \citep{citationneeded}
+The missing piece of the puzzle are neural networks \citep{anderson1995introduction}, which when applied to language generation give rise to \emph{neural language models}.
 
 Following the example above, both n-gram and neural language models solve the fundamental of problem of estimating the probability that the word "fate" follows "fifteen minutes of".
 However, in order to do so, n-gram language models draw upon explicit frequency observations when generating its output, an approach that often fails to consider an adequate amount of context, or to take into account the fact that similar words appear in similar contexts.
-In contrast, neural language models draw upon their internal parameters - the weights and biases \citep{citationneeded} associated to the various layers of the neural network that makes up the model. \citep{citationneeded}
+In contrast, neural language models draw upon their internal parameters - the weights and biases \citep{anderson1995introduction} associated to the various layers of the neural network that makes up the model.
 
 \subsection{Neural language modelling}
 
-Neural networks \citep{citationneeded} are an extremely powerful for many applications across several disciplines. Providing an effective summary of all neural networks is a difficult task, since they manifest themselves in different variations for different tasks.
-Still, they are generally understood as interconnected layers of \emph{neurons} that map an input vector of numbers to an output vector. Each neuron in the network is made up of a weight, a bias, and an activation function \citep{citationneeded}, which are used to transform an input vector to an output number \citep{citationneeded}.
+Neural networks are an extremely powerful for many applications across several disciplines. Providing an effective summary of all neural networks is a difficult task, since they manifest themselves in different variations for different tasks.
+Still, they are generally understood as interconnected layers of \emph{neurons} that map an input vector of numbers to an output vector. Each neuron in the network is made up of a weight, a bias, and an activation function, which are used to transform an input vector to an output number.
 For the purposes of this work, it is more important to understand the overall network rather than its individual parts: neural models are a way to apply complex transformations to vectors.
 The \emph{parameters} of the model, i.e. the combined weights and biases of the individual neurons, can be used to encode knowledge in a way that simpler statistical models struggle to achieve.
 
 Above, the example of "trees need water" and "trees need hydration" was briefly discussed. While n-gram models have no structural way to note the similarity between "water" and "hydration", and thus fail to recognize that the admissible contexts for the two words have some overlap, neural networks have been employed to solve this problem exactly because of their capacity to progressively store knowledge.
-Word embeddings \emph{citationneeded} are a way of representing words as numerical vectors, such words with similar semantics will be close to each other in terms of vector distance. \citep{citationneeded} The embeddings for "water" and "hydration" would therefore be closer in vector space than "water" and "dog".
-Several ways have been developed to derive embeddings from text data --- for exmaple, the CBOW \emph{citationneeded} algorithm uses neural networks to predict the missing word given the surrounding context through the use of a neural network.
-For many iterations, the model is presented with a piece of text with a gap, and the objective of guessing the missing item. With each example, the model parameters are updated, or \emph{nudged} in the correct direction (for information on gradient descent, see \citealp{citationneeded}), i.e. towards a state that are more conducive to the correct prediction.
+Word embeddings \citep{selva2021review} are a way of representing words as numerical vectors, such words with similar semantics will be close to each other in terms of vector distance.  The embeddings for "water" and "hydration" would therefore be closer in vector space than "water" and "dog".
+Several ways have been developed to derive embeddings from text data --- for exmaple, the CBOW \citep{mikolov2013efficientestimationwordrepresentations} algorithm uses neural networks to predict the missing word given the surrounding context through the use of a neural network.
+For many iterations, the model is presented with a piece of text with a gap, and the objective of guessing the missing item. With each example, the model parameters are updated, or \emph{nudged} in the correct direction (for information on gradient descent, see \citealp{zhang2019gradientdescentbasedoptimization}), i.e. towards a state that are more conducive to the correct prediction.
 Importantly, among the parameters of the neural network are the embeddings for every word, which are used by the model to compute the final prediction across subsequent layers --- these are random at the beginning, but progressively more and more refined.
 At the end of training, most model parameters are discarded, but the embeddings are kept, and hopefully the result will have captured semantic similarities between the entries.
 
@@ -98,10 +98,10 @@ While the CBOW algorithm discards all model parameters aside from the embeddings
 
 \subsection{Large Language Models}
 
-Language models have a long and intricate history, having been iterated upon from different perspectives and with different atchitectural approaches. \citep{citationneeded}
-The introduction of the transformer \citep{citationneeded}, a model type that for more efficient training over extremely large text data, propelled language model quality forward considerably, to the point that all language models commonly known today follow this architecture.
+Language models have a long and intricate history, having been iterated upon from different perspectives and with different architectural approaches.
+The introduction of the transformer \citep{vaswani2023attentionneed}, a model type that for more efficient training over extremely large text data, propelled language model quality forward considerably, to the point that all language models commonly known today follow this architecture.
 The ability to train models with relatively little expenses allowed models to grow further and further in perplexity, eventually resulting in what we identify today as Large Language Models (LLMs).
-In terms of research attention, BERT \citep{citationneeded} and GPT-2 \citep{citationneeded} have perhaps been the most resonant examples earlier on.
+In terms of research attention, BERT \citep{devlin2019bertpretrainingdeepbidirectional} and GPT-2 \citep{radford2019language} have perhaps been the most resonant examples earlier on.
 
 Bidirectional Encoder Representations from Transformers (BERT) is slightly different from the language models discussed so far, in that its primary purpose is not generation.
 The word embeddings described above are a powerful tool for obtaining meaningful representations, but have the significant flaw of not being context-aware.
@@ -117,31 +117,31 @@ This is not the case for BERT. Since the objective here is to evaluate finished 
 Despite being a fairly recent introduction to the scene, being made available in just 2018, BERT has made big waves in nearly all fields where processing natural language is even tangentially relevant.
 It even resulted in the birth of the somewhat jokingly named discipline of BERTology, which is meant to convey the detailed analysis of how BERT and its different variations exactly arrive at the high-quality embeddings that they are known for.
 
-In the same year as BERT was published, another historical language model also made its debut: OpenAI's GPT-2. \citep{citationneeded}
+In the same year as BERT was published, another historical language model also made its debut: OpenAI's GPT-2. \citep{radford2019language}
 GPT-2 lines up closer to the popular idea of what constitutes a language model. It is large in size with 1.5 billion parameters, and was primarily conceived for language generation.
 In the original paper, the authors highlighted the ability of the model to approach several different problems without explicit training, such as question answering, test summarization, machine translation, and so forth.
 In this sense, GPT-2 is one of the first successful examples of language models displaying generalized problem-solving skills, that require both articualation and minute world knowledge.
 
-GPT-2 has become more of a baseline than a challenger in the years following its introduction, such was its impact in research applications. It has garnered much attention and analysis, similarly to BERT, a process that also highlighted some of its flaws (see, for example, the GPT-2 unicorn completion). While talk about GPT-2 could not at all be considered undertone, it was perhaps cut short, in that nowadays it is more rarely employed compared to BERT. This is in large part due to its new iteration, GPT-3 \citep{citationneeded}.
+GPT-2 has become more of a baseline than a challenger in the years following its introduction, such was its impact in research applications. It has garnered much attention and analysis, similarly to BERT, a process that also highlighted some of its flaws (see, for example, the GPT-2 unicorn completion). While talk about GPT-2 could not at all be considered undertone, it was perhaps cut short, in that nowadays it is more rarely employed compared to BERT. This is in large part due to its new iteration, GPT-3 \citep{brown2020language}.
 
 \subsection{Fears and reactions to LLMs}
 
 In 2020, GPT-3 was announced by the company OpenAI, and was made available to the general public through an interface called ChatGPT. With its introduction, the gates were open to the generation of high-quality text through AI.
 This was perhaps the first example of language model garnering tremendous general attention, not only in academic circles but from the public at large. ChatGPT even experienced service outages due to its servers not being able to handle the astounding traffic they were receiving.
 The introduction of GPT-3 provided an unprecedented boost to langauge models as a consumer technology, leading to a sort of arms race both in integrating AI into customer-facing products, as well as in model develompent itself.
-In the first wave of AI competition, Facebook's Llama \citep{touvron2023llama} and the open source model Mistral \citep{jiang2023mistral} also entered the scene, alongside Google's Bard (\citealp{citationneeded}, now discontinued). In a subsequent wave, further developments have reached even higher generation quality, with models such as GPT-4 \citep{citationneeded}, Gemini \citep{citationneeded}.
+In the first wave of AI competition, Facebook's Llama \citep{touvron2023llama} and the open source model Mistral \citep{jiang2023mistral} also entered the scene, alongside Google's now discontinued Bard (see for example \citealp{fowler2023bard}). In a subsequent wave, further developments have reached even higher generation quality, with models such as GPT-4 \citep{openai2024gpt4technicalreport} and Gemini \citep{geminiteam2024geminifamilyhighlycapable}.
 
 Such developments marked the beginning of language models being commonplace technology.
 The arts, education, technology, sales, and dozens of other fields have seen major changes to the way they operate, either in alongside or in opposition to artificial intelligence.
 Education, in particular, was one of the first areas to experience a problematic application of language generation, with a prevailing initial fear that students would opt to have a language model solve their homework for them.
-Surprisingly, programming also saw the rapid birth of assistive technology, such as Github Copilot \citep{citationneeded}, leading to fears that many software professionals would be made obsolete by the new technologies.
+Surprisingly, programming also saw the rapid birth of assistive technology, such as Github Copilot \citep{chen2021evaluatinglargelanguagemodels}, leading to fears that many software professionals would be made obsolete by the new technologies.
 
 People employed in artistic fields, particularly writers, also took a deeply cautious stance from the beginning with respect to AI.
 In a landmark development, the 5-month-long strike of the Writer's Guild of America
 \footnote{An article summarising the strike can be viewed at https://www.vox.com/culture/2023/9/24/23888673/wga-strike-end-sag-aftra-contract}
 resulted in an agreement which included safeguards for writers against the use of artificial intelligence.
 \footnote{See for example https://www.nbclosangeles.com/news/local/hollywood-writers-safeguards-against-ai-wga-agreement/3233064/ for an account of the agreement}
-Such a stance turned out to be far from unfounded, with how AI-generated content has flooded several internet platforms. \citep{citationneeded}
+Such a stance turned out to be far from unfounded, with how AI-generated content has flooded several internet platforms.
 As recently as March 2024, even the Google search engine has had to address the issue of unoriginal content, which is in large part meant to target results which contain generated text.
 \footnote{Google published a blog post explaining the changes at https://blog.google/products/search/google-search-update-march-2024/}
 At the same time, the search engine itself adopted a new feature called AI Overviews, an integrated AI-generated response to the user's query.
