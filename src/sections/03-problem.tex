@@ -1,5 +1,77 @@
 \section{Threats posed by NLG systems}
-\label{sec:mainideas}
+\label{sec:threats}
 
 NLG systems, and language models in particular, have emerged as an extraordinarily useful tool in a number of creative and technical fields, but it stands to reason that they would lend themselves to nefarious applications just as well as ethical ones.
-Following \citealp{crothers2023machinegeneratedtextcomprehensive}, several threat models \citep{shostack2014security} can be outlined for language modelling.
+Following \citet{crothers2023machinegeneratedtextcomprehensive}, several threat models \citep{shostack2014security} have been proposed to tackle the potential dangers of language generation, some of which have already had real-life realizations as well.
+
+Threat modelling provides researchers and professionals with the tools to predict potential dangers related to resources or technologies, even (and especially) in absence of historical expertise related to the relevant threats.
+For example, when designing a messaging application, a possible exploitation attempt could involve a malicious actor eavesdropping on other users' conversations.
+A threat model designed around this scenario would try to define the characteristics of the attacker, the likely strategies used, and how to counter them, preemptively or reactively.
+The methodical evaluation of potential threats and the implementation of relevant protection mechanisms is of particular concern in the field of information technology, since this area is so synonymous with scalability.
+Indeed, when something goes wrong in systems that operate on a huge scale, as do many if not most digital services people interact with daily, the impact is often proportionally disastrous.
+
+NLG systems integrate themselves into this picture better than one might initially assume.
+Importantly, language models scale far more easily than a human force. Humans need to be taught, few at a time and for a period of time, to perform a task.
+Automated systems, however, have no such limitation: once trained, one must only increase the compute to increase coverage, an operation that takes far less time and resources than training people.
+
+As such, language generation makes the known universe of digital threats that much more severe.
+On the one hand, it boosts the scale at which already existing attacks were operating, such as scams and phishing attempts - both of which had to be performed by human actors in some way thus far.
+On the other hand, it creates entirely new threats which were previously unfeasible, such as generating convincing documents for homework-evasion.
+
+\subsection{Scam and phishing attempts}
+
+Attacks and exploitation attempts targeted at individuals are particularly well-suited for NLG usage, since they usually involve using natural language to convince the victim of performing some action, such as revealing sensitive information or granting access to a restricted resource.
+
+Phishing is a cyberattack method where attackers impersonate legitimate entities to trick individuals into revealing private information, such as passwords, credit card numbers, or personal details.
+This is typically done through deceptive emails, messages, or websites that appear trustworthy but are actually fraudulent. Victims are often lured into clicking malicious links or downloading harmful attachments, leading to the theft of their data or the compromise of their devices.
+Phishing is a widespread and dangerous tactic used to gain unauthorized access to systems and conduct identity theft, financial fraud, or other malicious activities.
+
+An example of a phishing attack could involve a fake email that appears to come from a well-known bank. The email might use the bank's logo, official-sounding language, and a convincing sender address to create a sense of urgency, such as warning the recipient that their account has been compromised.
+The message instructs the recipient to click on a link to verify their account information immediately. When the user clicks the link, they are directed to a counterfeit website that looks almost identical to the bank's real site.
+Once on this fake site, the victim is prompted to enter their login credentials, which are then captured by the attackers.
+With this information, the cybercriminals can access the victim's real bank account, potentially leading to financial loss and identity theft.
+
+NLG has been proven to be effective across several varieties of phishing attacks. Depending on the scope of the attack, one can distinguish phishing attacks targeting indiscriminate groups (massive phishing), specific communities (community phishing) or individuals in particular (spear phishing).
+
+Regarding the former, the exploitation attempt targets a specific group or community, such as members of a social club, employees of a particular company, or even residents of a neighborhood. The attacker leverages the shared characteristics, interests, or affiliations of the community to create a more convincing and believable scam.
+For instance, a cybercriminal might send an email that appears to come from the community’s leader, such as a club president or company CEO, announcing an upcoming event or an urgent matter requiring action.
+The message may ask recipients to click on a link to RSVP, pay dues, or access important information.
+This link, however, leads to a fraudulent website designed to capture login credentials, financial details, or other sensitive information.
+By exploiting the trust and familiarity within the community, these phishing attacks can be particularly effective, as victims are more likely to lower their guard and engage with the malicious content.
+
+E-mail masquerade attacks are among the most common and most well-studied \cite{Khonji2013PhishingDA} digital vectors for phishing attacks.
+Language generation has been studied in correlation to them even before GPT-3 came to the forefront, and has been shown to be effective at creating a variety of attacking strategies with only few hours of effort \cite{bakie2017scaling}.
+Aside from providing an important method to scale up email-based attacks, language generation also renders traditional spam and phishing filters less effective.
+
+One of the most widely used method for distinguishing legitimate emails from spam is Bayesian filtering. This approach works by analyzing each word in an email and comparing it against a database of words commonly found in spam messages.
+The filter calculates the probability of the email being spam based on the presence and frequency of these words. If the likelihood exceeds a certain threshold, the email is flagged as spam.
+Despite some shortcomings, such as being vulnerable to adversarial manipulation of the underlying frequency tables, Bayesian filtering remains an effective tool for detecting and blocking unwanted emails.
+
+NLG systems could throw a wrench in this common approach, since large language models are capable of higher and less predictable lexical variety than traditional NLG systems.
+Community Targeted Phishing, as described by \citet{Giaretta_2019} aims explicitly to analyze the language of specific groups to craft complex emails, which with the help of today's LLMs can more easily evade traditional defenses.
+For example, a conversational LM could be trained on the style and publications of a well-known researcher, to then be used as a phishing actor against colleagues in the same area, who may not be directly familiar with the renowned figure.
+This clone may much more convincingly get victims to surrender personal information and click on malicious links, while evading.
+
+The more dangerous variety of phishing attacks, however, is \emph{spear phishing}. Spear phishing focuses on a single individual, using personalized information gathered from research to craft a highly convincing and tailored attack.
+This makes spear phishing more difficult to detect, as the attacker often impersonates someone the target knows or trusts, increasing the likelihood of success.
+The personalized nature of spear phishing often leads to greater harm, as the attacker aims to extract highly sensitive information or gain unauthorized access to critical systems.
+
+The bigger limitation of these attacks -- from the perpetrator's perspective -- is that much time investment and human time is needed for each target.
+NLG systems could provide a tool for scaling such attacks, for example by being employed in early stages for automated conversations, thus gaining the victim's trust before the attack proper.
+
+The language generation features provided by modern LLMs thus pose a substantial threat when it comes to their ability to boost the effectiveness of phishing attacks.
+Their ability is well suited to tricking large groups of people indiscriminately, as well as to strategies that prove insidious to threaten specific communities.
+They also enable the scaling up of phishing attacks targeted at individuals, since they can engage in conversation, preparing the field for the malicious extraction of sensitive information.
+The industry's tools for protection against traditional attacks are rendered somewhat obsolete when LLMs enter the picture, thus effectively detecting when a language model is being deployed is crucial.
+
+\subsection{Information poisoning}
+
+Generating Sentiment-Preserving Fake Online Reviews Using Neural Language Models
+
+AI and the Future of Disinformation Campaigns
+
+\subsection{Faking human authorship}
+
+Prevalence of nonsensical algorithmically generated papers in the scientific literature
+
+Is GPT-3 Text Indistinguishable from Human Text? Scarecrow: A Framework for Scrutinizing Machine Text

@@ -5,11 +5,17 @@
   "editor.wordWrap": "on",
   "cSpell.language": "en-US",
   "cSpell.words": [
+    "autoregressive",
     "bigram",
+    "CBOW",
+    "cyberattack",
+    "cybercriminal",
+    "cybercriminals",
     "Dorwin",
     "Hari",
     "psychohistory",
     "ruleset",
-    "Seldon"
+    "Seldon",
+    "timestep"
   ]
 }
