@@ -1,5 +1,134 @@
 \section{Threats posed by NLG systems}
-\label{sec:mainideas}
+\label{sec:threats}
 
 NLG systems, and language models in particular, have emerged as an extraordinarily useful tool in a number of creative and technical fields, but it stands to reason that they would lend themselves to nefarious applications just as well as ethical ones.
-Following \citealp{crothers2023machinegeneratedtextcomprehensive}, several threat models \citep{shostack2014security} can be outlined for language modelling.
+Following \citet{crothers2023machinegeneratedtextcomprehensive}, several threat models \citep{shostack2014security} have been proposed to tackle the potential dangers of language generation, some of which have already had real-life realizations as well.
+
+Threat modelling provides researchers and professionals with the tools to predict potential dangers related to resources or technologies, even (and especially) in absence of historical expertise related to the relevant threats.
+For example, when designing a messaging application, a possible exploitation attempt could involve a malicious actor eavesdropping on other users' conversations.
+A threat model designed around this scenario would try to define the characteristics of the attacker, the likely strategies used, and how to counter them, preemptively or reactively.
+The methodical evaluation of potential threats and the implementation of relevant protection mechanisms is of particular concern in the field of information technology, since this area is so synonymous with scalability.
+Indeed, when something goes wrong in systems that operate on a huge scale, as do many if not most digital services people interact with daily, the impact is often proportionally disastrous.
+
+NLG systems integrate themselves into this picture better than one might initially assume.
+Importantly, language models scale far more easily than a human force. Humans need to be taught, few at a time and for a period of time, to perform a task.
+Automated systems, however, have no such limitation: once trained, one must only increase the compute to increase coverage, an operation that takes far less time and resources than training people.
+
+As such, language generation makes the known universe of digital threats that much more severe.
+On the one hand, it boosts the scale at which already existing attacks were operating, such as scams and phishing attempts - both of which had to be performed by human actors in some way thus far.
+On the other hand, it creates entirely new threats which were previously unfeasible, such as generating convincing documents for homework-evasion.
+
+\subsection{Scam and phishing attempts}
+
+Attacks and exploitation attempts targeted at individuals are particularly well-suited for NLG usage, since they usually involve using natural language to convince the victim of performing some action, such as revealing sensitive information or granting access to a restricted resource.
+
+Phishing is a cyberattack method where attackers impersonate legitimate entities to trick individuals into revealing private information, such as passwords, credit card numbers, or personal details.
+This is typically done through deceptive emails, messages, or websites that appear trustworthy but are actually fraudulent. Victims are often lured into clicking malicious links or downloading harmful attachments, leading to the theft of their data or the compromise of their devices.
+Phishing is a widespread and dangerous tactic used to gain unauthorized access to systems and conduct identity theft, financial fraud, or other malicious activities.
+
+An example of a phishing attack could involve a fake email that appears to come from a well-known bank. The email might use the bank's logo, official-sounding language, and a convincing sender address to create a sense of urgency, such as warning the recipient that their account has been compromised.
+The message instructs the recipient to click on a link to verify their account information immediately. When the user clicks the link, they are directed to a counterfeit website that looks almost identical to the bank's real site.
+Once on this fake site, the victim is prompted to enter their login credentials, which are then captured by the attackers.
+With this information, the cybercriminals can access the victim's real bank account, potentially leading to financial loss and identity theft.
+
+NLG has been proven to be effective across several varieties of phishing attacks. Depending on the scope of the attack, one can distinguish phishing attacks targeting indiscriminate groups (massive phishing), specific communities (community phishing) or individuals in particular (spear phishing).
+
+Regarding the former, the exploitation attempt targets a specific group or community, such as members of a social club, employees of a particular company, or even residents of a neighborhood. The attacker leverages the shared characteristics, interests, or affiliations of the community to create a more convincing and believable scam.
+For instance, a cybercriminal might send an email that appears to come from the community’s leader, such as a club president or company CEO, announcing an upcoming event or an urgent matter requiring action.
+The message may ask recipients to click on a link to RSVP, pay dues, or access important information.
+This link, however, leads to a fraudulent website designed to capture login credentials, financial details, or other sensitive information.
+By exploiting the trust and familiarity within the community, these phishing attacks can be particularly effective, as victims are more likely to lower their guard and engage with the malicious content.
+
+E-mail masquerade attacks are among the most common and most well-studied \citep{Khonji2013PhishingDA} digital vectors for phishing attacks.
+Language generation has been studied in correlation to them even before GPT-3 came to the forefront, and has been shown to be effective at creating a variety of attacking strategies with only few hours of effort \citep{bakie2017scaling}.
+Aside from providing an important method to scale up email-based attacks, language generation also renders traditional spam and phishing filters less effective.
+
+One of the most widely used method for distinguishing legitimate emails from spam is Bayesian filtering. This approach works by analyzing each word in an email and comparing it against a database of words commonly found in spam messages.
+The filter calculates the probability of the email being spam based on the presence and frequency of these words. If the likelihood exceeds a certain threshold, the email is flagged as spam.
+Despite some shortcomings, such as being vulnerable to adversarial manipulation of the underlying frequency tables, Bayesian filtering remains an effective tool for detecting and blocking unwanted emails.
+
+NLG systems could throw a wrench in this common approach, since large language models are capable of higher and less predictable lexical variety than traditional NLG systems.
+Community Targeted Phishing, as described by \citet{Giaretta_2019} aims explicitly to analyze the language of specific groups to craft complex emails, which with the help of today's LLMs can more easily evade traditional defenses.
+For example, a conversational LM could be trained on the style and publications of a well-known researcher, to then be used as a phishing actor against colleagues in the same area, who may not be directly familiar with the renowned figure.
+This clone may much more convincingly get victims to surrender personal information and click on malicious links, while evading.
+
+The more dangerous variety of phishing attacks, however, is \emph{spear phishing}. Spear phishing focuses on a single individual, using personalized information gathered from research to craft a highly convincing and tailored attack.
+This makes spear phishing more difficult to detect, as the attacker often impersonates someone the target knows or trusts, increasing the likelihood of success.
+The personalized nature of spear phishing often leads to greater harm, as the attacker aims to extract highly sensitive information or gain unauthorized access to critical systems.
+
+The bigger limitation of these attacks -- from the perpetrator's perspective -- is that much time investment and human time is needed for each target.
+NLG systems could provide a tool for scaling such attacks, for example by being employed in early stages for automated conversations, thus gaining the victim's trust before the attack proper.
+
+The language generation features provided by modern LLMs thus pose a substantial threat when it comes to their ability to boost the effectiveness of phishing attacks.
+Their ability is well suited to tricking large groups of people indiscriminately, as well as to strategies that prove insidious to threaten specific communities.
+They also enable the scaling up of phishing attacks targeted at individuals, since they can engage in conversation, preparing the field for the malicious extraction of sensitive information.
+The industry's tools for protection against traditional attacks are rendered somewhat obsolete when LLMs enter the picture, thus effectively detecting when a language model is being deployed is crucial.
+
+\subsection{Information poisoning and influence campaigns}
+
+Another area where NLG can cause a negative impact is information and communication. Disinformation campaigns have been extremely common across all of human history.
+One coon look as back as the Donation of Constantine, a false document used in the 13th century to justify the territorial claims of the papal state, or as recently as the election meddling by foreign states in the US elections of the 21st century.
+
+Disinformation campaigns in particular have traditionally suffered from being dependent on human editors to compose the message and select the diffusion vector -- be it emails, social media, blogs, and so on - therefore performing them at scale comes at a steep cost. Language models have the potential of solving alleviating this limitation.
+By relying on NLG to generate most of the content of the campaign messages, it is possible for attackers to forgo -- at least in part -- this resource and time-consuming factor.
+
+
+\citet{buchanan2021truth} explore the role of GPT-3 in a human-machine setting, studying therefore the effectiveness of GPT-3 in generating disinformation campaigns when paired with human-crafted prompts along the process.
+Their findings suggest that while GPT-3 is unlikely to completely replace human operators in disinformation efforts, it significantly enhances their capabilities by enabling the creation of moderate- to high-quality content at an unprecedented scale.
+This amplification of output could make disinformation campaigns more pervasive and harder to counter, highlighting the need for robust strategies to mitigate such threats.
+
+GPT-3 performed particularly well with \emph{narrative reiteration} (e.g. generating a series of tweets based on an original) and \emph{narrative elaboration} (e.g. generating a blog post or article based on a title or paragraph) -- which consist in the generation of short or medium length messages given a particular world view and a prompt.
+When malicious actors have a well-defined message that they seek to advance, NLG systems seem therefore to be a dangerous tool at their disposal, as they performs exceptionally well in this setting, without requiring particularly skilled operators.
+GPT-3 was observed to perform worse -- or to require more careful prompting from the operator -- for tasks requiring higher levels of creativity and originality.
+\emph{Narrative wedging}, for example, aims to identify a source of division in the target society or group, and amplify its effects by means of carefully crafted disinformation messages.
+Similarly, \emph{narrative manipulation} is a technique that involves framing existing emergent stories to align with a pre-defined world view.
+Neither task requires coming up with outright lies, and for both a human-machine team was observed to be necessary to obtain credible and convincing messages.
+
+\citet{buchanan2021truth} go on to highlight that GPT-3's writing characteristics -- which can likely be extended to several other language models -- suits the goal of disinforming more than that of informing.
+Indeed, GPT-3 is known to frequently go on tangents and make information up even in neutral to benign generation contexts.
+These traits might unfortunately make GPT-3 more effective in creating misleading or false narratives than in producing reliable, accurate content, underscoring its potential risks in the hands of those seeking to deceive.
+
+Generic and task-specific language models can also be employed to exploit online review systems to influence consumer behavior. LLMs can be used to generate fake reviews with a target sentiment based on a prompt or a base review to emulate.
+This is an evolution of the \emph{crowdturfing} method, which involves paying large numbers of people to write fake reviews.
+Due to the associated economic cost, these attacks were limited to large-scale attacks, and therefore carried a built-in limiting element.
+
+\citet{adelani2019reviews} devise a strategy that employs language models to compose fake reviews based on an example displaying the desired sentiment towards the thing being reviewed.
+The generated fakes do not undergo manual review later, but employ a BERT-based sentiment classifier to filter out counterproductive items.
+To take it a step further, they use a fine-tuned version GPT-2 and BERT on Amazon and Yelp review databases, an operation that perhaps wouldn't necessarily be typical of attacks based on GPT-3 and other modern LLM variants.
+Nonetheless, using a task-specific version of GPT-2 might make it more comparable to task-agnostic, modern LLMs such as GPT-3 and GPT-4, making the findings more generalizable to modern systems.
+
+To verify the fooling power of the fake reviews, sets of 3 fake reviews and 1 real review were presented to human evaluators, with the objective of correctly finding the "real" review.
+The results demonstrate that participants often struggled to discern the authentic review, as their success rates were close to the random chance rate of 25\%.
+This suggests that the evaluators were essentially guessing, indicating that the fake reviews were convincing enough to be mistaken for real ones.
+Such findings indicate that even in the premodern era of language modeling (i.e. before GPT-3), NLG already proved a valid substitute for the more expensive crowdturfing attacks.
+
+\subsection{Faking human authorship}
+
+Other malicious uses of LLMs rely on its ability to appear human, and not so much on its ability to specifically compose high-quality text.
+One such application is the generation of pseudo-scientific papers to contribute to one's research numbers.
+Examples of generation of such papers are common even before language modelling became popular.
+SCIgen \citep{hargrave2005scigen} is a tool introduced in 2005 that allowed for the generation of nonsensical scientific papers by using a context-free grammar based generator.
+Such papers even pass the peer-review process from time to time and appear in respected publications.
+As recently as 2021, \citet{cabanac2021prevalence} identified 197 SCIgen articles for which there had been no withdrawal notice, and were at times even being sold.
+
+While SCIgen can be identified with relatively low computational effort and high accuracy, detecting content produced by more advanced generation tools, such as LLMs, presents a far greater challenge.
+With their ability to produce highly convincing and coherent text, these models could significantly worsen the issue, particularly in non-peer-reviewed technical documents.
+Beyond merely disrupting the scientific process, the proliferation of AI-generated technical content could also be exploited to influence public opinion and create confusion around important scientific issues, making it a growing threat in both academic and public discourse.
+
+(Un)fortunately, there don't appear to be studies investigating the concrete prevalence of LLM-generated scientific papers across the recent academic landscape -- perhaps both due to the recency of the phenomenon, as well as the difficulty in detecting the employment of modern NLG systems.
+\citet{rodriguez2022cross} investigated possible detection strategies with self-made document tampering, but used the older GPT-2 for document contamination as opposed to more modern versions, therefore their results are hard to generalize
+(admittedly, this example investigate domain-specific fine-tuned generation, something that is harder and more expensive to do with future versions of GPT).
+Nevertheless, this study provides valuable insight into the future of LLM-generated papers. Further discussion of their detection strategies can be found in Chapter \ref{sec:approaches}.
+
+Among the overtly malicious uses of NLG, there are other that do not seek to harm directly.
+Students using language models to, either partially or completely, complete their coursework for them is one such case.
+Overreliance on systems like ChatGPT can discourage students from developing analytical and thinking skills.
+Passively incorporating the generated answers is a real danger when interfacing with such systems without an adequate evaluation framework -- checking for factual correctness is one element among many that need checking before accepting a generation.
+
+Another indirectly harmful application of NLG is content generation for social media.
+AI-generated text and images risk diluting the true human experience present on the platforms, to such an extent that they may become inhospitable places to organic users.
+
+Furthermore, anyone using LLMs, however well-intentioned, is exposing themselves to the risk of plagiarism.
+The importance of checking the model output before incorporating it -- especially in formal and academic writing -- needs hardly be restated.
+\citet{gao2022comparing} investigated abstract generation for papers in the biomedical domain, and found no plagiarism in the output, though it did observe high accuracy in predicting whether an abstract was generated or human-written.
+This finding alleviates concerns somewhat, though the risk of inadvertent plagiarism is never fully 0, especially in longer contexts.
