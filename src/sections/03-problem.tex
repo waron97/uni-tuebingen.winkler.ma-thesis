@@ -110,3 +110,25 @@ Examples of generation of such papers are common even before language modelling 
 SCIgen \citep{hargrave2005scigen} is a tool introduced in 2005 that allowed for the generation of nonsensical scientific papers by using a context-free grammar based generator.
 Such papers even pass the peer-review process from time to time and appear in respected publications.
 As recently as 2021, \citet{cabanac2021prevalence} identified 197 SCIgen articles for which there had been no withdrawal notice, and were at times even being sold.
+
+While SCIgen can be identified with relatively low computational effort and high accuracy, detecting content produced by more advanced generation tools, such as LLMs, presents a far greater challenge.
+With their ability to produce highly convincing and coherent text, these models could significantly worsen the issue, particularly in non-peer-reviewed technical documents.
+Beyond merely disrupting the scientific process, the proliferation of AI-generated technical content could also be exploited to influence public opinion and create confusion around important scientific issues, making it a growing threat in both academic and public discourse.
+
+(Un)fortunately, there don't appear to be studies investigating the concrete prevalence of LLM-generated scientific papers across the recent academic landscape -- perhaps both due to the recency of the phenomenon, as well as the difficulty in detecting the employment of modern NLG systems.
+\citet{rodriguez2022cross} investigated possible detection strategies with self-made document tampering, but used the older GPT-2 for document contamination as opposed to more modern versions, therefore their results are hard to generalize
+(admittedly, this example investigate domain-specific fine-tuned generation, something that is harder and more expensive to do with future versions of GPT).
+Nevertheless, this study provides valuable insight into the future of LLM-generated papers. Further discussion of their detection strategies can be found in Chapter \ref{sec:approaches}.
+
+Among the overtly malicious uses of NLG, there are other that do not seek to harm directly.
+Students using language models to, either partially or completely, complete their coursework for them is one such case.
+Overreliance on systems like ChatGPT can discourage students from developing analytical and thinking skills.
+Passively incorporating the generated answers is a real danger when interfacing with such systems without an adequate evaluation framework -- checking for factual correctness is one element among many that need checking before accepting a generation.
+
+Another indirectly harmful application of NLG is content generation for social media.
+AI-generated text and images risk diluting the true human experience present on the platforms, to such an extent that they may become inhospitable places to organic users.
+
+Furthermore, anyone using LLMs, however well-intentioned, is exposing themselves to the risk of plagiarism.
+The importance of checking the model output before incorporating it -- especially in formal and academic writing -- needs hardly be restated.
+\citet{gao2022comparing} investigated abstract generation for papers in the biomedical domain, and found no plagiarism in the output, though it did observe high accuracy in predicting whether an abstract was generated or human-written.
+This finding alleviates concerns somewhat, though the risk of inadvertent plagiarism is never fully 0, especially in longer contexts.
