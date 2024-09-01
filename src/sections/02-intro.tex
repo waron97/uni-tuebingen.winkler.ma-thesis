@@ -71,20 +71,20 @@ However, while taking more context tokens into consideration increases the perfo
 
 Another issue that presents itself with frequency-based models is the handling of unseen n-grams. For example, the 3-gram "duck goose pony" may never come up in the model training data, in which case some near-0 probability is assigned to the sequence (due to smoothing, see for example \citet{chen1999empirical}).
 While some n-grams will fail to appear due to being ungrammatical or nonsensical like in "duck goose pony", others may be perfectly well-formed but either rare or just absent from the training data due to chance: if "trees need hydration" was never observed, then the model would fail to recognize this n-gram to be more likely than, for example, "trees need circumference" (assuming the latter was also not observed, which is quite likely in organic text).
-Even the n-gram "roundly faucet knowledge" would be equally is likely as "trees need hydration" if both were never observed in training. While the latter example can be solved by including lower-order n-grams in the probability calculation ("trees need" may have been observed even if "trees need hydration" wasn't, but "roundly faucet" is unlikely to have been observed; see \citet{katz1987estimation}), the former case requires more subtle knowledge.
+Even the n-gram "roundly faucet knowledge" would be equally as likely as "trees need hydration" if both were never observed in training. While the latter example can be solved by including lower-order n-grams in the probability calculation ("trees need" may have been observed even if "trees need hydration" wasn't, but "roundly faucet" is unlikely to have been observed; see \citet{katz1987estimation}), the former case requires more subtle knowledge.
 In order to correctly assess "trees need hydration" as a quite likely n-gram, the model would need to identify the similarity between the words "water" and "hydration", and infer that "trees need hydration" should have higher probability than, say, "trees need virtual", due to "water" and "hydration" being similar.
 
-Due to such limitations, n-gram language models aren't the piece of technology that propelled language modelling to the heights that we associate with it today.
+Due to such limitations, n-gram language models are not the piece of technology that propelled language modelling to the heights that we associate with it today.
 The missing piece of the puzzle are neural networks \citep{anderson1995introduction}, which when applied to language generation give rise to \emph{neural language models}.
 
-Following the example above, both n-gram and neural language models solve the fundamental of problem of estimating the probability that the word "fate" follows "fifteen minutes of".
+Following the example above, both n-gram and neural language models solve the fundamental problem of estimating the probability that the word "fate" follows "fifteen minutes of".
 However, in order to do so, n-gram language models draw upon explicit frequency observations when generating its output, an approach that often fails to consider an adequate amount of context, or to take into account the fact that similar words appear in similar contexts.
 In contrast, neural language models draw upon their internal parameters - the weights and biases \citep{anderson1995introduction} associated to the various layers of the neural network that makes up the model.
 
 \subsection{Neural language modelling}
 
 Neural networks are an extremely powerful for many applications across several disciplines. Providing an effective summary of all neural networks is a difficult task, since they manifest themselves in different variations for different tasks.
-Still, they are generally understood as interconnected layers of \emph{neurons} that map an input vector of numbers to an output vector. Each neuron in the network is made up of a weight, a bias, and an activation function, which are used to transform an input vector to an output number.
+Still, they are generally understood as interconnected layers of \emph{neurons} that map an input vector of numbers to an output vector. Each neuron in the network is made up of a vector of weights, a bias, and an activation function, which are used to transform an input vector to an output number.
 For the purposes of this work, it is more important to understand the overall network rather than its individual parts: neural models are a way to apply complex transformations to vectors.
 The \emph{parameters} of the model, i.e. the combined weights and biases of the individual neurons, can be used to encode knowledge in a way that simpler statistical models struggle to achieve.
 
@@ -118,12 +118,12 @@ This is not the case for BERT. Since the objective here is to evaluate finished 
 Despite being a fairly recent introduction to the scene, being made available in just 2018, BERT has made big waves in nearly all fields where processing natural language is even tangentially relevant.
 It even resulted in the birth of the somewhat jokingly named discipline of BERTology, which is meant to convey the detailed analysis of how BERT and its different variations exactly arrive at the high-quality embeddings that they are known for.
 
-In the same year as BERT was published, another historical language model also made its debut: OpenAI's GPT-2. \citep{radford2019language}
-GPT-2 lines up closer to the popular idea of what constitutes a language model. It is large in size with 1.5 billion parameters, and was primarily conceived for language generation.
+In the same year as BERT was published, another historical language model also made its debut: OpenAI's GPT-2.
+GPT-2 \citep{radford2019language} lines up closer to the popular idea of what constitutes a language model. It is large in size with 1.5 billion parameters, and was primarily conceived for language generation.
 In the original paper, the authors highlighted the ability of the model to approach several different problems without explicit training, such as question answering, test summarization, machine translation, and so forth.
 In this sense, GPT-2 is one of the first successful examples of language models displaying generalized problem-solving skills, that require both articulation and minute world knowledge.
 
-GPT-2 has become more of a baseline than a challenger in the years following its introduction, such was its impact in research applications. It has garnered much attention and analysis, similarly to BERT, a process that also highlighted some of its flaws (see, for example, the GPT-2 unicorn completion). While talk about GPT-2 could not at all be considered undertone, it was perhaps cut short, in that nowadays it is more rarely employed compared to BERT. This is in large part due to its new iteration, GPT-3 \citep{brown2020language}.
+GPT-2 has become more of a baseline than a challenger in the years following its introduction, such was its impact in research applications. It has garnered much attention and analysis, similarly to BERT, a process that also highlighted some of its flaws (see, for example, the GPT-2 unicorn story\footnote{\url{https://pbs.twimg.com/media/DzYpsJOU0AA1PO9.png:large}}). While talk about GPT-2 could not at all be considered undertone, it was perhaps cut short, in that nowadays it is more rarely employed compared to BERT. This is in large part due to its new iteration, GPT-3 \citep{brown2020language}.
 
 \subsection{Fears and reactions to LLMs}
 
@@ -138,15 +138,11 @@ Education, in particular, was one of the first areas to experience a problematic
 Surprisingly, programming also saw the rapid birth of assistive technology, such as Github Copilot \citep{chen2021evaluatinglargelanguagemodels}, leading to fears that many software professionals would be made obsolete by the new technologies.
 
 People employed in artistic fields, particularly writers, also took a deeply cautious stance from the beginning with respect to AI.
-In a landmark development, the 5-month-long strike of the Writer's Guild of America
-\footnote{An article summarising the strike can be viewed at https://www.vox.com/culture/2023/9/24/23888673/wga-strike-end-sag-aftra-contract}
-resulted in an agreement which included safeguards for writers against the use of artificial intelligence.
-\footnote{See for example https://www.nbclosangeles.com/news/local/hollywood-writers-safeguards-against-ai-wga-agreement/3233064/ for an account of the agreement}
-Such a stance turned out to be far from unfounded, with how AI-generated content has flooded several internet platforms.
-As recently as March 2024, even the Google search engine has had to address the issue of unoriginal content, which is in large part meant to target results which contain generated text.
-\footnote{Google published a blog post explaining the changes at https://blog.google/products/search/google-search-update-march-2024/}
-At the same time, the search engine itself adopted a new feature called AI Overviews, an integrated AI-generated response to the user's query.
-\footnote{Google published a blog post explaining its new AI integration at https://blog.google/products/search/generative-ai-google-search-may-2024/}
+In a landmark development, the 5-month-long strike of the Writer's Guild of America\footnote{An article summarising the strike can be viewed at https://www.vox.com/culture/2023/9/24/23888673/wga-strike-end-sag-aftra-contract}
+resulted in an agreement which included safeguards for writers against the use of artificial intelligence\footnote{See for example https://www.nbclosangeles.com/news/local/hollywood-writers-safeguards-against-ai-wga-agreement/3233064/ for an account of the agreement}.
+Such a stance turned out to be far from unfounded, with how AI-generated content has flooded several Internet platforms.
+As recently as March 2024, even the Google search engine has had to address the issue of unoriginal content, which is in large part meant to target results which contain generated text\footnote{Google published a blog post explaining the changes at https://blog.google/products/search/google-search-update-march-2024/}.
+At the same time, the search engine itself adopted a new feature called AI Overviews, an integrated AI-generated response to the user's query\footnote{Google published a blog post explaining its new AI integration at https://blog.google/products/search/generative-ai-google-search-may-2024/}.
 
 The use of large language models thus has been observed to spark mixed reactions, both emotionally and legislatively. However, what was considered so far in this examination is the \emph{lawful} and (perhaps arguably) moral use of language technology.
 This does not mean that such technologies cannot be employed with harmful intent --- quite the contrary. the discussion about malicious use of language generation has been left on the sidelines in the early years of LM adoption, but worries are progressively making their way to the forefront of the debate, and countermeasures are becoming increasingly pursued research objectives.
