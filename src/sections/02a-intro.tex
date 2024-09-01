@@ -1,2 +1,23 @@
 \section{Introduction}
 \label{sec:introduction}
+
+Recent advances in the field of language generation have unlocked the door to the widespread use of language models, across almost all fields of human life -- academics, marketing, arts, programming, and so forth.
+For anyone engaging with digital media, talk of generative artificial intelligence (AI) has become a daily occurrence, and many companies are integrating language technology in some form or another.
+As it stands, chatbots like ChatGPT and image generators like DALL-E are used by millions to make art, tell exciting stories, improve customer relationships, create tailor-made learning environments for students, and much more.
+In this panorama of exciting new technologies, however, there is no lack of worrying signs, and potential for the misuse of these innovative tools.
+
+Language generation has been around since last century, so its massive popularization in 2020 wasn't necessarily as groundbreaking for the discipline as it was for the general public.
+What represented the biggest leap was the quality of the output that the language models were capable of.
+The generation of language largely indistinguishable from human-written text was available for everyone to use through popular interfaces like ChatGPT.
+Given the scale at which AI-generated content has been flooding into all manners of digital phenomena, it has become increasingly crucial to develop up-to-date technologies to detect when a piece of media (for the purposes of this work, only text is considered) is authentically human, or machine-generated.
+
+Language generation has a huge number of positive applications, and it stands to improve people's lives in many ways. Still, the potentially nefarious uses are equally as many.
+In fact, even without bad intent, it is easy for model operators to generate and use harmful language in some form.
+
+This thesis aims to delve into the field of machine-generated text detection, exploring the current state of the art, as well as limitations and future possibilities.
+Outside of analyzing the various approaches to the problem, this work is meant as a contribution to the development of systems that do not forgo all size concerns in favor of performance.
+Modern detection systems rely on models whose running cost is comparable to the massive language models doing the generation -- but the performance gains of this strategy do not necessarily justify the tradeoffs.
+
+When deploying computationally heavy solutions, it is often assumed that they will not run on the end user's machine -- it is after all unreasonable to expect the average user to have hundreds of Gigabytes of RAM on hand.
+Instead, the client software is only a relay to the centrally hosted service, with which it communicates over the network.
+This may be acceptable in some cases, but it is not desirable in others -- for example, users may and should be reluctant to dispatch their private communications to some remote service in the name of detecting generation.
