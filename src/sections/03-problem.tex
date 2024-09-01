@@ -66,16 +66,47 @@ The industry's tools for protection against traditional attacks are rendered som
 
 \subsection{Information poisoning and influence campaigns}
 
-Another area where NLG can cause a negative impact is information and communication.
-Disinformation campaigns in particular have traditionally suffered from being dependent on human editors to compose the message and select the diffusion vector - be it emails, social media, articles, and so on.
+Another area where NLG can cause a negative impact is information and communication. Disinformation campaigns have been extremely common across all of human history.
+One coon look as back as the Donation of Constantine, a false document used in the 13th century to justify the territorial claims of the papal state, or as recently as the election meddling by foreign states in the US elections of the 21st century.
+
+Disinformation campaigns in particular have traditionally suffered from being dependent on human editors to compose the message and select the diffusion vector -- be it emails, social media, blogs, and so on - therefore performing them at scale comes at a steep cost. Language models have the potential of solving alleviating this limitation.
+By relying on NLG to generate most of the content of the campaign messages, it is possible for attackers to forgo -- at least in part -- this resource and time-consuming factor.
 
 
-Generating Sentiment-Preserving Fake Online Reviews Using Neural Language Models
+\citet{buchanan2021truth} explore the role of GPT-3 in a human-machine setting, studying therefore the effectiveness of GPT-3 in generating disinformation campaigns when paired with human-crafted prompts along the process.
+Their findings suggest that while GPT-3 is unlikely to completely replace human operators in disinformation efforts, it significantly enhances their capabilities by enabling the creation of moderate- to high-quality content at an unprecedented scale.
+This amplification of output could make disinformation campaigns more pervasive and harder to counter, highlighting the need for robust strategies to mitigate such threats.
 
-AI and the Future of Disinformation Campaigns
+GPT-3 performed particularly well with \emph{narrative reiteration} (e.g. generating a series of tweets based on an original) and \emph{narrative elaboration} (e.g. generating a blog post or article based on a title or paragraph) -- which consist in the generation of short or medium length messages given a particular world view and a prompt.
+When malicious actors have a well-defined message that they seek to advance, NLG systems seem therefore to be a dangerous tool at their disposal, as they performs exceptionally well in this setting, without requiring particularly skilled operators.
+GPT-3 was observed to perform worse -- or to require more careful prompting from the operator -- for tasks requiring higher levels of creativity and originality.
+\emph{Narrative wedging}, for example, aims to identify a source of division in the target society or group, and amplify its effects by means of carefully crafted disinformation messages.
+Similarly, \emph{narrative manipulation} is a technique that involves framing existing emergent stories to align with a pre-defined world view.
+Neither task requires coming up with outright lies, and for both a human-machine team was observed to be necessary to obtain credible and convincing messages.
+
+\citet{buchanan2021truth} go on to highlight that GPT-3's writing characteristics -- which can likely be extended to several other language models -- suits the goal of disinforming more than that of informing.
+Indeed, GPT-3 is known to frequently go on tangents and make information up even in neutral to benign generation contexts.
+These traits might unfortunately make GPT-3 more effective in creating misleading or false narratives than in producing reliable, accurate content, underscoring its potential risks in the hands of those seeking to deceive.
+
+Generic and task-specific language models can also be employed to exploit online review systems to influence consumer behavior. LLMs can be used to generate fake reviews with a target sentiment based on a prompt or a base review to emulate.
+This is an evolution of the \emph{crowdturfing} method, which involves paying large numbers of people to write fake reviews.
+Due to the associated economic cost, these attacks were limited to large-scale attacks, and therefore carried a built-in limiting element.
+
+\citet{adelani2019reviews} devise a strategy that employs language models to compose fake reviews based on an example displaying the desired sentiment towards the thing being reviewed.
+The generated fakes do not undergo manual review later, but employ a BERT-based sentiment classifier to filter out counterproductive items.
+To take it a step further, they use a fine-tuned version GPT-2 and BERT on Amazon and Yelp review databases, an operation that perhaps wouldn't necessarily be typical of attacks based on GPT-3 and other modern LLM variants.
+Nonetheless, using a task-specific version of GPT-2 might make it more comparable to task-agnostic, modern LLMs such as GPT-3 and GPT-4, making the findings more generalizable to modern systems.
+
+To verify the fooling power of the fake reviews, sets of 3 fake reviews and 1 real review were presented to human evaluators, with the objective of correctly finding the "real" review.
+The results demonstrate that participants often struggled to discern the authentic review, as their success rates were close to the random chance rate of 25\%.
+This suggests that the evaluators were essentially guessing, indicating that the fake reviews were convincing enough to be mistaken for real ones.
+Such findings indicate that even in the premodern era of language modeling (i.e. before GPT-3), NLG already proved a valid substitute for the more expensive crowdturfing attacks.
 
 \subsection{Faking human authorship}
 
-Prevalence of nonsensical algorithmically generated papers in the scientific literature
-
-Is GPT-3 Text Indistinguishable from Human Text? Scarecrow: A Framework for Scrutinizing Machine Text
+Other malicious uses of LLMs rely on its ability to appear human, and not so much on its ability to specifically compose high-quality text.
+One such application is the generation of pseudo-scientific papers to contribute to one's research numbers.
+Examples of generation of such papers are common even before language modelling became popular.
+SCIgen \citep{hargrave2005scigen} is a tool introduced in 2005 that allowed for the generation of nonsensical scientific papers by using a context-free grammar based generator.
+Such papers even pass the peer-review process from time to time and appear in respected publications.
+As recently as 2021, \citet{cabanac2021prevalence} identified 197 SCIgen articles for which there had been no withdrawal notice, and were at times even being sold.
