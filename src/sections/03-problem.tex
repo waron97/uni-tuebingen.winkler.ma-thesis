@@ -77,7 +77,43 @@ By relying on NLG to generate most of the content of the campaign messages, it i
 Their findings suggest that while GPT-3 is unlikely to completely replace human operators in disinformation efforts, it significantly enhances their capabilities by enabling the creation of moderate- to high-quality content at an unprecedented scale.
 This amplification of output could make disinformation campaigns more pervasive and harder to counter, highlighting the need for robust strategies to mitigate such threats.
 
-GPT-3 performed particularly well with \emph{narrative reiteration} (e.g. generating a series of tweets based on an original) and \emph{narrative elaboration} (e.g. generating a blog post or article based on a title or paragraph) -- which consist in the generation of short or medium length messages given a particular world view and a prompt.
+Among the various activities that have been identified in disinformation campaigns, GPT-3 was observed to perform exceptionally in some, while needing stricter human supervision in others.
+It excelled in \emph{narrative reiteration}, a simple task that involves generating multiple variations of a short message that repeat a particular theme.
+For example, when providing the model with a number of successful climate-change denier tweets, researchers were able to obtain high-quality approximations on the first try and without particular refinery.
+With how low the effort to mass-produce this type messaging seems to be compared to the effectiveness of the output, it stands to reason that LLMs could enable a previously unseen proliferation of deceitful content.
+
+If reiteration focused on generating tweet-length documents, \emph{narrative elaboration} expands this to medium to long length content, such as articles and blog posts.
+For this task, GPT-3 was tested for its ability to sound reputable in its output, i.e. in its ability to replicate the tone of a renowned news source -- unfortunately the believability of the generated articles was not verified in this setting.
+By the same token, this task certainly requires more human supervision, whose effects and variability are hard to design an experiment around, than simple reiteration, since getting the prompt right will influence the tone and message of the generation immensely (for example, the headline or sample text to emulate must provide enough information to the model to recognize the style and worldview).
+Nevertheless, GPT-3 was able to fool classifiers only partially: the evaluation model, which classified genuine articles with over 90\% accuracy over three news networks, had only around 65\% accuracy.
+This indicates that GPT-3 is good at the elaboration task, but not perfect.
+It should however be said that fine-tuning the model could make it more potent in this regard -- a fact that was observed with GPT-2 but could not be done on GPT-3 due to technical limitations.
+
+\emph{Narrative seeding} sets itself apart from the previous tasks, in that it requires that the model come up with original conspiratorial material.
+The objective in this case would be akin to the rise of QAnon between 2017 and 2020, a Twitter account that would post short messages containing conspiracy theories.
+While the effectiveness of most disinformation campaigns is, at least in part, a function of the scale of the operation, in this case a single human can be an effective catalyst, as long as the content is captivating.
+While GPT-3 appears to have the capability to come up with such messages -- and its proneness to hallucinations might even help it do so -- it is not obvious how one would go about measuring its potential in this endeavor.
+
+Exploiting existing stories and divisions that exist in the target societies and groups is equally as important in disinformation campaigns as fabricating importance.
+\emph{Narrative wedging} involves locating a source of conflict and widening it with disinformation. In the original experiment, messages were generated to influence US religious groups (Christian, Arabic, Jewish) to vote a certain way (Democrat, Republican, Abstain).
+The process by which the messages were obtained relied very heavily on human-machine cooperation, where a team of humans would identify the best arguments for a target group to vote a certain way through repeated prompts, and the best arguments were then used for message generation.
+The resulting 110 messages were reviewed by four experts, with 95\% of messages found credible by at least one, and 65\% by all four.
+Surprisingly, some of the messages were quite insidious, with the model soliciting Arabic voters (a traditionally left-leaning block) to vote Republican by calling for them to vote based on individual interests rather than group affiliation.
+
+A similar task, \emph{narrative manipulation}, involved identifying existing news stories and rewriting them to fit a particular narrative.
+Researchers used GPT-3 to rewrite a series of news articles concerning US political events around 2020, such the Black Lives Matter protests and the incipit of Covid-19.
+Again, this involved thick interplay between a human team and GPT-3, as the rewriting process was found to be most effective when it was executed in a series of steps (in short: summarize the article, alter the summary, expand again into longer text).
+Articles were modified to reflect both a left and a right-leaning position, and were then presented to human evaluators to test the effectiveness of the alteration, along with the corresponding authentic reference articles for comparison.
+This was proven to be mostly the case, i.e. GPT-3 was shown to be consistently able to not only give articles the correct spin, but to even output content that was found to be mostly authentic by the reviewers (the original articles received an average authenticity score of 3.8 on average, whereas generated articles only 2.4, but the best generations were believably authentic).
+
+Finally, \emph{narrative persuasion} tested GPT-3's performance in creating tailored messages for specific targets in an attempt to alter their convictions.
+Messages were generated for two topics (US involvement in Afghanistan and China), both for and against each issue, with the target's party affiliation in mind.
+Of 20 generations in each pairing, the 10 best were selected by a human team, and presented to over one thousand human respondents.
+The participants generally found GPT-3's statements to be convincing, with 63 percent rating them as at least somewhat persuasive, even when the statements were targeted at an audience with opposing political views.
+While only about 12 percent found the statements "extremely convincing," the majority still found them somewhat persuasive.
+Additionally, the survey indicated that GPT-3's statements were effective in shifting respondents' opinions on various topics, with a notable and sometimes stark increase in support for the positions advocated by GPT-3 after being exposed to its arguments (in regards to action against China, GPT-3 managed to overturn a situation of absolute majority in favor of sanctions by reducing the pro-sanction faction from 51\% to 33\% of respondents).
+
+In summary, GPT-3 performed particularly well with \emph{narrative reiteration} (e.g. generating a series of tweets based on an original) and \emph{narrative elaboration} (e.g. generating a blog post or article based on a title or paragraph) -- which consist in the generation of short or medium length messages given a particular world view and a prompt.
 When malicious actors have a well-defined message that they seek to advance, NLG systems seem therefore to be a dangerous tool at their disposal, as they performs exceptionally well in this setting, without requiring particularly skilled operators.
 GPT-3 was observed to perform worse -- or to require more careful prompting from the operator -- for tasks requiring higher levels of creativity and originality.
 \emph{Narrative wedging}, for example, aims to identify a source of division in the target society or group, and amplify its effects by means of carefully crafted disinformation messages.
