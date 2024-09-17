@@ -1,2 +1,48 @@
 \section{Previous approaches}
 \label{sec:approaches}
+
+If the above foray into the threat models concerning language generation that have been discussed in research has revealed anything, it is that expecting model operators to disclose the nature of texts submitted to their recipients is a naive and potentially dangerous habit.
+Thankfully, as language models have grown larger and more sophisticated, so have strategies and technologies detecting them matured alongside them.
+Though it has certainly received and influx of manpower interest since then, automatic detection of machine generated text has been an active area of research even from before 2020 -- after all, as was previously discussed, there was no shortage of attempts to exploit NLG technologies well before the recent GPT craze.
+
+In Chapter \ref{sec:background}, this thesis presented an overview of different ways in which text could be represented, on a spectrum ranging from surface-level metrics to neural contextual embeddings.
+Many parallels can be drawn between these strategies and the methodologies employed to detect machine generation.
+In the following sections, several well researched and tested detection strategies will be explored, some taking advantage of linguistically motivated features or even frequency-based metrics, while others lean into the times and use LLMs themselves to discriminate between authentic and generated productions.
+It should however be underlined that the movement toward more sophisticated vectorization processes does not necessarily entail a one-sided improvement across all possible aspects involved in the detection pipeline.
+
+On the contrary, moving up the ladder of complexity comes at the cost of requiring increasing amounts of computational power.
+Such approaches are extremely valid explorations of what is the best that can be achieved, but applicability in the real world is often limited since the end users cannot run the required software on commonplace commercial machines.
+Separating the application into client and server, which is the common approach taken in other AI fields, is only acceptable in the narrower subset of cases which have no privacy requirement regarding the data being verified.
+Chapter \ref{sec:task} will dive deeper into the more "cheap" approaches, meaning those that forgo heavy systems, aiming instead to strike a balance between performance and (compute) accessibility.
+
+\subsection{Frequency and feature-based methods}
+
+\begin{enumerate}
+    \item https://arxiv.org/abs/1904.09751
+    \item https://peerj.com/articles/cs-443/
+    \item https://ieeexplore.ieee.org/abstract/document/9892269
+    \item https://ieeexplore.ieee.org/abstract/document/8282270
+    \item https://arxiv.org/abs/2111.02878
+\end{enumerate}
+
+\subsection{Neural approaches}
+
+\begin{enumerate}
+    \item Adversarial Robustness of Neural-Statistical Features in Detection of Generative Transformers
+    \item Defending against neural fake news
+    \item Cross-Domain Detection of GPT-2-Generated Technical Text
+    \item Real or Fake? Learning to Discriminate Machine from Human Generated Text
+    \item DetectGPT: Zero-Shot Machine-Generated Text Detection using Probability Curvature
+\end{enumerate}
+
+
+\subsection{Domain differentiation}
+
+\begin{enumerate}
+    \item Technical: Cross-Domain Detection of GPT-2-Generated Technical Text
+    \item Socials:  Automatic Detection of Bot-Generated Tweets
+    \item Socials, reviews: Detecting computer-generated disinformation
+    \item Socials: Deep Fake Recognition in Tweets Using Text Augmentation, Word Embeddings and Deep Learning
+    \item Chatbots:  Detecting Bot-Generated Text by Characterizing Linguistic Accommodation in Human-Bot Interactions
+    \item Ecom: Creating and detecting fake reviews of online products.
+\end{enumerate}

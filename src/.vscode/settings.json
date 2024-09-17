@@ -22,6 +22,7 @@
     "psychohistory",
     "ruleset",
     "Seldon",
-    "timestep"
+    "timestep",
+    "vectorizations"
   ]
 }
