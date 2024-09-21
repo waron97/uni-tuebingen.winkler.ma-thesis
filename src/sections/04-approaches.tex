@@ -22,25 +22,37 @@ BOW representation strategies only consider the words that appear in a text, wit
 One application is the simple count vectorization strategy \citep{wendland2021introduction}, in which a text is represented by the counts of each word that occurs in it.
 
 A closely related, but more refined and widely applied method is the extraction of TF-IDF matrices over sets of documents \citep{ramos2003using}.
-If one only looks at word counts, then prepositions and other common elements will likely account for much of the information retrieved from the text. 
+If one only looks at word counts, then prepositions and other common elements will likely account for much of the information retrieved from the text.
 TF-IDF offers a fix by implementing the intuition that a text containing the words "geothermal" and "power-plant", even if only with a few occurrences, is more informative about its nature than it having hundreds of examples "the" and "of".
 As such, term frequencies in TF-IDF are weighted by how rare they are (i.e. in how many documents of the sample they appear), with rarer words gaining a proportional score boost.
 
 TF-IDF has a rich history of successful usage in almost all fields of NLP, including information retrieval \citep{ramos2003using}, sentiment analysis \citep{cahyani2021performance}, and text-classification \citep{zhang2011comparative} among many others.
 Machine text detection has also tapped into this tradition. 
-Recently, \citet{frohling2021feature} employed higher-dimensional TF-IDF both as a classification accuracy baseline and as an input to meta-learners, i.e. ensemble models that take predictions from multiple classifier to produce a final label.
+Recently, \citet{frohling2021feature} employed higher-dimensional TF-IDF both as a classification accuracy baseline and as an input to meta-learners, i.e. ensemble models that take predictions from multiple classifiers to produce a final label.
 While falling short of state-of-the-art solutions that will be discussed later in this chapter, this methodical experiment still managed to build competitive systems by combining (computationally) simple approaches, in part by drawing upon the information captured by TF-IDF.
 
 Alongside n-gram frequency features, like the ones discussed so far, another common approach to text vectorization is represented by linguistic feature sets.
 Instead of relying on simple token counts to derive a way to represent human productions with numbers, this strategy utilizes the quantifiable properties of the language being used.
 Some trivial examples may be the global length of a text, the average word length of the sentences contained within it, the type-token ratio, and so forth.
-Naturally, one can devise much more refined metrics to extract texts, regarding text fluency, readability, grammatical properties, the richness of the vocabulary, cohesion, or even its purpose.
+Naturally, one can devise much more refined metrics to extract from texts, for example regarding text fluency, readability, grammatical properties, the richness of the vocabulary, cohesion, or even its purpose.
 The inquiry mentioned above, conducted by \citet{frohling2021feature}, combined TF-IDF representations with feature-based classifiers across a variety of settings and datasets -- in fact, these linguistic features drive most of the best models' performance.
 
 The first targetable linguistic characteristic that language models have been observed to exhibit is a lack of cohesion \citep{holtzman2019curious}. 
 A study on GPT-2, for example, found that decoding strategies that maximize overall probability are likely to run into repetitive language \citep{see2019massively}, and even topic-drift, a phenomenon in which language models fail to stay within the confines of a particular topic \citep{badaskar2008identifying}.
 Traditional readability features, such as the Gunning-Fog Index and the Flesch-Kincaid Index, have been used successfully to identify generated text \citep{Crothers_2022}.
 Other methods involve modeling relationships between entities across documents through auxiliary models \citep{barzilay2008modeling}, which seek to automatically determine the primary elements of the text, and track how they are presented throughout a text -- with the idea being that human authors will refer back to the main points more often than machines.
+
+Another useful set of features involve the use of varied vocabulary, and one that avoids repetition as much as possible.
+Texts authored by humans typically exhibit creative strategies to maintain narrative flow, such as building deep coreference chains instead of bogging down the text with frequent repetitions \citep{feng2010comparison} -- LMs tend instead to err toward toward the opposite side \citep{gehrmann2019gltrstatisticaldetectionvisualization}.
+Generated text display frequent use of repetition, leading to reduced lexical diversity within the text \citep{zellers2020evaluating}.
+Lexical richness is, fortunately, one of the language aspects that can be more readily measured through features such as type-token ration, content or stop-word ratio, POS-tag distribution, and frequency of rare words, among many \citep{van2007comparing}.
+\citet{see2019massively} identify a concrete trend in word-type usage in generated texts, where LMs favor verbs and pronouns more than humans, who make richer use of nouns and adjectives.
+Moreover, the reduced usage of varied ways to refer to entities can be measured by extracting the length of coreference chains \citep{feng2010comparison}, with the expectation that machines will produce shorter chains and more explicit repetitions.
+
+The repetitive nature of generated text can also be attributed to the underlying sampling strategies.
+\citet{ippolito2019automatic} observe that a huge proportion of the probability mass is concentrated in the first few hundred, most common tokens in the case of top-k sampling.
+To make use of this property, another set of features measuring frequency of common texts can be employed, and it can lead to good detection performance when the model is sampled with top-k (other sampling methods do not necessarily exhibit the same tendency).
+
 
 \begin{enumerate}
     \item https://arxiv.org/abs/1904.09751
