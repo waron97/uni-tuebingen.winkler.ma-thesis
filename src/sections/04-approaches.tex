@@ -53,6 +53,11 @@ The repetitive nature of generated text can also be attributed to the underlying
 \citet{ippolito2019automatic} observe that a huge proportion of the probability mass is concentrated in the first few hundred, most common tokens in the case of top-k sampling.
 To make use of this property, another set of features measuring frequency of common texts can be employed, and it can lead to good detection performance when the model is sampled with top-k (other sampling methods do not necessarily exhibit the same tendency).
 
+Typically, generated text detection is a supervised task, which means that model training takes place with a labelled set of data.
+One interesting study explores the issue at hand with an unsupervised strategy: \citet{galle2021unsupervised} use repeated high-order n-grams (re-occurring multi-word expressions) to distinguish machine text from human productions.
+They find that \emph{supermaximal} substrings (i.e. the longest substrings that do not occur in any other substring of the collection) can be efficiently computed for a collection, and their presence in texts can be used as input for binary prediction.
+This approach was tested against GPT-2 and it was able to reach an impressive 80\% precision even with nucleus sampling \citep{holtzman2019curious}, which makes generation much harder to detect than top-k strategies.
+
 
 \begin{enumerate}
     \item https://arxiv.org/abs/1904.09751
