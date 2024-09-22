@@ -69,23 +69,21 @@ As summarized in Figure \ref{fig:galle2021_fig5_100models}, this approach was te
     \label{fig:galle2021_fig5_100models}
 \end{figure}
 
-\begin{enumerate}
-    \item https://arxiv.org/abs/1904.09751
-    \item https://peerj.com/articles/cs-443/
-    \item https://ieeexplore.ieee.org/abstract/document/9892269
-    \item https://ieeexplore.ieee.org/abstract/document/8282270
-    \item https://arxiv.org/abs/2111.02878
-\end{enumerate}
-
 \subsection{Neural approaches}
 
-\begin{enumerate}
-    \item Adversarial Robustness of Neural-Statistical Features in Detection of Generative Transformers
-    \item Defending against neural fake news
-    \item Cross-Domain Detection of GPT-2-Generated Technical Text
-    \item Real or Fake? Learning to Discriminate Machine from Human Generated Text
-    \item DetectGPT: Zero-Shot Machine-Generated Text Detection using Probability Curvature
-\end{enumerate}
+The strategies discussed so far have been traditionally paired been used with statistical models (chiefly logistic regression and support vector machines).
+However, the field of generated text detection has naturally also adopted the huge technological shift which of NLP has experienced, represented by neural networks and neural language models \citep{papers2024nlp}.
+Since statistical features predictably underperform neural features \citep{crothers2022adversarial}, most detection approaches in this area forgo linguistic and frequency-based features altogether.
+However, recent results confirm their validity even when employed alongside LLMs: although they reach lower peaks than transformer-based counterparts, they are much more robust against adversarial attacks.
+Adversarial attacks describes malicious attempts of various types made by third parties to induce a misclassification in the model.
+Some examples may be illicitly accessing the training data of the detector model and insert or corrupt its records, or intercept the input at inference time and introduce changes in order to evade detection.
+In this context, an attacker might introduce small perturbations (like word or character edits) into the generated text to make the detector model fail to notice the generation.
+Statistical features were observed to have very high resistance to such attacks, and a hybrid model combining statistical features with Transformer-based attributes was reported to significantly enhance adversarial robustness, while maintaining solid performance in standard, non-adversarial scenarios \citep{crothers2022adversarial}.
+
+Of course, no survey into the various methods to detect automatic generation can ignore the two classes of state-of-the-art approaches, both rooted in leveraging pretrained neural language models.
+On one side, there are so-called zero-shot approaches \citep{zellers2020defendingneuralfakenews}, which take advantage of the logits outputted by the models and attempt to make a prediction based on those, with various degrees of sophistication.
+On the other, approaches based on fine-tuning large bi-directional transformers \citep{solaiman2019release} boast the contribution of the absolute best models to the field at present.
+The BERT variant RoBERTa \citep{liu2019robertarobustlyoptimizedbert} has emerged as a winner in this space, both because due to its strong performance, as well as the relative ease with which fine-tuning approaches can be taken off the ground \citep{radford2019dataset}.
 
 
 \subsection{Domain differentiation}

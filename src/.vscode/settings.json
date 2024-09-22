@@ -18,6 +18,7 @@
     "Distil",
     "Dorwin",
     "Hari",
+    "logits",
     "Overreliance",
     "pretrained",
     "psychohistory",
@@ -26,6 +27,7 @@
     "supermaximal",
     "targetable",
     "timestep",
+    "underperform",
     "vectorizations"
   ]
 }
