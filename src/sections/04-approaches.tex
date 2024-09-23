@@ -105,9 +105,9 @@ If the difference is above a certain threshold, the input is flagged as machine-
 DetectGPT outperforms even RoBERTa-based models when the target text is outside of the domain of the fine-tuned transformers' training sets, while still maintaining near-top performance when in-distributed texts are classifier.
 The simpler task definition of the white box setting, i.e. that the generator model is known accessible, is however a limitation of the experiment.
 Real-world scenarios can often include situations in which the generator model is unknown, therefore a proxy scorer needs to be used instead \citep{mireshghallah2023smaller}.
-Figure \ref{fig:detectgpt} offers an overview of DetectGPT performance across different scorer and generator models.
-Performance is predictably best when the scorer is the same as the generator, but good-enough alternative models can be found -- perhaps smaller, efficient models can be found for detecting the prominent generators, contributing to a less resource-intensive solution landscape.
-Ensemble solutions may even cover against many potential generators, instead of relying on a single scorer in the black box setting (i.e. when the generator model is not known).
+Figure \ref{fig:detectgpt} offers an overview of DetectGPT performance across different scoring and generator models.
+Performance is predictably best when the scoring model is the same as the generator, but good-enough alternative models can be found -- perhaps smaller, efficient models can be found for detecting the prominent generators, contributing to a less resource-intensive solution landscape.
+Ensemble solutions may even cover against many potential generators, instead of relying on a single scoring model in the black box setting (i.e. when the generator model is not known).
 
 \begin{figure}[h]
     \centering
