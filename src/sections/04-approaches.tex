@@ -151,3 +151,5 @@ Recently, \citet{salminen2022creating} have used ULMFiT \citep{howard2018univers
 They then use this newly generated dataset to fine-tune a RoBERTa-based classifier, which they compare against an SVM model and an OpenAI off-the-shelf fake review detector, also a RoBERTa classifier.
 Results show that the newly created model outperforms both baselines, reaching over 90\% accuracy.
 These findings are validated against the Deceptive Reviews Dataset \citep{ott2011finding}, where the newly introduced classifier again obtains the best result of the three models, with an AUC of 0.696, followed by OpenAI's off-the-shelf model with 0.595.
+Automated detection strategies seem especially necessary in this area, since the study also finds that human judges do not perform better than chance at identifying generations.
+The adversarial nature of machine-generated text detection is especially at the forefront in this area, since it is easy to imagine a future in which attackers and detectors play a "cat-and-mouse" game, with attackers trying to evade detectors, and the latter developing new models and strategies in turn.
