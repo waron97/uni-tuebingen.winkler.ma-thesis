@@ -116,8 +116,15 @@ Ensemble solutions may even cover against many potential generators, instead of 
         Performance overview of DetectGPT \citep{mitchell2023detectgptzeroshotmachinegeneratedtext}, reporting AUROC \citep{bradley1997use} over the XSum, SQuAD, and WritingPrompts datasets.
         Same scorer-generator pairs show the best performance, but results show that some models may act as better proxies than others, inviting further research.
     }
-    \ref{fig:detectgpt}
+    \label{fig:detectgpt}
 \end{figure}
+
+The state-of-the art approach in machine-generated text detection has been, for a couple years at the time of writing, indisputably the fine-tuning approach \citep{solaiman2019release}.
+This involves fine-tuning a pre-trained bi-directional language model.
+The best resulting model is derived from providing task-specific training to RoBERTa \citep{liu2019roberta}, a masked general-purpose language model based on BERT \citep{devlin2019bertpretrainingdeepbidirectional} with a focus on classification.
+The primary weakness of RoBERTa is that it doesn't necessarily handle cross-domain examples out of the box, an aspect that the aforementioned DetectGPT \citep{mitchell2023detectgpt} improved on greatly, despite not outgunning RoBERTa large from in-distribution datasets.
+\citet{rodriguez2022cross} also offer an improvement on this front by evaluating model performance on a new domain with a few hundred attacker examples selected by experts.
+While DetectGPT might be very useful in situations where the attacker characteristics are entirely unknown, this latter approach might still offer more in the more standard case of a back-and-forth effort between attackers and defenders.
 
 \subsection{Domain differentiation}
 
