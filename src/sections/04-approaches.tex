@@ -128,11 +128,26 @@ While DetectGPT might be very useful in situations where the attacker characteri
 
 \subsection{Domain differentiation}
 
-\begin{enumerate}
-    \item Technical: Cross-Domain Detection of GPT-2-Generated Technical Text
-    \item Socials:  Automatic Detection of Bot-Generated Tweets
-    \item Socials, reviews: Detecting computer-generated disinformation
-    \item Socials: Deep Fake Recognition in Tweets Using Text Augmentation, Word Embeddings and Deep Learning
-    \item Chatbots:  Detecting Bot-Generated Text by Characterizing Linguistic Accommodation in Human-Bot Interactions
-    \item Ecom: Creating and detecting fake reviews of online products.
-\end{enumerate}
+Aside from general solutions mentioned above to the problem of generated text detection, there is a rich inventory of domain-specific tools and strategies.
+For example, \citet{rodriguez2022cross} experiment with detection tasks in the technical domain, specific targeting physics and chemistry.
+The study successfully applies a RoBERTa-based classifier fine-tuned on the biomedical domain on the physics domain, with relatively few new examples obtained from human experts.
+While only relating to GPT-2, the results reported are encouraging in the sense that knowledge may be more easily transferable across similar domains, even if they are technical in nature.
+
+In the real of social media, Twitter has received consistently high research attention.
+\citet{fagni2021tweepfake} report on a number of different strategies that can help detect generated tweets, including some that are less commonly seen in research nowadays, such as TF-IDF and character-level models.
+Interestingly, character-encodings outperformed BERT-based approaches, and only lagged 0.05 percentage points behind RoBERTa, further underlining the validity of imperfect but computationally realistic solutions.
+\citet{tourille2022automatic} expand on this by introducing more training examples from GPT-2, which proved significantly harder to correctly classify in the original by \citet{fagni2021tweepfake}, and show that prediction accuracy can be boosted in this way, though globally this is hard to notice, since RoBERTa already had greater than 90\% accuracy.
+In general, it is hard not to raise the criticism anew that all of the most recent research, including the aforementioned twitter studies, do not move beyond GPT-2, so it remains a question how well they would perform if the attacker models were the much more sophisticated contemporary LLMs.
+
+Another interesting domain of detection is chatbots and direct messages.
+Bot detection is already a well-researched field \citep{latah2020detection} where NLP can make a contribution when it comes to detecting AI agents faking human personhood.
+\citet{bhatt2021detectingbotgeneratedtextcharacterizing} expand the methodologies applied here by analyzing not only the messages suspected of having been generating, but also how the human interlocutors reacted to them.
+They verify the results with a number of different models across different representational strategies, such as BOW models, feature-based ones, and BERT-based classifiers.
+Not only does the inclusion of the human responses into the input improve cross-dataset generalization of the models, but non-BERT models fall short of simpler BOW models for some (substantially different) cross-dataset runs.
+Unfortunately, this experiments was again completed on the Conv2AI \emph{dinan2019secondconversationalintelligencechallenge} dataset, which does not make use of the most recent LLM technology in its generated examples.
+
+Lastly, product reviews are also an area of interest when it comes to detecting automated text.
+Recently, \citet{salminen2022creating} have used ULMFiT \citep{howard2018universal} and GPT-2 to generate fake reviews based on the Amazon \citep{ni2019justifying} dataset.
+They then use this newly generated dataset to fine-tune a RoBERTa-based classifier, which they compare against an SVM model and an OpenAI off-the-shelf fake review detector, also a RoBERTa classifier.
+Results show that the newly created model outperforms both baselines, reaching over 90\% accuracy.
+These findings are validated against the Deceptive Reviews Dataset \citep{ott2011finding}, where the newly introduced classifier again obtains the best result of the three models, with an AUC of 0.696, followed by OpenAI's off-the-shelf model with 0.595.
