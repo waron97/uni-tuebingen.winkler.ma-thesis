@@ -9,6 +9,7 @@
     "bigram",
     "CBOW",
     "chatbots",
+    "coreference",
     "crowdturfing",
     "cyberattack",
     "cybercriminal",
@@ -16,12 +17,20 @@
     "disinforming",
     "Distil",
     "Dorwin",
+    "Flesch",
     "Hari",
+    "Kincaid",
+    "logits",
     "Overreliance",
+    "personhood",
     "pretrained",
     "psychohistory",
     "ruleset",
     "Seldon",
-    "timestep"
+    "supermaximal",
+    "targetable",
+    "timestep",
+    "underperform",
+    "vectorizations"
   ]
 }
