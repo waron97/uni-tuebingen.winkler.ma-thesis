@@ -28,7 +28,9 @@ The evaluation metric by which the submitted solutions are measured is Mean Abso
 The baseline suggested by the organizers was based on Longformer \citep{beltagy2020longformerlongdocumenttransformer}, a RoBERTa checkpoint specialized in long texts.
 This baseline achieved an impressive 3.5 MAE on the development set -- a tough standard -- and a (much lower) 21.54 MAE on the test set, though the latter was of course not known at development time.
 
-\begin{figure}[h]
+\vspace{1cm}
+
+\begin{table}[h]
     \centering
     \includegraphics[width=0.7\textwidth]{assets/subtaskc-data.png}
     \caption{
@@ -37,7 +39,7 @@ This baseline achieved an impressive 3.5 MAE on the development set -- a tough s
         LLaMA-2-7B* and LLaMA-2-7B used different prompts. Bold data is used in shared task training development, and test.
     }
     \label{fig:taskc_data}
-\end{figure}
+\end{table}
 
 Following the example set by the baseline, the solutions we devised did not attempt to predict the boundary change index directly -- instead, we performed binary classification at the token level, essentially asking whether any given token belongs to the human or the machine-generated segment.
 In accordance with the general mission of producing solutions that could run on at least midrange home computers and laptops, large-scale transformer-based approaches, such as the one provided as the baseline, were discarded altogether.
@@ -80,6 +82,7 @@ Table \ref{tab:c_models} offers a summary of the models developed for subtask C.
         Character-level & LSTM          & 2           & 512          \\
         Word2vec        & LSTM          & 2           & 512          \\
         Joint model     & FFN           & -           & 256          \\
+        \hline
     \end{tabular}
     \caption{Summary of models for subtask C. \textbf{*} Number of layers. \textbf{**} Hidden size.}
     \label{tab:c_models}
