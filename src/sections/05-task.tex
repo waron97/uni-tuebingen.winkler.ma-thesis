@@ -19,6 +19,7 @@ Specifically, detection technologies have been observed to be weak to techniques
 Change point detection, which is the titular requirement of subtask C, addresses another way in which the use of NLG technology might be obfuscated.
 In the scenario targeted by the subtask, a human segment ranging from 0\% to 50\% of the text is concluded by a machine-generated component, making the text as a whole much harder to flag as a generation.
 
+For all subtasks, the data is sourced from the M4 \citep{wang-etal-2024-m4} dataset.
 Task organizers provided generations by GPT variants and the LLaMA series \citep{touvron2023llama}, but unfortunately not in high abundance: the training set around 5000 texts, and was accompanied by development set containing a little over 500 more.
 Table \ref{fig:taskc_data} offers an overview of the data distribution across the sets.
 Alongside the general scarcity of training and cross-validation data, one should also note that a relevant portion of the data is entirely machine-generated, meaning the change index is exactly 0.
@@ -92,5 +93,21 @@ Table \ref{tab:c_models} offers a summary of the models developed for subtask C.
 
 \subsection{Generated text detection}
 \label{subsec:subtask_a}
+
+Subtask A of Task 8 tackles machine-generated text detection in the classical sense, in the way that was discussed in Chapter \ref{sec:approaches}.
+It offered both a monolingual and a multilingual track, both with their respective leaderboards, but our team decided to only submit for the monolingual track.
+
+As hinted at in the previous section, the training set provided for this subtask contained over 100.000 records, with 5000 more provided for validation, sourced from the M4 \citep{wang-etal-2024-m4} dataset.
+Table \ref{table:adata} offers an overview of the data distribution across the three partitions.
+All sets offer a balanced mix of generated and human texts, with the training set containing outputs from 4 different models: Davinci-003 (a GPT-3 variant), ChatGPT, Cohere \footnote{\url{https://cohere.com/}} and Dolly-v2 \citep{DatabricksBlog2023DollyV2}. The development set adds BLOOMz \citep{muennighoff2023crosslingualgeneralizationmultitaskfinetuning} to the collection, and the test set introduces GPT-4 on top.
+The intent of the authors to enforce a black-box setting shines through in the way they built the partitions: the development set includes a model unknown to the train set, and the test set contains another model absent from the other splits.
+
+\begin{table}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{assets/subtaska-data.png}
+    \caption{Subtasks A: Monolingual Binary Classification. Data statistics over Train/Dev/Test splits.}
+    \label{table:adata}
+\end{table}
+
 
 \subsection{Generated text detection: post-deadline additions}
