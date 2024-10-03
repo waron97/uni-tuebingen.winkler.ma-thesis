@@ -15,18 +15,18 @@ Due to the more pronounced research interest in subtask A, as well as to better 
 \subsection{Human - LM Boundary detection}
 
 Subtask C of the shared task addresses detection environments that are characterized by active adversarial agents performing the generation.
-Specifically, detection technologies have been observed to be weak to techniques also found in obfuscation \citep{macko2024authorship}, such as paraphrasing \citep{krishna2024paraphrasing} and noise-introduction \citep{wang2021adversarial}.
+Specifically, detection technologies have been observed to be weak to techniques also found in authorship obfuscation \citep{macko2024authorship}, such as paraphrasing \citep{krishna2024paraphrasing} and noise-introduction \citep{wang2021adversarial}.
 Change point detection, which is the titular requirement of subtask C, addresses another way in which the use of NLG technology might be obfuscated.
 In the scenario targeted by the subtask, a human segment ranging from 0\% to 50\% of the text is concluded by a machine-generated component, making the text as a whole much harder to flag as a generation.
 
 For all subtasks, the data is sourced from the M4 \citep{wang-etal-2024-m4} dataset.
-Task organizers provided generations by GPT variants and the LLaMA series \citep{touvron2023llama}, but unfortunately not in high abundance: the training set around 5000 texts, and was accompanied by development set containing a little over 500 more.
+Task organizers provided generations by GPT variants and the LLaMA series \citep{touvron2023llama}, but unfortunately not in high abundance: the training set contained around 5000 texts, and was accompanied by development set containing a little over 500 more.
 Table \ref{fig:taskc_data} offers an overview of the data distribution across the sets.
 Alongside the general scarcity of training and cross-validation data, one should also note that a relevant portion of the data is entirely machine-generated, meaning the change index is exactly 0.
-Though this of course preserves the objective of being able to reliably detect fully generated texts, it does cut into the already low amount of true change examples available in training.
+Though this of course preserves the objective of being able to reliably detect fully generated texts, it does cut into the already low amount of true change examples available for training.
 
 The evaluation metric by which the submitted solutions are measured is Mean Absolute Error (MAE), i.e. the average absolute difference in the predicted change-point index and the true value.
-The baseline suggested by the organizers was based on Longformer \citep{beltagy2020longformerlongdocumenttransformer}, a RoBERTa checkpoint specialized in long texts.
+The baseline suggested by the organizers was based on Longformer \citep{beltagy2020longformerlongdocumenttransformer}, a fine-tuned RoBERTa checkpoint specialized in long texts.
 This baseline achieved an impressive 3.5 MAE on the development set -- a tough standard -- and a (much lower) 21.54 MAE on the test set, though the latter was of course not known at development time.
 
 \vspace{1cm}
@@ -60,16 +60,17 @@ At least on paper, employing pretrained Word2Vec embeddings introduces an import
 However, for the character-level LSTM, there are no such mitigating factors.
 From very early on, it was clear from intermediate results that the character-level LSTM struggled significantly, since it had no pretrained semantic context for the input letter sequences.
 To address this excessive burden placed on the scarce training data to both inform on how human language works, as well as how to distinguish it from generations, we enrich the dataset provided for subtask C with that of subtask A.
-While deep discussion of the latter is reserved for the later sections of this chapter, it should suffice to say that training data for subtask A contains over 100.000 records, providing ample, linguistic material, albeit not targeted to the specific objective of subtask C.
+While deep discussion of the latter is reserved for the later sections of this chapter, it should suffice to say that training data for subtask A contains over 100.000 records, providing ample linguistic material, albeit not targeted to the specific objective of subtask C.
 
 Records imported from the training set for subtask A had the target label set to either 0 (for fully machine-generated texts), or the length of the tokenized text (for fully human texts).
-Since this operation carries the inevitable side effect of drowning out the far fewer examples where a change occurs mid-text (which are available in subtask C's data only), all models are trained for 5 epochs on the enriched data, and then on the original task data.
+Since this operation carries the inevitable side effect of drowning out the far fewer examples where a change occurs mid-text (which are available in subtask C's data only), all models are trained for 5 epochs on the enriched data, and then exclusively on the original task data.
 Aside from the aforementioned optimizations, hyperparameter tuning over the characteristics of the models yielded that, for both LSTM's, a hidden size of 512 and 2 layers resulted in the highest validation performance.
 
 After training the two base approaches, an ensemble model was also constructed combining the representations of the two LSTM's.
 This consisted in a non-recurrent feed-forward network (FFN) whose inputs were the concatenated representations at the word level.
-For the character-level model, this meant averaging the representation at every character for any given word.
-Utilizing a simple FFN in this case was deemed to be the most efficient solution, since the interaction between the various elements of the sequence is already captured in the sub-model.
+We applied this FFN head to the representations at each word-level token, outputting a binary label, the same way as the two LSTM's.
+For the character-level model, this meant averaging the representation at every character for any given word, before passing the representation to the ensemble classifier, along with the Word2Vec-based model's embeddings.
+Utilizing a simple FFN in this case was deemed to be the most efficient solution, since the interaction between the various elements of the sequence is already captured in the sub-models.
 This is also similar to how token-level classification is performed with transformers, with a feed-forward classification head applied at each token.
 The best-performing hidden size for this model was found to be 256.
 Table \ref{tab:c_models} offers a summary of the models developed for subtask C.
@@ -78,11 +79,11 @@ Table \ref{tab:c_models} offers a summary of the models developed for subtask C.
     \centering
     \begin{tabular}{llll}
         \hline
-        \textbf{Model}  & \textbf{Type} & \textbf{L*} & \textbf{H**} \\
+        \textbf{Model}  & \textbf{Type}          & \textbf{Number of LSTM layers} & \textbf{Hidden size} \\
         \hline
-        Character-level & LSTM          & 2           & 512          \\
-        Word2vec        & LSTM          & 2           & 512          \\
-        Joint model     & FFN           & -           & 256          \\
+        Character-level & Long short-term memory & 2                              & 512                  \\
+        Word2vec        & Long short-term memory & 2                              & 512                  \\
+        Joint model     & Feed-forward network   & -                              & 256                  \\
         \hline
         \vspace{0.1cm}
     \end{tabular}
