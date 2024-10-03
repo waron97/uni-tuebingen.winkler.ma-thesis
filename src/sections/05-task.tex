@@ -100,11 +100,13 @@ It offered both a monolingual and a multilingual track, both with their respecti
 As hinted at in the previous section, the training set provided for this subtask contained over 100.000 records, with 5000 more provided for validation, sourced from the M4 \citep{wang-etal-2024-m4} dataset.
 Table \ref{table:adata} offers an overview of the data distribution across the three partitions.
 All sets offer a balanced mix of generated and human texts, with the training set containing outputs from 4 different models: Davinci-003 (a GPT-3 variant), ChatGPT, Cohere \footnote{\url{https://cohere.com/}} and Dolly-v2 \citep{DatabricksBlog2023DollyV2}. The development set adds BLOOMz \citep{muennighoff2023crosslingualgeneralizationmultitaskfinetuning} to the collection, and the test set introduces GPT-4 on top.
+\footnote{The make-up of the test set was not known during the shared task, it was only made available after the submissions deadline.}
 The intent of the authors to enforce a black-box setting shines through in the way they built the partitions: the development set includes a model unknown to the train set, and the test set contains another model absent from the other splits.
 
 Alongside the partitioned dataset, the task organizers also provided a RoBERTa-based transformer baseline.
 The evaluation metric for this subtask was accuracy.
 The transformer baseline achieves an accuracy of 72\% on the development set and 88.47\% on the test set.
+\footnote{Baseline accuracy on the test set was only made public after the submissions deadline.}
 
 \begin{table}[ht]
     \centering
@@ -118,7 +120,7 @@ Evaluating potential solutions based on their ability to detect solely BLOOMz ge
 However, there is also the possibility that selecting based on this development set achieves a more superficial objective: detecting BLOOMz generations in particular.
 This moving objective in the setup of the development set has plagued much of the development for this subtask, and will remain somewhat of a theme all the way through the final, post-deadline experiments.
 
-With that premise, the proceedings at the time of the shared task evolved along similar lines as was described above for subtask C.
+With that premise, the proceedings at the time of the shared task evolved along similar lines as those described above for subtask C.
 The overarching goal remained to develop a workable solution at a low computational cost.
 For this purpose, an ensemble approach was devised for subtask A as well, with some modifications compared to the approach to subtask C.
 Our intuition was that surface-level and stylistic features would be more effective than semantics in discriminating between human and machine-generated text. To build on this idea, we developed three approaches, which were joined at the end in the ensemble.
@@ -126,27 +128,27 @@ Our intuition was that surface-level and stylistic features would be more effect
 The first approach involved training a character-level LSTM. We expected the stylistic features of the texts to be good indicators of the generator, and working at the character level is known to capture this information well.
 For example, character n-gram models have been used successfully in the field of authorship attribution, which relies heavily on style \citep{stamatatos2013robustness}.
 
-Following generally the same steps as for the character model in subtask C, the input texts are first tokenized, then all tokens are mapped to their lowercase variants, and lastly numerals and punctuation were mapped to a \verb|<NUM>| and a \verb|<PUNCT>| special token respectively.
+Following generally the same steps as for the character model in subtask C, the input texts were first tokenized, then all tokens were mapped to their lowercase variants, and lastly numerals and punctuation were mapped to a \verb|<NUM>| and a \verb|<PUNCT>| special token respectively.
 White-space elements (space, tab, newline) were also mapped to a special token \verb|<WS>|.
-At this point, the tokenized and transformed inputs are fed through an LSTM, and the representation of the last token is used for prediction.
-Notably different from subtask C is the model architecture, which is uni-directional in this case.
+At this point, the tokenized and transformed inputs were fed through an LSTM, and the representation of the last token was used for prediction.
+Notably different from subtask C was the model architecture, which was uni-directional in this case.
 During development, this model was trained on both the classification objective, as well as a language modeling objective, for similar reasons as the dataset enrichment in subtask C.
-Since this character-level approach does not benefit from any external data that would be latently contributed by pre-training, the language modeling objective is added to extract as much linguistic information as possible from the available dataset.
+Since this character-level approach did not benefit from any external data that would have latently contributed by means of pre-training, the language modeling objective was added to extract as much linguistic information as possible from the available dataset.
 
-The second approach is constructed along the lines of the first in terms of technical setup, but deals with words rather than characters.
-Large transformer-based solutions benefit from vast amounts of pre-training, but at a heavy computational cost -- using pretrained embeddings as model inputs appeared to be a good compromise between heavy models and training from scratch, as was the case with the character-level LSTM.
+The second approach was constructed along the lines of the first in terms of technical setup, but dealt with words rather than characters.
+Large transformer-based solutions benefit from vast amounts of pre-training, but at a heavy computational cost -- using pretrained embeddings as model inputs appeared to be a good compromise between heavy models and training from scratch, as had been the case with the character-level LSTM.
 We used the pretrained Word2vec embeddings from the Wikipedia2Vec \citep{yamada2020wikipedia2vec} project to map texts to vectors, but maintained the other steps, such as mapping numerals, punctuation and white-space to special tokens.
 As opposed to the Word2Vec model in subtask C, this variant also uses a uni-directional LSTM, though no language modeling task is performed in this case.
 
-The third approach is not recurrent in its nature -- instead, we used the TextDescriptives pipeline \citep{Hansen_2023} through spaCy \citep{honnibal2020spacy} to obtain 66 linguistically motivated features to globally represent the text.
+The third approach was not recurrent in its nature -- instead, we used the TextDescriptives pipeline \citep{Hansen_2023} through spaCy \citep{honnibal2020spacy} to obtain 66 linguistically motivated features to globally represent the text.
 Such linguistic features have a long tradition in NLP, for example in the field of readability analysis (for example \citealp{vajjala-meurers-2012-improving}), and have been observed to be valid and cheap-to-compute representations in a variety of settings.
 Since they are most well known for capturing the style of a text, rather than semantics, they appear to be very well suited for the present task.
 Additionally, we computed the mean perplexity of the document using GPT-2 \citep{Radford2019} and added it to the feature vectors.
 This follows the idea that the perplexity of a document assigned by a LLM should be higher for human written texts than for machine generated texts \citep{chaka2023detecting}.
-Our third approach computes this global feature vector for the input text, then generates a prediction through a simple MLP.
+Our third approach computed this global feature vector for the input text, then generated a prediction through a simple MLP.
 The model consisted of 3 linear layers with Tanh activation functions in between and was trained for 2000 epochs with a learning rate of 0.0003.
 
-An ensemble model was finally formulated, consisting in a feed-forward network which takes as input the final representations (the last hidden states) of each of the three previous approaches, generating a single prediction.
+An ensemble model was finally formulated, consisting in a feed-forward network which takes as input the final representations (the last hidden states in the case of the LSTM's) of each of the three previous approaches, generating a single prediction.
 In addition to the standard model weights and biases related to the linear layers, a trainable scalar weight was also specified for each of the three inputs, to allow for dynamic scaling of the three input vectors, which would have been otherwise hard to interpret in tandem.
 Table \ref{tab:a_models} offers an overview of the models developed by team TueCICL during the shared task proper.
 
@@ -168,13 +170,13 @@ Table \ref{tab:a_models} offers an overview of the models developed by team TueC
 \end{table}
 
 Results for this and all other experiments will be discussed in detail in Chapter \ref{sec:discussion}, but it makes sense to give a few notes before moving on to the post-deadline contributions.
-The shared task only allowed one submission per subtask, and out best-performing solution on the development set was the ensemble model, with an F1-score of 0.845, beating the baseline (at 0.72) by a substantial margin.
+The shared task only allowed one submission per subtask, and out best-performing solution on the development set was the ensemble model, with an accuracy of 85\%, beating the baseline (at 72\%) by a substantial margin.
 Despite this, the ensemble model only achieved an accuracy of 54.57\% accuracy on the test set, far behind the baseline's 88.47\%.
 This observation remains true even at the level of the three sub-models, neither of which performs convincingly on the test set.
-Surprisingly, evaluations made after the deadline, once the test set labels were published, revealed that our best submission came from a model that was never intended to be the front-runner in our research, namely a TF-IDF logistic regression approach that only reached 60\% accuracy on the development set, but achieved an impressive 87\% accuracy on the test set, and was thus our only model that managed to bear the baseline.
+Surprisingly, evaluations made after the deadline, once the test set labels were published, revealed that our best submission came from a model that was never intended to be the front-runner in our research, namely a TF-IDF logistic regression approach that only reached 60\% accuracy on the development set, but achieved an impressive 87\% accuracy on the test set, and was thus our only model that managed to beat the baseline.
 
-After looking at our various models' performance on the test set, it appeared strongly that solid performance on the development set did not translate into a good grasp of the test set.
-Instead, our solutions had become indirectly more optimized at detecting BLOOMz generations, as opposed to machine-generated text in general.
+After looking at our various models' performance on the test set, it strongly appeared that solid performance on the development set did not translate into a good grasp of the test set.
+Instead, our solutions had become presumably more optimized at detecting BLOOMz generations, as opposed to machine-generated text in general.
 The best performing model on the test set ended up being one that did not show almost any promise in development.
 
 In summary, two important lessons were drawn from the shared task results that informed the subsequent work on this subtask, which will be presented in detail in the next subsection.
