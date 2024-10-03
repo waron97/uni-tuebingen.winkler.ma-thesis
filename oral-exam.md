@@ -10,4 +10,3 @@
 ## Machine translation
 
 [Neural Machine Translation for Low-resource Languages: A Survey](https://dl.acm.org/doi/abs/10.1145/3567592)
-[https://dl.acm.org/doi/abs/10.1145/3567592](https://dl.acm.org/doi/abs/10.1145/3567592)
