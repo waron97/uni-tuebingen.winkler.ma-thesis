@@ -1,0 +1,1 @@
+{"max_depth": 200, "max_features": 5, "min_samples_leaf": 3, "min_samples_split": 10, "n_estimators": 2000, "random_state": 4376823}

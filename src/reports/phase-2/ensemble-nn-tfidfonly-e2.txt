@@ -1,0 +1,24 @@
+DEV
+
+              precision    recall  f1-score   support
+
+           0       0.99      1.00      0.99     13000
+           1       1.00      0.99      0.99     13000
+
+    accuracy                           0.99     26000
+   macro avg       0.99      0.99      0.99     26000
+weighted avg       0.99      0.99      0.99     26000
+
+
+
+
+TEST
+
+              precision    recall  f1-score   support
+
+           0       0.72      1.00      0.84     16272
+           1       0.99      0.65      0.79     18000
+
+    accuracy                           0.82     34272
+   macro avg       0.86      0.82      0.81     34272
+weighted avg       0.87      0.82      0.81     34272

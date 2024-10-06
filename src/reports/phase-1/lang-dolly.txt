@@ -1,0 +1,38 @@
+CUSTOM DEV REPORT
+
+              precision    recall  f1-score   support
+
+           0       0.59      1.00      0.74     12000
+           1       0.99      0.32      0.48     12000
+
+    accuracy                           0.66     24000
+   macro avg       0.79      0.66      0.61     24000
+weighted avg       0.79      0.66      0.61     24000
+
+
+
+
+TRUE DEV REPORT
+
+              precision    recall  f1-score   support
+
+           0       0.54      0.99      0.70      2500
+           1       0.94      0.14      0.24      2500
+
+    accuracy                           0.57      5000
+   macro avg       0.74      0.57      0.47      5000
+weighted avg       0.74      0.57      0.47      5000
+
+
+
+
+TRUE TEST REPORT
+
+              precision    recall  f1-score   support
+
+           0       0.52      1.00      0.68     16272
+           1       0.98      0.17      0.29     18000
+
+    accuracy                           0.56     34272
+   macro avg       0.75      0.58      0.48     34272
+weighted avg       0.76      0.56      0.47     34272

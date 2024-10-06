@@ -1,0 +1,38 @@
+TRAIN
+
+              precision    recall  f1-score   support
+
+           0       0.60      0.91      0.72     52851
+           1       0.74      0.29      0.41     45906
+
+    accuracy                           0.62     98757
+   macro avg       0.67      0.60      0.57     98757
+weighted avg       0.66      0.62      0.58     98757
+
+
+
+
+DEV
+
+              precision    recall  f1-score   support
+
+           0       0.57      0.92      0.71     13000
+           1       0.80      0.32      0.45     13000
+
+    accuracy                           0.62     26000
+   macro avg       0.69      0.62      0.58     26000
+weighted avg       0.69      0.62      0.58     26000
+
+
+
+
+TEST
+
+              precision    recall  f1-score   support
+
+           0       0.51      0.94      0.66     16272
+           1       0.76      0.17      0.28     18000
+
+    accuracy                           0.54     34272
+   macro avg       0.63      0.56      0.47     34272
+weighted avg       0.64      0.54      0.46     34272
