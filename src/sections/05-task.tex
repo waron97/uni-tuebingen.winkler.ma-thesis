@@ -300,7 +300,7 @@ The final ensemble classifiers do not represent a bad result in and of themselve
 However, there is also reason to be disappointed.
 Firstly, neither ensemble performs better than the best individual classifier on the test set, where the Davinci-optimized TF-IDF classifier achieved 89\%.
 In addition, this second stage of experimentation also failed to produce a detector better or equalling the 90\% mark in classification performance.
-There is nothing inherently special about this threshold, but literature analysis and earlier results would have suggested that reaching is not only possible, but, at least in theory, likely.
+There is nothing inherently special about this threshold, other than that it is about the minimum value that beats the baseline, but literature analysis and earlier results would have suggested that reaching is not only possible, but, at least in theory, likely.
 Another important observation is that the best result ever observed on the development set, 89\% by the random forest ensemble, did not translate to a convincing result on the test set, again indicating that the development set acts more as an obstacle to overcome, rather than a true indication of performance, at least in the context of the shared task.
 
 As a final round of experiments to check whether swapping the development set would indeed improve performance on the shared task, all steps described above are done anew, with a few modifications to the data partitions.
