@@ -1,2 +1,162 @@
 \section{Discussion of SemEval results}
 \label{sec:discussion}
+
+\subsection{Subtask A: Shared Task analysis rankings}
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{llll}
+        \toprule
+        \textbf{Model}     & \textbf{Development set} & \textbf{Test set} & \textbf{Ranking} \\
+        \midrule
+        Baseline           & 0.72                     & 0.88              & 20               \\
+        \midrule
+        Character-level    & 0.85                     & 0.55              & 127              \\
+        Word2vec*          & 0.82                     & 0.72              & 85               \\
+        Language features* & 0.63                     & 0.88              & 21               \\
+        Joint model*       & 0.83                     & 0.69              & 96               \\
+        \bottomrule
+        \vspace{0.1cm}
+    \end{tabular}
+    \caption{Results for SemEval-2024 Task 8, subtask A. Dev and Test columns report the accuracy on the respective data partitions. The ranking column refers to the model ranking in the shared task competition. The scores and ranking of the unofficial submissions were not provided by the organizers and computed by team TueCICL. There was a total of 137 submissions.\\ \textbf{*} unofficial submissions}
+    \label{tab:a_results}
+\end{table}
+
+Table \ref{tab:a_results} shows the results for each model submitted during the proceedings of the shared task, for subtask A.
+On the development set, almost all models outperform the transformer baseline provided by the organizers.
+The best performing model was the character-level model, with an accuracy of 0.85 -- this was our final submission for the shared task.
+While the two recurrent models and the joint model do not differ very much from one another, the FFN built on linguistically motivated global feature vectors sets itself apart in that it is the worst performing model on the development set.
+
+Perhaps the most important lesson here is that there's clearly diminishing returns in closely fitting the development set -- perhaps even negative returns, as the worst-performing model in development is the best-performing one on the test set by a big margin.
+At any rate, it wouldn't be honest to put the blame of this middling performance on the development set alone.
+Selecting character-level and Word2Vec-based solutions appears after the fact to have been a misfire as well.
+For further information, the original task report \citep{stuhlinger-winkler-2024-tuecicl} contains an in-depth rundown of the shared task, while the following pages are dedicated to how these lessons can help improve performance on the task, with little adjustments to the methods, that nonetheless preserve the mission of computationally efficient, locally runnable detectors.
+
+\subsection{Subtask A: post-deadline improvements}
+
+Having taken note of the disappointing performance of the official submissions to the shared task, a new batch of experiments were conducted in the context of this Master Thesis.
+These had the objective of being more firmly grounded in research, while still maintaining the objective of developing detectors which end-users would be able to own and run on their own machines.
+A new approach was developed, targeting generator models one at a time with different strategies, since machine-generated detection seems to be an elusive target when targeting all generators at once.
+Instead, the work was split among many different classifiers, attempting to differentiate between human texts and only one generator (Davinci, ChatGPT, Cohere, Dolly, BLOOMz).
+
+The first batch of experiments resulted in the single-generator classifiers described in Table \ref{tab:subsolutions-initial}.
+Among these models was the best ever performance on the test set, with an 89\% classification accuracy by the TF-IDF model on Davinci, though this model would have been impossible to find, since its performance on the development does not stand out.
+After running the full experiment, which ended in the development of the ensemble model, it was also observed that the approach resulted in good, but not excellent classification performance.
+Table \ref{tab:ensemble-initial} describes the two ensemble models, one neural and one trained with a random forest base.
+Unfortunately, neither ensemble beats the baseline, while both fall short of the best single-generator classifier on the test set.
+They also both underperform the best unofficial submission to the shared task, which was developed by team TueCICL, achieving 88\% test set accuracy with only linguistically motivated features.
+
+Chapter \ref{sec:task} concluded with the description of the last experimental run, which followed the general lines of the first, with a re-sampled development set.
+The single-generator model lineup was also extended to include the three BLOOMz classifiers, one with a fine-tuned DistilBERT model, and two statistical approaches with TF-IDF and language feature representations respectively.
+The remainder of this section is dedicated to the analysis of this last experimental run, which resulted in a final ensemble with a classification accuracy of 97\% on the test set.
+
+The first task in the newly formulated approach to the task of machine-generated text detection is obtaining a set of single-generator classifiers.
+As a reminder, a total of 15 such classifiers, one for each model and strategy combination, are trained on a subset of the train data, containing only human texts and generations from the target model.
+The validation set for these models is constructed along the same lines, containing no generations from other models, to ensure each single-generator classifier is selected based solely on its ability to detect its target.
+Probability scores associated to the positive label are then used as input to the final ensemble classifier.
+
+
+\begin{table}[ht]
+    \centering
+    \vspace{0.1cm}
+    \begin{tabular}{llp{10px}ccp{10px}c}
+        \toprule
+        \multirow{2}{*}{Model} & \multirow{2}{*}{Strategy} &  & \multicolumn{2}{c}{Development set} &               & Test set                   \\
+                               &                           &  & \tiny{Preicision}                   & \tiny{Recall} &          & \tiny{Accuracy} \\
+        \midrule
+        ChatGPT                & DistilBERT                &  & 1.00                                & 0.66          &          & 0.83            \\
+        ChatGPT                & TF-IDF                    &  & 0.97                                & 0.55          &          & 0.88            \\
+        ChatGPT                & Language Feats            &  & 0.98                                & 0.69          &          & 0.83            \\
+        Davinci                & DistilBERT                &  & 0.95                                & 0.82          &          & 0.77            \\
+        Davinci                & TF-IDF                    &  & 0.94                                & 0.68          &          & 0.89            \\
+        Davinci                & Language Feats            &  & 0.97                                & 0.87          &          & 0.97            \\
+        Cohere                 & DistilBERT                &  & 0.96                                & 0.82          &          & 0.69            \\
+        Cohere                 & TF-IDF                    &  & 0.94                                & 0.66          &          & 0.70            \\
+        Cohere                 & Language Feats            &  & 0.96                                & 0.65          &          & 0.45            \\
+        Dolly                  & DistilBERT                &  & 0.87                                & 0.92          &          & 0.62            \\
+        Dolly                  & TF-IDF                    &  & 0.89                                & 0.81          &          & 0.87            \\
+        Dolly                  & Language Feats            &  & 0.99                                & 0.30          &          & 0.56            \\
+        BLOOMz                 & DistilBERT                &  & 0.92                                & 0.10          &          & 0.55            \\
+        BLOOMz                 & TF-IDF                    &  & 0.80                                & 0.32          &          & 0.54            \\
+        BLOOMz                 & Language Feats            &  & 0.70                                & 0.57          &          & 0.56            \\
+        \bottomrule
+        \vspace{0.1cm}
+    \end{tabular}
+    \caption{
+        Performance metrics for final single-generator classifiers.
+        The development set referenced here is the one derived from the train set and described in Chapter \ref{sec:task}, not the original development set.
+        Precision and recall refer to the \textbf{positive} label, not to the average of the metric over the two classes.
+    }
+    \label{tab:subsolutions-final}
+\end{table}
+
+The objective for single-generator classifiers is to be as specialized as possible in detecting generations from a single model.
+In other words, they should be geared towards high precision, rather than high recall.
+Table \ref{tab:subsolutions-final} provides a summary of the single-generator classifiers, with precision and recall for the positive label (i.e. for the machine-generated class) over the re-sampled development set, and accuracy on the test set.
+There are several takeaways from this table that are worth mentioning.
+Initially, it can be noted that precision is high for nearly all classifiers, which is in concordance with the models' training goals.
+For some single-generator classifiers, even the recall value for the positive label is respectable, meaning that the models display good ability to detect generations from other models as well.
+Another interesting aspect is that for all generators, at least one strategy displays high precision, even when other strategies struggle.
+For example, BLOOMz-targeted models struggle when using TF-IDF and language features, but are rescued by their DistilBERT sibling.
+Similarly, detectors for Dolly in the TF-IDF and DistilBERT strategies do not inspire high confidence, but the features-based classifier appears to have specialized much more than the others, and could come to the rescue for difficult scenarios despite its low test-set performance.
+Feature-based detectors generally perform above expectations, with all except BLOOMz developing a highly specialized toolkit, resulting in especially high precision.
+In this sense, they are the perhaps the strategy that best captures the objective of the single-generator models: highly specialized systems, that can detect one specific model with very high precision.
+As will be seen later, this is likely why they are a crucial driver for performance in the ensemble classifiers.
+
+\begin{table}[ht]
+    \vspace{0.1cm}
+    \centering
+    \begin{tabular}{llccccc}
+        \toprule
+        Model   & Strategy   & ChatGPT & Cohere & Davinci & Dolly & BLOOMz \\
+        \midrule
+        ChatGPT & TF-IDF     & 1.00    & 0.43   & 0.64    & 0.25  & 0.13   \\
+        ChatGPT & Lang Feats & 1.00    & 0.50   & 0.60    & 0.86  & 0.03   \\
+        ChatGPT & DistilBERT & 1.00    & 0.68   & 0.74    & 0.39  & 0.15   \\
+        Cohere  & TF-IDF     & 0.66    & 1.00   & 0.59    & 0.51  & 0.35   \\
+        Cohere  & Lang Feats & 0.71    & 1.00   & 0.69    & 0.35  & 0.16   \\
+        Cohere  & DistilBERT & 0.96    & 1.00   & 0.80    & 0.68  & 0.27   \\
+        Davinci & TF-IDF     & 0.85    & 0.60   & 1.00    & 0.40  & 0.27   \\
+        Davinci & Lang Feats & 0.94    & 0.87   & 1.00    & 0.90  & 0.23   \\
+        Davinci & DistilBERT & 0.99    & 0.78   & 0.99    & 0.63  & 0.47   \\
+        Dolly   & TF-IDF     & 0.78    & 0.83   & 0.73    & 1.00  & 0.57   \\
+        Dolly   & Lang Feats & 0.23    & 0.00   & 0.04    & 1.00  & 0.13   \\
+        Dolly   & DistilBERT & 0.98    & 0.97   & 0.86    & 0.99  & 0.53   \\
+        BLOOMz  & TF-IDF     & 0.18    & 0.36   & 0.25    & 0.24  & 1.00   \\
+        BLOOMz  & Lang Feats & 0.00    & 0.08   & 0.16    & 0.10  & 1.00   \\
+        BLOOMz  & DistilBERT & 0.01    & 0.03   & 0.03    & 0.02  & 0.99   \\
+        \bottomrule
+        \vspace{0.1cm}
+    \end{tabular}
+    \caption{
+        Accuracy in the re-sampled development set for each single-generator classifier.
+    }
+    \label{tab:generalization}
+\end{table}
+
+\begin{table}[ht]
+    \vspace{0.1cm}
+    \centering
+    \begin{tabular}{lcc}
+        \toprule
+        Composition            & Development accuracy & Test accuracy \\
+
+        \midrule
+        TF-IDF only            & 99.527\%             & 87.179\%      \\
+        Language features only & 98.777\%             & 85.466\%      \\
+        DistilBERT only        & 96.250\%             & 74.790\%      \\
+        TF-IDF + features      & 99.927\%             & 95.544\%      \\
+        Full Model             & 99.892\%             & 97.106\%      \\
+        \midrule
+        Winning model          & NA                   & 96.88\%       \\
+        \bottomrule
+        \vspace{0.1cm}
+    \end{tabular}
+    \caption{
+        Summary of final ensemble performance across different configurations.
+        The best-performing model is the full ensemble, beating the task-winning model, whose reported accuracy is included for comparison.
+    }
+    \label{tab:ensemble-final}
+\end{table}
+
+\subsection{Subtask C: Shared task analysis and rankings}
