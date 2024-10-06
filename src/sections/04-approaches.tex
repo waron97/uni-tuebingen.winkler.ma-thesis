@@ -62,7 +62,7 @@ The result is a list, where the top-scoring items are highly suspected to be mac
 Precision is then reported regarding the top \emph{m} documents in the ranking, since the authors' intent is to design a system that pushes the final decision onto human judges, with the intent of only identifying suspicious documents.
 As summarized in Figure \ref{fig:galle2021_fig5_100models}, this approach was tested against GPT-2 and it was able to reach an impressive 80\% precision (in top-5000) even with nucleus sampling \citep{holtzman2019curious}, which makes generation much harder to detect than top-k strategies (which this strategy detects at near-perfect precision) and is therefore an extremely interesting strategy when only few in-domain examples are available.
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.6\textwidth]{assets/galle2021_fig5_100models.png}
     \caption{
@@ -109,7 +109,7 @@ Figure \ref{fig:detectgpt} offers an overview of DetectGPT performance across di
 Performance is predictably best when the scoring model is the same as the generator, but good-enough alternative models can be found -- perhaps smaller, efficient models can be found for detecting the prominent generators, contributing to a less resource-intensive solution landscape.
 Ensemble solutions may even cover against many potential generators, instead of relying on a single scoring model in the black box setting (i.e. when the generator model is not known).
 
-\begin{figure}[h]
+\begin{figure}[ht]
     \centering
     \includegraphics[width=0.5\textwidth]{assets/detectgpt_modelcomp.png}
     \caption{

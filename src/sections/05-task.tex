@@ -30,7 +30,7 @@ The baseline suggested by the organizers was based on Longformer \citep{beltagy2
 This baseline achieved an impressive 3.5 MAE on the development set -- a tough standard -- and a (much lower) 21.54 MAE on the test set, though the latter was of course not known at development time.
 
 
-\begin{table}[h]
+\begin{table}[ht]
     \centering
     \includegraphics[width=0.7\textwidth]{assets/subtaskc-data.png}
     \caption{
@@ -74,7 +74,7 @@ This is also similar to how token-level classification is performed with transfo
 The best-performing hidden size for this model was found to be 256.
 Table \ref{tab:c_models} offers a summary of the models developed for subtask C.
 
-\begin{table}[h]
+\begin{table}[ht]
     \centering
     \begin{tabular}{llll}
         \hline
@@ -152,7 +152,7 @@ An ensemble model was finally formulated, consisting in a feed-forward network w
 In addition to the standard model weights and biases related to the linear layers, a trainable scalar weight was also specified for each of the three inputs, to allow for dynamic scaling of the three input vectors, which would have been otherwise hard to interpret in tandem.
 Table \ref{tab:a_models} offers an overview of the models developed by team TueCICL during the shared task proper.
 
-\begin{table}[h]
+\begin{table}[ht]
     \centering
     \begin{tabular}{llll}
         \hline
@@ -240,7 +240,7 @@ Each individual classifier is then evaluated on all three non-train data partiti
 Table \ref{tab:subsolutions-initial} reports the accuracy achieved by the individual classifiers against the data partitions available at this stage.
 Deeper discussion about the results can be found in Chapter \ref{sec:discussion}, but the results are included here for an intermediate sanity check.
 
-\begin{table}[h]
+\begin{table}[ht]
     \centering
     \vspace{0.1cm}
     \begin{tabular}{lp{5px}cccp{5px}cccp{5px}ccc}
@@ -280,7 +280,7 @@ Following \citet{frohling2021feature}, a probability is inferred with each class
 Two model architectures are explored for the ensemble: a random forest classifier, trained with grid search in a similar fashion as the TF-IDF and language feature models, and a neural feed-forward network.
 Table \ref{tab:ensemble-initial} presents the resulting ensemble classifiers.
 
-\begin{table}[h]
+\begin{table}[ht]
     \vspace{0.1cm}
     \centering
     \begin{tabular}{lp{150px}cc}
