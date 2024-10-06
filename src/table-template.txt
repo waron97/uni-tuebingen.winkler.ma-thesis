@@ -1,0 +1,17 @@
+\begin{table}[h]
+    \centering
+    \begin{tabular}{cccccccccc}
+        \hline
+        Model   & \multicolumn{3}{c}{Dev Set} & \multicolumn{3}{|c|}{True Dev Set} & \multicolumn{3}{c}{Test Set}                                                                           \\
+        \hline
+                & T                           & L                                  & \multicolumn{1}{c|}{DB}      & T       & L      & \multicolumn{1}{c|}{DB} & T       & L      & DB      \\
+        \hline
+        ChatGPT & dev-tf                      & dev-l                              & dev-db                       & tdev-tf & tdev-l & tdev-db                 & test-tf & test-l & test-db \\
+        Davinci & dev-tf                      & dev-l                              & dev-db                       & tdev-tf & tdev-l & tdev-db                 & test-tf & test-l & test-db \\
+        Cohere  & dev-tf                      & dev-l                              & dev-db                       & tdev-tf & tdev-l & tdev-db                 & test-tf & test-l & test-db \\
+        Dolly   & dev-tf                      & dev-l                              & dev-db                       & tdev-tf & tdev-l & tdev-db                 & test-tf & test-l & test-db \\
+        \hline
+    \end{tabular}
+    \caption{}
+    \label{tab:subsolutions-initial}
+\end{table}

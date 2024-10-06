@@ -12,7 +12,7 @@ As team TueCICL, we submitted results for two of the subtasks to the leaderboard
 For subtask A, consisting in binary classification over the whole texts, there were two phases development, one for shared task proper, and subsequent post-deadline experimenting in the context of this Master Thesis.
 Due to the more pronounced research interest in subtask A, as well as to better present the higher volume of material associated with it, this section shall first discuss subtask C, then dive deeper into subtask A later in this Chapter.
 
-\subsection{Human - LM Boundary detection}
+\subsection{Change point detection}
 
 Subtask C of the shared task addresses detection environments that are characterized by active adversarial agents performing the generation.
 Specifically, detection technologies have been observed to be weak to techniques also found in authorship obfuscation \citep{macko2024authorship}, such as paraphrasing \citep{krishna2024paraphrasing} and noise-introduction \citep{wang2021adversarial}.
@@ -185,3 +185,135 @@ Second, good performance on the provided development set did not indicate a good
 Finding a more suitable evaluation method for the models in subsequent training iterations was essential to improve performance, otherwise the cross-validated definition of good detector and a good \emph{BLOOMz} detector would remain indistinguishable.
 
 \subsection{Generated text detection: post-deadline additions}
+
+Ensemble solutions to the problem of machine-generated text detection are far from rare in the scientific literature on the subject.
+For example, \citet{frohling2021feature} propose ensemble approaches over linguistic features, TF-IDF models, and neural classifiers.
+This could be seen as a more refined implementation of a similar intuition to what was presented in the previous section for subtask A, with two notable departures from that workflow: pretrained static embeddings like Word2Vec are not used, and the inputs to the ensemble are not  long vector representations, but individual model probabilities associated with the positive label.
+Results obtained by \citet{frohling2021feature} in the multi-generator setting (the same situation as subtask A, where the data splits contain generations from multiple models) suggested that their detector might be developing specialized sub-detectors for each individual data source, instead of forming a generalized comprehension of the distinction between human-written text and machine outputs.
+This hypothesis is echoed by other studies as well, which observe a generally low transferability of a detector's ability to detect \emph{some} model's to generations to detecting generated text in general.
+For example, \citet{mitchell2023detectgpt} also observe a steep drop in detection performance in the black-box setting compared to the white-box setting, suggesting that ensemble solutions targeting different but \emph{particular} models might constitute a promising way forward in the field.
+
+The work put forward in the following pages of this Master Thesis is developed along the guidelines mentioned in these recent research approaches.
+These additions are made in the context of this thesis, and are distinct from the shared task at SemEval-2024 and do not steam from a team effort like TueCICL's submissions in the main event, discussed in the previous section.
+
+A first direction for the post-deadline work was provided by the realization that the models developed for the shared task did not fully utilize the information provided in training and validation.
+In fact, aside from the text, the domain (Wikipedia, Wikihow, et cetera) and the label (machine or human) of every record, the exact generator model was also known for machine-generated text.
+Jointly with the evidence that detectors are much better suited to detect \emph{particular} models, as opposed to generated text in general, it was determined that the contributors to the final ensemble model in this second stage would be specialized models, trained to detect only one particular generator.
+
+Of the original strategies devised for the shared task, the Word2Vec and the character-level approaches were discarded, since they underperformed their counterparts in the shared task submissions, which is a confirmation of their relatively lower representation in the literature.
+Despite half of the previous approaches being discarded in this stage, it still makes sense to continue working with linguistic features.
+They appear to give valuable contributions to detectors in the relevant research \citep{frohling2021feature}, and they were perhaps not sufficiently explored for the shared task submissions.
+With linguistic features, it is possible to hand-pick a limited selection to ensure explainability of the results, but for pure performance it is generally preferred to aim for a higher quantity of metrics.
+For the shared task, we computed the feature vectors through the TextDescriptives pipeline \citep{Hansen_2023} for spaCy, which yield about 60 distinct measures per text.
+In the second stage, we swapped the extraction library to LFTK \citep{lee2023lftkhandcraftedfeaturescomputational}, a more recent and mature feature collection and framework, and also the largest off-the-shelf solution at the time of writing.
+
+In addition, since the best-performing model for the original task unexpectedly ended up being TF-IDF, it seems fair to conclude that the information captured by these document matrices can be fruitfully applied to the tasked at hand.
+\citet{frohling2021feature} also employ TF-IDF to successfully boost detection performance.
+
+Lastly, large-scale transformer-based solutions such as RoBERTa are still off the table, but excluding all transformers altogether was perhaps overly hasty.
+DistilBERT \citep{sanh2020distilbertdistilledversionbert} is a BERT version that retains much of its larger siblings' language capability at a lower computational cost.
+Since inference with DistilBERT is still manageable with the target end-user systems, it is included as an ensemble component in this work, with the aim to obtain some of the predictive power of state-of-the-art transformer approaches.
+
+This work breaks down the problem of black-box machine-generated text detection into a set of smaller problems, consisting in detecting the output of one generator at a time.
+A number of classifiers are trained for each model contained in the train set: Davinci, ChatGPT, Dolly, and Cohere.
+Each individual classifier is trained with one of three general strategies and is only optimized to detect one model.
+To summarize the model strategies outline above, a detector model is trained for each generator model, sourcing its inputs either from linguistic features computed through LFTK, TF-IDF vectors, or DistilBERT.
+
+To achieve the training objective for each sub-classifier, a secondary development is derived from the training set, containing 3000 records for each generator, and an extra 12.000 human texts, which yields balanced classes.
+This is done both to set up a validation set that allows the best models to be selected only based on their ability to detect their own generations, as well as to maintain consistent train and development data for the sub-classifiers, in order to maintain a validation data split whose is unknown to all classifiers, which would not have been the case had a custom validation set been sampled individually for each classifier. Random state for every step is fixed at the same arbitrary constant value, and there was no supervised search performed for any step described below.
+
+To train the TF-IDF and language feature-based classifiers, the process runs in a similar fashion.
+First, all documents produced by the target generator are extracted from the train set, yielding around 10.000 documents.
+The same amount of human records is sampled from the train set.
+This means that in the training process for each classifier, human texts are significantly undersampled compared to all of the available data.
+This is done to ensure balance between classes, and since the sampling is random for each classifier, it is statistically likely that all of the human texts will have been used by the time all classifiers are trained.
+For TF-IDF, the documents are vectorized with lowercasing, stopword removal, and the top 100.000 most frequent terms are kept in the unigram-bigram range.
+For the language features, the pre-computed feature vectors are taken from a database for time efficiency, but computing them at inference time in downstream applications would not be a technical hurdle.
+A Random Forest Classifier is then fit to the input vectors, with standard hyperparameter tuning through grid search to evaluate a variety of configuration constellations.
+Cross-validation for the classifier is not carried out through ten-fold cross-validation, instead the custom validation set (3000 human texts and 3000 documents generated by the target classifier) is supplied during training to obtain the best model.
+
+For the DistilBERT fine-tuned classifier, the data partitions used in training are the same as for the statistical models.
+The difference is of course in the model architecture, as well as the preprocessing, which is done by the associated DistilBERT tokenizer.
+The training proceeds for 5 epochs, with the best model selected based on accuracy on the custom validation set.
+
+Each individual classifier is then evaluated on all three non-train data partitions: the custom development set containing 24.000 records originally in the train set, the \emph{true} validation set with 5000 (2500 BLOOMz + 2500 human) generations, and the test set.
+Table \ref{tab:subsolutions-initial} reports the accuracy achieved by the individual classifiers against the data partitions available at this stage.
+Deeper discussion about the results can be found in Chapter \ref{sec:discussion}, but the results are included here for an intermediate sanity check.
+
+\begin{table}[h]
+    \centering
+    \vspace{0.1cm}
+    \begin{tabular}{lp{5px}cccp{5px}cccp{5px}ccc}
+        \hline
+        \multirow{2}{*}{Model} &  & \multicolumn{3}{c}{Dev Set} &             & \multicolumn{3}{c}{True Dev Set} &  & \multicolumn{3}{c}{Test Set}                                                                            \\
+                               &  & \tiny{TF-IDF}               & \tiny{Lang} & \tiny{BERT}                      &  & \tiny{TF-IDF}                & \tiny{Lang} & \tiny{BERT} &  & \tiny{TF-IDF} & \tiny{Lang} & \tiny{BERT} \\
+        \hline
+        ChatGPT                &  & 0.74                        & 0.86        & 0.88                             &  & 0.58                         & 0.50        & 0.60        &  & 0.86          & 0.82        & 0.83        \\
+        Davinci                &  & 0.79                        & 0.95        & 0.88                             &  & 0.65                         & 0.59        & 0.63        &  & 0.89          & 0.76        & 0.81        \\
+        Cohere                 &  & 0.71                        & 0.66        & 0.87                             &  & 0.66                         & 0.57        & 0.60        &  & 0.55          & 0.56        & 0.57        \\
+        Dolly                  &  & 0.72                        & 0.85        & 0.89                             &  & 0.64                         & 0.54        & 0.69        &  & 0.76          & 0.42        & 0.64        \\
+        \hline
+        \vspace{0.1cm}
+    \end{tabular}
+    \caption{
+        Classification accuracy by the individual classifiers on the various data partitions.
+        The "Dev Set" is a split-off segment of the train set, the "True Dev Set" is the initial development set provided by the task organizers.
+        "Lang" refers to the classifiers trained on linguistic features.
+    }
+    \label{tab:subsolutions-initial}
+\end{table}
+
+There are a few interesting observations that can be made in relationship with the classifiers' performance.
+One aspect that was hard to miss among the test set results is that the TF-IDF classifier trained to detect the Davinci generator is the best solution ever to emerge for the shared task, beating all potential submissions -- though this of course it is only possible to say this after the fact, with access to the test set labels.
+Without these, there is nothing in the runs on the validation set that would make this solution stand out.
+Accuracy on the BLOOMz development set remained consistently low for all classifiers, but the worst classification performance among all was the features-based classifier trained for Dolly on the test set, which dipped below random chance.
+Overall, the consistently higher results on the test set compared to the true development set reinforce the idea that trying to optimize for the original development set might be a fool's errand.
+The results in this case clearly reflect the much higher similarity of the train set to the test set.
+Generally, the feature and TF-IDF based models did not underperform DistilBERT on either set, which might have perhaps been the expectation, and TF-IDF even outperforms DistilBERT by a significant margin for the Dolly detectors, and generally do better for three out of four models on the test set.
+This inspires some initial confidence in the new approach.
+
+After obtaining the model classifiers, an ensemble model is trained sourcing the inputs from them.
+The data used for training the ensemble is the custom development set mentioned earlier, containing 3000 examples from each generator and 12.000 human texts.
+This is setup helps ensure that individual generator detectors haven't already seen the training example.
+In truth, training the ensemble on the full train set or on this split-off segment wasn't observed to result in a different outcome in terms of performance on the original validation set, which was used to select the best model in this stage.
+Following \citet{frohling2021feature}, a probability is inferred with each classifier for each target document, resulting in a 12-length input vector, with each value referring to the probability associated to the positive label according to one classifier.
+Two model architectures are explored for the ensemble: a random forest classifier, trained with grid search in a similar fashion as the TF-IDF and language feature models, and a neural feed-forward network.
+Table \ref{tab:ensemble-initial} presents the resulting ensemble classifiers.
+
+\begin{table}[h]
+    \vspace{0.1cm}
+    \centering
+    \begin{tabular}{lp{150px}cc}
+        \hline
+        Model       & Description                                                               & Dev accuracy & Test accuracy \\
+        \hline
+        Statistical & Random Forest with Grid Search                                            & 0.89         & 0.82          \\
+        FFN         & Neural feed-forward network, with 3 linear layers and a hidden size of 64 & 0.65         & 0.79          \\
+        \hline
+        \vspace{0.1cm}
+    \end{tabular}
+    \caption{Accuracy of the ensemble models on the task development set (BLOOMz generator only) and the test set.}
+    \label{tab:ensemble-initial}
+\end{table}
+
+The final ensemble classifiers do not represent a bad result in and of themselves -- in fact, submitting either for the shared task would be constitute a 30\% improvement in accuracy on the official submissions, and would have placed better in the final leaderboard.
+However, there is also reason to be disappointed.
+Firstly, neither ensemble performs better than the best individual classifier on the test set, where the Davinci-optimized TF-IDF classifier achieved 89\%.
+In addition, this second stage of experimentation also failed to produce a detector better or equalling the 90\% mark in classification performance.
+There is nothing inherently special about this threshold, but literature analysis and earlier results would have suggested that reaching is not only possible, but, at least in theory, likely.
+Another important observation is that the best result ever observed on the development set, 89\% by the random forest ensemble, did not translate to a convincing result on the test set, again indicating that the development set acts more as an obstacle to overcome, rather than a true indication of performance, at least in the context of the shared task.
+
+As a final round of experiments to check whether swapping the development set would indeed improve performance on the shared task, all steps described above are done anew, with a few modifications to the data partitions.
+The original train and development sets, totalling a little more than 122000 documents combined, are merged, and a new development set is sampled from this combined partition.
+After this process, the new development set contains 13000 human texts, 3000 text from each of Cohere, ChatGPT, Davinci, Dolly, and finally 1000 BLOOMz generations.
+The new train set contains all remaining documents, i.e. 52851 human texts, 11343 from Davinci, 11339 from ChatGPT, 11046 from Dolly, 10.678 from Cohere, and finally 1500 from BLOOMz.
+
+All single-generator classifiers were re-trained on these new data partitions.
+For most classifiers, this did not introduce any change, since they were still only trained and evaluated on a single generator, therefore, for example, the ChatGPT classifiers were still only seeing human and ChatGPT texts.
+A complete novelty compared to the earlier models are the three BLOOMz-based classifiers.
+These models don't have nearly as much to train and evaluate on as their siblings, but their contribute may still reveal itself to be valuable.
+It's worth mentioning that, just like in the earlier iteration of this experiment, the single-generator models' ability to detect their target model's generation is near-perfect across the board.
+
+After obtaining the single-generator detectors, a set of new ensemble models are trained.
+The ensemble inputs remain the probability of the positive label according to each single-generator classifier, since this was unlikely to be limiting factor in the earlier run.
+This second run of experiments yielded much more convincing results, which will be explored in-depth in Chapter \ref{sec:approaches}.
