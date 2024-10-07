@@ -183,6 +183,19 @@ It is important that some detectors show generalization to unknown generators, a
 At the same time, a detector can also contribute by being excellent at detecting only its target, since it would be pointless to aim for unknown generators at the cost of dwindling prediction power over known ones.
 The picture painted by Table \ref{tab:generalization} is of a good balance between the two specializations.
 
+Since the final objective of this work with regards to the classifiers above is to use them as part of an ensemble, it would also make sense to verify how the recall changes when two models work together.
+Language features and TF-IDF are orders of magnitude lighter models than DistilBERT, and this shows in their generalization performance, but this property also makes them the most aligned with the mission of developing small but efficient detectors.
+For this reason, it would be interesting to verify how the two models perform when used in their intended setting, i.e. in tandem -- hence the naming of the models of the last four rows of Table \ref{tab:generalization}, "Statistical Tandem", where the two statistical models for each target generator are jointly evaluated.
+If either model flags a text as positive, the text is counted as a machine-generated labelling by the joint system.
+The fact that combining the models shows superior performance is, of course, a natural consequence of the operation, since both models can only benefit from the presence of the other.
+What's noteworthy is the magnitude of the improvement, which is at times quite significant -- for example, Cohere over ChatGPT improves by 15 percentage points.
+As a rule of thumb, models benefit most from teamwork when performance wasn't high to begin with, though there are some outliers.
+In the better cases, there are improvements in the range of 10\%.
+When either component strategy already displays recall of above 70\%, improvements are often minimal, but sometimes still noticeable, for example Davinci over Cohere improves by 7\% despite an already high 87\% recall achieved by the feature-based classifier.
+The model that benefits the least from joint evaluation is Dolly, whose feature-based classifier seems to be almost completely dwarfed by the TF-IDF counterpart, contributing only a 1\% improvement in recall.
+BLOOMz is again its own category, benefitting somewhat from the tandem experiment, but still remaining one of the lowest-scoring models.
+At any rate, expectations for BLOOMz detectors were low to begin with, so any improvement in the detection of non-BLOOMz generators is a welcome surprise.
+
 \begin{table}[ht]
     \vspace{0.1cm}
     \centering
