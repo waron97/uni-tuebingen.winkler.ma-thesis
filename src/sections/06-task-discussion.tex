@@ -108,28 +108,31 @@ As will be seen later, this is likely why they are a crucial driver for performa
     \centering
     \begin{tabular}{llccccc}
         \toprule
-        Model   & Strategy   & ChatGPT & Cohere & Davinci & Dolly & BLOOMz \\
+        Model   & Strategy   & ChatGPT       & Cohere        & Davinci       & Dolly         & BLOOMz        \\
         \midrule
-        ChatGPT & TF-IDF     & 1.00    & 0.43   & 0.64    & 0.25  & 0.13   \\
-        ChatGPT & Lang Feats & 1.00    & 0.50   & 0.60    & 0.86  & 0.03   \\
-        ChatGPT & DistilBERT & 1.00    & 0.68   & 0.74    & 0.39  & 0.15   \\
-        Cohere  & TF-IDF     & 0.66    & 1.00   & 0.59    & 0.51  & 0.35   \\
-        Cohere  & Lang Feats & 0.71    & 1.00   & 0.69    & 0.35  & 0.16   \\
-        Cohere  & DistilBERT & 0.96    & 1.00   & 0.80    & 0.68  & 0.27   \\
-        Davinci & TF-IDF     & 0.85    & 0.60   & 1.00    & 0.40  & 0.27   \\
-        Davinci & Lang Feats & 0.94    & 0.87   & 1.00    & 0.90  & 0.23   \\
-        Davinci & DistilBERT & 0.99    & 0.78   & 0.99    & 0.63  & 0.47   \\
-        Dolly   & TF-IDF     & 0.78    & 0.83   & 0.73    & 1.00  & 0.57   \\
-        Dolly   & Lang Feats & 0.23    & 0.00   & 0.04    & 1.00  & 0.13   \\
-        Dolly   & DistilBERT & 0.98    & 0.97   & 0.86    & 0.99  & 0.53   \\
-        BLOOMz  & TF-IDF     & 0.18    & 0.36   & 0.25    & 0.24  & 1.00   \\
-        BLOOMz  & Lang Feats & 0.00    & 0.08   & 0.16    & 0.10  & 1.00   \\
-        BLOOMz  & DistilBERT & 0.01    & 0.03   & 0.03    & 0.02  & 0.99   \\
+        ChatGPT & TF-IDF     & \textbf{1.00} & 0.43          & 0.64          & 0.25          & 0.13          \\
+        ChatGPT & Lang Feats & \textbf{1.00} & 0.50          & 0.60          & 0.86          & 0.03          \\
+        ChatGPT & DistilBERT & \textbf{1.00} & 0.68          & 0.74          & 0.39          & 0.15          \\
+        Cohere  & TF-IDF     & 0.66          & \textbf{1.00} & 0.59          & 0.51          & 0.35          \\
+        Cohere  & Lang Feats & 0.71          & \textbf{1.00} & 0.69          & 0.35          & 0.16          \\
+        Cohere  & DistilBERT & 0.96          & \textbf{1.00} & 0.80          & 0.68          & 0.27          \\
+        Davinci & TF-IDF     & 0.85          & 0.60          & \textbf{1.00} & 0.40          & 0.27          \\
+        Davinci & Lang Feats & 0.94          & 0.87          & \textbf{1.00} & 0.90          & 0.23          \\
+        Davinci & DistilBERT & 0.99          & 0.78          & \textbf{0.99} & 0.63          & 0.47          \\
+        Dolly   & TF-IDF     & 0.78          & 0.83          & 0.73          & \textbf{1.00} & 0.57          \\
+        Dolly   & Lang Feats & 0.23          & 0.00          & 0.04          & \textbf{1.00} & 0.13          \\
+        Dolly   & DistilBERT & 0.98          & 0.97          & 0.86          & \textbf{0.99} & 0.53          \\
+        BLOOMz  & TF-IDF     & 0.18          & 0.36          & 0.25          & 0.24          & \textbf{1.00} \\
+        BLOOMz  & Lang Feats & 0.00          & 0.08          & 0.16          & 0.10          & \textbf{1.00} \\
+        BLOOMz  & DistilBERT & 0.01          & 0.03          & 0.03          & 0.02          & \textbf{0.99} \\
         \bottomrule
         \vspace{0.1cm}
     \end{tabular}
     \caption{
-        Accuracy in the re-sampled development set for each single-generator classifier.
+        Generalization metrics for each single-generator classifier.
+        The reported value is equal to the ratio of correctly flagged documents for a generator, over all documents produced by that generator.
+        In other words, a measure of recall is shown for each detector-generator combination.
+        Bolded values refer to instances where the detector is trained on the productions of the generator.
     }
     \label{tab:generalization}
 \end{table}
