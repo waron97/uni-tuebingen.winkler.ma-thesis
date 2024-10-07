@@ -34,16 +34,16 @@ For further information, the original task report \citep{stuhlinger-winkler-2024
 
 \subsection{Subtask A: post-deadline improvements}
 
-Having taken note of the disappointing performance of the official submissions to the shared task, a new batch of experiments were conducted in the context of this Master Thesis.
+Having taken note of the disappointing performance of the official submissions to the shared task, a new batch of experiments was conducted in the context of this Master Thesis.
 These had the objective of being more firmly grounded in research, while still maintaining the objective of developing detectors which end-users would be able to own and run on their own machines.
 A new approach was developed, targeting generator models one at a time with different strategies, since machine-generated detection seems to be an elusive target when targeting all generators at once.
 Instead, the work was split among many different classifiers, attempting to differentiate between human texts and only one generator (Davinci, ChatGPT, Cohere, Dolly, BLOOMz).
 
 The first batch of experiments resulted in the single-generator classifiers described in Table \ref{tab:subsolutions-initial}.
-Among these models was the best ever performance on the test set, with an 89\% classification accuracy by the TF-IDF model on Davinci, though this model would have been impossible to find, since its performance on the development does not stand out.
+Among these models was the one showing the best ever performance on the test set, with an 89\% classification accuracy by the TF-IDF model on Davinci, though this model would have been impossible to find without access to the test set labels, since its performance on the development does not stand out.
 After running the full experiment, which ended in the development of the ensemble model, it was also observed that the approach resulted in good, but not excellent classification performance.
 Table \ref{tab:ensemble-initial} describes the two ensemble models, one neural and one trained with a random forest base.
-Unfortunately, neither ensemble beats the baseline, while both fall short of the best single-generator classifier on the test set.
+Unfortunately, neither ensemble beats the baseline, and both fall short of the best single-generator classifier on the test set.
 They also both underperform the best unofficial submission to the shared task, which was developed by team TueCICL, achieving 88\% test set accuracy with only linguistically motivated features.
 
 Chapter \ref{sec:task} concluded with the description of the last experimental run, which followed the general lines of the first, with a re-sampled development set.
@@ -100,8 +100,22 @@ Another interesting aspect is that for all generators, at least one strategy dis
 For example, BLOOMz-targeted models struggle when using TF-IDF and language features, but are rescued by their DistilBERT sibling.
 Similarly, detectors for Dolly in the TF-IDF and DistilBERT strategies do not inspire high confidence, but the features-based classifier appears to have specialized much more than the others, and could come to the rescue for difficult scenarios despite its low test-set performance.
 Feature-based detectors generally perform above expectations, with all except BLOOMz developing a highly specialized toolkit, resulting in especially high precision.
-In this sense, they are the perhaps the strategy that best captures the objective of the single-generator models: highly specialized systems, that can detect one specific model with very high precision.
+In this sense, they are perhaps the strategy that best captures the objective of the single-generator models: highly specialized systems, that can detect one specific model with very high precision.
 As will be seen later, this is likely why they are a crucial driver for performance in the ensemble classifiers.
+
+When it comes to performance on the test set, the results of course do not differ from those already reported in Table \ref{tab:subsolutions-initial}, since these are the same models, evaluated on the same data.
+For the 12 single-generator classifiers that were already discussed, only the precision and recall metrics were new introductions to the conversation.
+In that sense, the metrics paint a positive picture, with a good degree of specialization among models, with high precision being an indicator of success even in the face of low test-set accuracy.
+The BLOOMz-targeted models were trained with only 1500 positive examples, with a further 1000 reserved for validation.
+Predictably, this led to the non-pretrained models being at a disadvantage, since TF-IDF and feature-based models need more data than fine-tuning to achieve a good fit.
+Indeed, the DistilBERT-based detector is the best-performing classifier in terms of precision, with the two other models lagging behind.
+The scarcity of data appears to have hurt the features-based classifier the most, even though this strategy is very high-performing when detecting other generators.
+Not only is the fine-tuned classifier the most precise, but it also appears to be the most highly specialized.
+It achieved a recall of only 10\%, which one might mistakenly consider to be a negative measurement.
+BLOOMz texts were only responsible for 3\% of generations in the re-sampled development set, meaning that the low recall measured for this model is a positive sign of highly optimized detection behavior, which again is the goal of the single-generator classifiers.
+The TF-IDF and feature-based classifiers for BLOOMz do not display similar behavior, as their lower precision and higher recall indicate that they take more shots in the dark, which constitutes and undesirable, if perhaps inevitable outcome.
+If any conclusion is to be drawn from the results in Table \ref{tab:subsolutions-final}, it would be that the process has seemingly produced at least one highly specialized detector for all generators, with some less precise but hopefully good auxiliary models.
+It remains to be seen whether it is possible to obtain an ensemble that properly leverages the properties of the single-generator models.
 
 \begin{table}[ht]
     \vspace{0.1cm}
