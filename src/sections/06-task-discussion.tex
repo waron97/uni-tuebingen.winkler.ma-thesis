@@ -122,23 +122,28 @@ It remains to be seen whether it is possible to obtain an ensemble that properly
     \centering
     \begin{tabular}{llccccc}
         \toprule
-        Model   & Strategy   & ChatGPT       & Cohere        & Davinci       & Dolly         & BLOOMz        \\
+        Model   & Strategy           & ChatGPT       & Davinci       & Cohere        & Dolly         & BLOOMz        \\
         \midrule
-        ChatGPT & TF-IDF     & \textbf{1.00} & 0.43          & 0.64          & 0.25          & 0.13          \\
-        ChatGPT & Lang Feats & \textbf{1.00} & 0.50          & 0.60          & 0.86          & 0.03          \\
-        ChatGPT & DistilBERT & \textbf{1.00} & 0.68          & 0.74          & 0.39          & 0.15          \\
-        Cohere  & TF-IDF     & 0.66          & \textbf{1.00} & 0.59          & 0.51          & 0.35          \\
-        Cohere  & Lang Feats & 0.71          & \textbf{1.00} & 0.69          & 0.35          & 0.16          \\
-        Cohere  & DistilBERT & 0.96          & \textbf{1.00} & 0.80          & 0.68          & 0.27          \\
-        Davinci & TF-IDF     & 0.85          & 0.60          & \textbf{1.00} & 0.40          & 0.27          \\
-        Davinci & Lang Feats & 0.94          & 0.87          & \textbf{1.00} & 0.90          & 0.23          \\
-        Davinci & DistilBERT & 0.99          & 0.78          & \textbf{0.99} & 0.63          & 0.47          \\
-        Dolly   & TF-IDF     & 0.78          & 0.83          & 0.73          & \textbf{1.00} & 0.57          \\
-        Dolly   & Lang Feats & 0.23          & 0.00          & 0.04          & \textbf{1.00} & 0.13          \\
-        Dolly   & DistilBERT & 0.98          & 0.97          & 0.86          & \textbf{0.99} & 0.53          \\
-        BLOOMz  & TF-IDF     & 0.18          & 0.36          & 0.25          & 0.24          & \textbf{1.00} \\
-        BLOOMz  & Lang Feats & 0.00          & 0.08          & 0.16          & 0.10          & \textbf{1.00} \\
-        BLOOMz  & DistilBERT & 0.01          & 0.03          & 0.03          & 0.02          & \textbf{0.99} \\
+        ChatGPT & DistilBERT         & \textbf{1.00} & 0.74          & 0.68          & 0.39          & 0.15          \\
+        ChatGPT & TF-IDF             & \textbf{1.00} & 0.64          & 0.43          & 0.25          & 0.13          \\
+        ChatGPT & Language Features  & \textbf{1.00} & 0.60          & 0.50          & 0.86          & 0.03          \\
+        ChatGPT & Statistical Tandem & \textbf{1.00} & 0.77          & 0.75          & 0.88          & 0.16          \\
+        Davinci & DistilBERT         & 0.99          & \textbf{0.99} & 0.78          & 0.63          & 0.47          \\
+        Davinci & TF-IDF             & 0.85          & \textbf{1.00} & 0.60          & 0.40          & 0.27          \\
+        Davinci & Language Features  & 0.94          & \textbf{1.00} & 0.87          & 0.90          & 0.23          \\
+        Davinci & Statistical Tandem & 0.98          & \textbf{1.00} & 0.94          & 0.92          & 0.39          \\
+        Cohere  & DistilBERT         & 0.96          & 0.80          & \textbf{1.00} & 0.68          & 0.27          \\
+        Cohere  & TF-IDF             & 0.66          & 0.59          & \textbf{1.00} & 0.51          & 0.35          \\
+        Cohere  & Language Features  & 0.71          & 0.69          & \textbf{1.00} & 0.35          & 0.16          \\
+        Cohere  & Statistical Tandem & 0.86          & 0.79          & \textbf{1.00} & 0.65          & 0.39          \\
+        Dolly   & DistilBERT         & 0.98          & 0.86          & 0.97          & \textbf{0.99} & 0.53          \\
+        Dolly   & TF-IDF             & 0.78          & 0.73          & 0.83          & \textbf{1.00} & 0.57          \\
+        Dolly   & Language Features  & 0.23          & 0.04          & 0.00          & \textbf{1.00} & 0.13          \\
+        Dolly   & Statistical Tandem & 0.79          & 0.74          & 0.83          & \textbf{1.00} & 0.65          \\
+        BLOOMz  & DistilBERT         & 0.01          & 0.03          & 0.03          & 0.02          & \textbf{0.99} \\
+        BLOOMz  & TF-IDF             & 0.18          & 0.25          & 0.36          & 0.24          & \textbf{1.00} \\
+        BLOOMz  & Language Features  & 0.00          & 0.16          & 0.08          & 0.10          & \textbf{1.00} \\
+        BLOOMz  & Statistical Tandem & 0.18          & 0.34          & 0.39          & 0.30          & \textbf{1.00} \\
         \bottomrule
         \vspace{0.1cm}
     \end{tabular}
@@ -147,6 +152,7 @@ It remains to be seen whether it is possible to obtain an ensemble that properly
         The reported value is equal to the ratio of correctly flagged documents for a generator, over all documents produced by that generator.
         In other words, a measure of recall is shown for each detector-generator combination.
         Bolded values refer to instances where the detector is trained on the productions of the generator.
+        Statistical tandem indicates a combination of the Features and TF-IDF models, where a correct classification by either is counted as a success.
     }
     \label{tab:generalization}
 \end{table}
