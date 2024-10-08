@@ -196,6 +196,11 @@ The model that benefits the least from joint evaluation is Dolly, whose feature-
 BLOOMz is again its own category, benefitting somewhat from the tandem experiment, but still remaining one of the lowest-scoring models.
 At any rate, expectations for BLOOMz detectors were low to begin with, so any improvement in the detection of non-BLOOMz generators is a welcome surprise.
 
+With the conversation around the single-generators classifiers concluded, this work presents the culmination of several batches of ideas, approaches, and experiments.
+For the very final ensemble model, only a neural version is presented, instead of both a feed-forward network and a random forest model, as was proposed in Table \ref{tab:ensemble-initial}.
+For the ensemble built on the 15 models above, the neural model is head and shoulders above its counterpart, and is therefore the only one reported.
+Table \ref{tab:ensemble-final} details the final ensemble solution, with various model combinations.
+
 \begin{table}[ht]
     \vspace{0.1cm}
     \centering
@@ -204,12 +209,12 @@ At any rate, expectations for BLOOMz detectors were low to begin with, so any im
         Composition            & Development accuracy & Test accuracy \\
 
         \midrule
-        TF-IDF only            & 99.527\%             & 87.179\%      \\
-        Language features only & 98.777\%             & 85.466\%      \\
-        DistilBERT only        & 96.250\%             & 74.790\%      \\
-        TF-IDF + features      & 99.927\%             & 95.544\%      \\
-        Full Model             & 99.892\%             & 97.106\%      \\
+        TF-IDF only            & 99.53\%              & 87.18\%       \\
+        Language features only & 98.78\%              & 85.47\%       \\
+        DistilBERT only        & 96.25\%              & 74.79\%       \\
+        TF-IDF + features      & 99.93\%              & 95.54\%       \\
         \midrule
+        Full Model             & 99.89\%              & 97.10\%       \\
         Winning model          & NA                   & 96.88\%       \\
         \bottomrule
         \vspace{0.1cm}
@@ -221,4 +226,72 @@ At any rate, expectations for BLOOMz detectors were low to begin with, so any im
     \label{tab:ensemble-final}
 \end{table}
 
+The final final solution proposed by this thesis for the task of machine-generated text detection, at least in the binary classification declination, is the model labelled "Full Model" in the table.
+This model makes use of all single-generator classifiers, with a feed-forward network containing three RelU-activated linear layers, and a hidden size of 64.
+It was trained on 5 epochs, with the fifth and last epoch resulting in the best model on the development set.
+On the test set, it achieves a convincing 97.10\% accuracy, a performance that beats the best-performing model submitted to the shared task, if only by a sliver.
+While it is right to acknowledge that this is a good result, and certainly a better one than anticipated even in the most rosy projections, it would be a great failure not to recognize that it was only possible with the power of hindsight.
+While it did not directly help the models, being able to see model performance on the test set made it possible to know for certain whether a good enough milestone had been achieved.
+This is unmistakably a departure from the spirit of the shared task, which aimed to present participants with a black-box exercise, where there war great emphasis on the final dataset being inscrutable.
+At the same time, knowledge of how well top-performers scored clearly marked the horizon of possibilities.
+A lower than optimal result could not be mistaken for the best possible result, since others had clearly gotten farther.
+In summary, while there is no reason not to highlight the results of the \emph{Full Model}, it nonetheless remains necessary to interpret the model lineup in the correct light.
+
+Some other interesting measurements are also collected in Table \ref{tab:ensemble-final}.
+For example, the first three rows examine each strategy individually, with 5 classifiers each.
+Taken individually, none of the strategies match the baseline's 88\% accuracy on the test, despite outstanding results in development.
+In fact, looking at the development set only, one would be hard pressed judge the full model as markedly above its individual components.
+The ranking between these three smaller ensembles is also quite surprising.
+Before the fact, the expectation would have been for the fine-tuning approach, with the label DistilBERT in the table, would have been the highest achiever on the test set, but it is instead TF-IDF taking home that particular prize, with the feature-based model a close second.
+Considering that DistilBERT appeared to be the best strategy in terms of its ability to generalize one generator's characteristics to other ones, the observed outcome should have been this ensemble being the best single-strategy model.
+One possible explanation as to why this wasn't what transpired in the end is that the property that makes a model a good team player is the ensemble might be specialization rather than generalization, or at least a skewed relationship towards the former.
+It is true that all classifiers were near-perfect detectors against the generator they were trained on (see Table \ref{tab:generalization}), but the two statistical strategies are consistently less reliable on other generator models.
+As it turns out, this may not have been sign of weak models, but a characteristic to encourage.
+It is also possible that in another world, one in which the test set contained more unknown generators than just GPT-4, it would be the DistilBERT strategy's generalization ability to collect all the praises.
+
+Table \ref{tab:ensemble-final} contains one more ensemble constellation which was not yet touched upon, namely a model combining the 10 single-generator classifiers based on TF-IDF and language features.
+In the generalization study presented in Table \ref{tab:generalization} these model types were also evaluated in tandem.
+SOTA models often accept a tradeoff that provides a minimal improvement in performance at the cost of ballooning complexity.
+For this Master Thesis, built on the notion that this cost is not worth incurring, these statistical classifiers have special meaning.
+They are computationally much cheaper to obtain than the fine-tuned systems, and could run on virtually any end-user machine.
+On its own merit, the ensemble built on top of the combination of these strategies would have placed fourth in the shared task, lagging only 1.5 points behind the full model.
+In the context of the goals that this work set out to achieve, this is perhaps the result that merits the most attention.
+
 \subsection{Subtask C: Shared task analysis and rankings}
+
+\begin{table}[ht]
+    \vspace{0.1cm}
+    \centering
+    \begin{tabular}{llll}
+        \toprule
+        \textbf{Model}   & \textbf{Development MAE} & \textbf{Test MAE} & \textbf{Final ranking} \\
+        \midrule
+        Baseline         & 3.53                     & 21.54             & 14                     \\
+        \midrule
+        Character-level* & 8.35                     & 45.83             & 28                     \\
+        Word2vec*        & 7.02                     & 38.35             & 27                     \\
+        Joint model      & 6.36                     & 34.88             & 25                     \\
+        \bottomrule
+        \vspace{0.1cm}
+    \end{tabular}
+    \caption{
+        Results by team TueCICL for SemEval-2024 Task 8, subtask C. Dev and Test columns report mean absolute error (MAE) on the respective data partitions.
+        The ranking column refers to the model ranking in the shared task competition.
+        The scores and ranking of the unofficial submissions were not provided by the organizers and computed by us. There were a total of 33 submissions.\\ \textbf{*} unofficial submissions}
+    \label{tab:c_results}
+\end{table}
+
+Table \ref{tab:c_results} outlines our results for subtask C. In this subtask, team TueCICL was unable to match the transformer baseline.
+
+Our official submission, the joint model, achieved a mean standard error of 6.36 on the development set, falling short of around 3 points from the baseline provided by the organizers.
+The difference is even more dramatic when it comes to the test set, where the gap widens to around 13 points. This is also far off from the best performing solutions in the shared task, which achieved a MAE of 15.7.
+
+The character and Word2vec models failed to outperformed both the baseline and the joint model for the development set, and this remains the case in the test set.
+This reinforces the idea that extracting as much information as possible from the texts is key to performance in this subtask.
+
+Overall, the models developed for subtask C have proven to be somewhat unrefined.
+The test set seems to be particularly punishing towards solutions that do not generalize well, but the results, while highlighting the shortcomings of our models, also point toward the potential that these approaches can have, with more attention dedicated to them.
+
+Compared to the binary classification setting, change point detection is the harder problem to tackle, which is reflected in the lower amount of literature of the subject.
+Finding an informative but efficient representation for texts in this task is in itself a challenge.
+Drawing from the lessons learned in subtask A, it's possible that the approach on subtask C lacked some out-of-the box thinking and creativity, which seem like they will be required to make progress in the subject, seeing that the best model still was still more than 15 positions off on average.
