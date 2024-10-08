@@ -1,6 +1,9 @@
 \section*{Abstract}
 
 Recent developments in Natural Language Processing (NLP) have resulted in the development and popularization of highly effective Large Language Models (LLMs), capable of generating convincing and seemingly creative linguistic material.
-LLMs have garnered much attention, both from researchers and the general public, and continue to be increasingly applied to a variety of fields. However, the breakneck speed at which these systems are adopted leaves unattended some of the security concerns regarding their use.
-Since the language produced by the models is of such high quality, it is not always feasible to distinguish authentically human contributions from machine-generated text, which can enable a multitude of nefarious applications of LLMs.
-This work explores the history and inner workings of LLMs, how they can be misused, and possible antidotes to the problem of machine-generated text detection, with a careful eye toward a good balance of computational cost and performance of detection strategies.
+As these technologies have gained more and more momentum and usage, so has the need for accurate detection strategies risen alongside them.
+More sophisticated generators demand mature and creative detectors, and so a double arms race has formed: the systems designed to identify unauthentic texts find themselves tackling both an evolving landscape of text generation and a bustling environment of adversarial agents developing strategies to evade detection.
+On a hunt for better and better models, the field of machine-generated text detection has tended towards employing those same large language models in its solutions, at the cost of high computational complexity and hardware requirements.
+The design philosophy behind most of these systems seems to have accepted that end-users will not be able to own the detection software, as they will not be able to run it on their own machines.
+This work attempts to bring this requirement back into focus and shows that it is possible to develop competitive solutions without invoking multi-billion parameter models, and does so by leveraging ensemble approaches and simple representation strategies such as TF-IDF and linguistically motivated features.
+The final model presented in this thesis achieves top-of-the-rank performance on Task 8 at SemEval-2024, while only sparingly relying on transformer fine-tuning.
