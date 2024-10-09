@@ -21,7 +21,10 @@ Publication Date: 2023
 
 Google Scholar citations: 124
 
-*This is a study dealing with using large language models to produce high quality training data, which might be useful for reinforcing concise factual information for downstream model training.*
+*This study deals with the strategy of query expansion.*
+*When a query is submitted to the retriever, many systems intercept it and extend it in some way, by adding context, or pre-generated answers.*
+*In this case, LLMs are used to extend the query with a passage, in an attempt to help the IR system to match relevant documents.*
+*They report improvements on classical retrievers like BM25, but not on neural-native systems, which likely wouldn't benefit very much from this.*
 
 ### Proposal 3
 
