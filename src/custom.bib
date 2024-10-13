@@ -728,3 +728,43 @@
   primaryclass  = {cs.CL},
   url           = {https://arxiv.org/abs/1910.01108}
 }
+
+@inproceedings{sarvazyan-etal-2024-genaios,
+  title     = {Genaios at {S}em{E}val-2024 Task 8: Detecting Machine-Generated Text by Mixing Language Model Probabilistic Features},
+  author    = {Sarvazyan, Areg Mikael  and
+               Gonz{\'a}lez, Jos{\'e} {\'A}ngel  and
+               Franco-salvador, Marc},
+  editor    = {Ojha, Atul Kr.  and
+               Do{\u{g}}ru{\"o}z, A. Seza  and
+               Tayyar Madabushi, Harish  and
+               Da San Martino, Giovanni  and
+               Rosenthal, Sara  and
+               Ros{\'a}, Aiala},
+  booktitle = {Proceedings of the 18th International Workshop on Semantic Evaluation (SemEval-2024)},
+  month     = jun,
+  year      = {2024},
+  address   = {Mexico City, Mexico},
+  publisher = {Association for Computational Linguistics},
+  url       = {https://aclanthology.org/2024.semeval-1.17},
+  doi       = {10.18653/v1/2024.semeval-1.17},
+  pages     = {101--107},
+  abstract  = {This paper describes the participation of the Genaios team in the monolingual track of Subtask A at SemEval-2024 Task 8. Our best system, LLMixtic, is a Transformer Encoder that mixes token-level probabilistic features extracted from four LLaMA-2 models. We obtained the best results in the official ranking (96.88{\%} accuracy), showing a false positive ratio of 4.38{\%} and a false negative ratio of 1.97{\%} on the test set. We further study LLMixtic through ablation, probabilistic, and attention analyses, finding that (i) performance improves as more LLMs and probabilistic features are included, (ii) LLMixtic puts most attention on the features of the last tokens, (iii) it fails on samples where human text probabilities become consistently higher than for generated text, and (iv) LLMixtic{'}s false negatives exhibit a bias towards text with newlines.}
+}
+
+@inproceedings{koike2024outfox,
+  title     = {Outfox: Llm-generated essay detection through in-context learning with adversarially generated examples},
+  author    = {Koike, Ryuto and Kaneko, Masahiro and Okazaki, Naoaki},
+  booktitle = {Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume    = {38},
+  number    = {19},
+  pages     = {21258--21266},
+  year      = {2024}
+}
+
+@inproceedings{guo2024ustc,
+  title     = {{USTC-BUPT} at SemEval-2024 Task 8: Enhancing Machine-Generated Text Detection via Domain Adversarial Neural Networks and LLM Embeddings},
+  author    = {Guo, Zikang and Jiao, Kaijie and Yao, Xingyu and Wan, Yuning and Li, Haoran and Xu, Benfeng and Zhang, Licheng and Wang, Quan and Zhang, Yongdong and Mao, Zhendong},
+  booktitle = {Proceedings of the 18th International Workshop on Semantic Evaluation (SemEval-2024)},
+  pages     = {1511--1522},
+  year      = {2024}
+}

@@ -311,7 +311,7 @@ The new train set contains all remaining documents, i.e. 52851 human texts, 1134
 All single-generator classifiers were re-trained on these new data partitions.
 For most classifiers, this did not introduce any change, since they were still only trained and evaluated on a single generator, therefore, for example, the ChatGPT classifiers were still only seeing human and ChatGPT texts.
 A complete novelty compared to the earlier models are the three BLOOMz-based classifiers.
-These models don't have nearly as much to train and evaluate on as their siblings, but their contribute may still reveal itself to be valuable.
+These models do not have nearly as much to train and evaluate on as their siblings, but their contribute may still reveal itself to be valuable.
 It's worth mentioning that, just like in the earlier iteration of this experiment, the single-generator models' ability to detect their target model's generation is near-perfect across the board.
 
 After obtaining the single-generator detectors, a set of new ensemble models are trained.
