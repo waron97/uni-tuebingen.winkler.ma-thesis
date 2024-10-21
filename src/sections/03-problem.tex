@@ -83,7 +83,7 @@ For example, when providing the model with a number of successful climate-change
 With how low the effort to mass-produce this type messaging seems to be compared to the effectiveness of the output, it stands to reason that LLMs could enable a previously unseen proliferation of deceitful content.
 
 If reiteration focused on generating tweet-length documents, \emph{narrative elaboration} expands this to medium to long length content, such as articles and blog posts.
-For this task, GPT-3 was tested for its ability to sound reputable in its output, i.e. in its ability to replicate the tone of a renowned news source -- unfortunately the believability of the generated articles was not verified in this setting.
+For this task, GPT-3 was tested for its ability to sound reputable in its output, i.e., in its ability to replicate the tone of a renowned news source -- unfortunately the believability of the generated articles was not verified in this setting.
 By the same token, this task certainly requires more human supervision, whose effects and variability are hard to design an experiment around, than simple reiteration, since getting the prompt right will influence the tone and message of the generation immensely (for example, the headline or sample text to emulate must provide enough information to the model to recognize the style and worldview).
 Nevertheless, GPT-3 was able to fool classifiers only partially: the evaluation model, which classified genuine articles with over 90\% accuracy over three news networks, had only around 65\% accuracy.
 This indicates that GPT-3 is good at the elaboration task, but not perfect.
@@ -104,7 +104,7 @@ A similar task, \emph{narrative manipulation}, involved identifying existing new
 Researchers used GPT-3 to rewrite a series of news articles concerning US political events around 2020, such the Black Lives Matter protests and the incipit of Covid-19.
 Again, this involved thick interplay between a human team and GPT-3, as the rewriting process was found to be most effective when it was executed in a series of steps (in short: summarize the article, alter the summary, expand again into longer text).
 Articles were modified to reflect both a left and a right-leaning position, and were then presented to human evaluators to test the effectiveness of the alteration, along with the corresponding authentic reference articles for comparison.
-This was proven to be mostly the case, i.e. GPT-3 was shown to be consistently able to not only give articles the correct spin, but to even output content that was found to be mostly authentic by the reviewers (the original articles received an average authenticity score of 3.8 on average, whereas generated articles only 2.4, but the best generations were believably authentic).
+This was proven to be mostly the case, i.e., GPT-3 was shown to be consistently able to not only give articles the correct spin, but to even output content that was found to be mostly authentic by the reviewers (the original articles received an average authenticity score of 3.8 on average, whereas generated articles only 2.4, but the best generations were believably authentic).
 
 Finally, \emph{narrative persuasion} tested GPT-3's performance in creating tailored messages for specific targets in an attempt to alter their convictions.
 Messages were generated for two topics (US involvement in Afghanistan and China), both for and against each issue, with the target's party affiliation in mind.
@@ -136,7 +136,7 @@ Nonetheless, using a task-specific version of GPT-2 might make it more comparabl
 To verify the fooling power of the fake reviews, sets of 3 fake reviews and 1 real review were presented to human evaluators, with the objective of correctly finding the "real" review.
 The results demonstrate that participants often struggled to discern the authentic review, as their success rates were close to the random chance rate of 25\%.
 This suggests that the evaluators were essentially guessing, indicating that the fake reviews were convincing enough to be mistaken for real ones.
-Such findings indicate that even in the premodern era of language modeling (i.e. before GPT-3), NLG already proved a valid substitute for the more expensive crowdturfing attacks.
+Such findings indicate that even in the premodern era of language modeling (i.e., before GPT-3), NLG already proved a valid substitute for the more expensive crowdturfing attacks.
 
 \subsection{Faking human authorship}
 
@@ -156,7 +156,7 @@ Beyond merely disrupting the scientific process, the proliferation of AI-generat
 (admittedly, this example investigate domain-specific fine-tuned generation, something that is harder and more expensive to do with future versions of GPT).
 Nevertheless, this study provides valuable insight into the future of LLM-generated papers. Further discussion of their detection strategies can be found in Chapter \ref{sec:approaches}.
 
-Among the overtly malicious uses of NLG, there are other that do not seek to harm directly.
+Among the overtly malicious uses of NLG, there are others that do not seek to harm directly.
 Students using language models to, either partially or completely, complete their coursework for them is one such case.
 Overreliance on systems like ChatGPT can discourage students from developing analytical and thinking skills.
 Passively incorporating the generated answers is a real danger when interfacing with such systems without an adequate evaluation framework -- checking for factual correctness is one element among many that need checking before accepting a generation.

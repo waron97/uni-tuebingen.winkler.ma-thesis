@@ -27,14 +27,14 @@ On the development set, almost all models outperform the transformer baseline pr
 The best performing model was the character-level model, with an accuracy of 0.85 -- this was our final submission for the shared task.
 While the two recurrent models and the joint model do not differ very much from one another, the FFN built on linguistically motivated global feature vectors sets itself apart in that it is the worst performing model on the development set.
 
-Perhaps the most important lesson here is that there's clearly diminishing returns in closely fitting the development set -- perhaps even negative returns, as the worst-performing model in development is the best-performing one on the test set by a big margin.
-At any rate, it wouldn't be honest to put the blame of this middling performance on the development set alone.
+Perhaps the most important lesson here is that there is clearly diminishing returns in closely fitting the development set -- perhaps even negative returns, as the worst-performing model in development is the best-performing one on the test set by a big margin.
+At any rate, it would not be honest to put the blame of this middling performance on the development set alone.
 Selecting character-level and Word2Vec-based solutions appears after the fact to have been a misfire as well.
 For further information, the original task report \citep{stuhlinger-winkler-2024-tuecicl} contains an in-depth rundown of the shared task, while the following pages are dedicated to how these lessons can help improve performance on the task, with little adjustments to the methods, that nonetheless preserve the mission of computationally efficient, locally runnable detectors.
 
 \subsection{Subtask A: post-deadline improvements}
 
-Having taken note of the disappointing performance of the official submissions to the shared task, a new batch of experiments was conducted in the context of this Master Thesis.
+Having taken note of the disappointing performance of the official submissions to the shared task, a new batch of experiments was conducted in the context of this master thesis.
 These had the objective of being more firmly grounded in research, while still maintaining the objective of developing detectors which end-users would be able to own and run on their own machines.
 A new approach was developed, targeting generator models one at a time with different strategies, since machine-generated detection seems to be an elusive target when targeting all generators at once.
 Instead, the work was split among many different classifiers, attempting to differentiate between human texts and only one generator (Davinci, ChatGPT, Cohere, Dolly, BLOOMz).
@@ -92,7 +92,7 @@ Probability scores associated to the positive label are then used as input to th
 
 The objective for single-generator classifiers is to be as specialized as possible in detecting generations from a single model.
 In other words, they should be geared towards high precision, rather than high recall.
-Table \ref{tab:subsolutions-final} provides a summary of the single-generator classifiers, with precision and recall for the positive label (i.e. for the machine-generated class) over the re-sampled development set, and accuracy on the test set.
+Table \ref{tab:subsolutions-final} provides a summary of the single-generator classifiers, with precision and recall for the positive label (i.e., for the machine-generated class) over the re-sampled development set, and accuracy on the test set.
 There are several takeaways from this table that are worth mentioning.
 Initially, it can be noted that precision is high for nearly all classifiers, which is in concordance with the models' training goals.
 For some single-generator classifiers, even the recall value for the positive label is respectable, meaning that the models display good ability to detect generations from other models as well.
@@ -173,7 +173,7 @@ Considering that the test set is made up by around 9\% of BLOOMz models, and tha
 Even though the BLOOMz detectors generalize poorly, they still clearly capture something about the generations by their target model (and, hopefully, the class of generators to which BLOOMz belongs in general) that all other classifiers fail to.
 
 DistilBERT models distinguish themselves as the best-generalizing models across the board, especially those targeting ChatGPT and Davinci.
-One possible explanation might be that these OpenAI models are either the largest or the most general-purpose models, thus their properties extend father away, whereas other models like Dolly describe themselves as instruction-tuned, thus making their characteristics potentially less general.
+One possible explanation might be that these OpenAI models are either the largest or the most general-purpose models, thus their properties extend farther away, whereas other models like Dolly describe themselves as instruction-tuned, thus making their characteristics potentially less general.
 In addition, the Davinci and ChatGPT-based detectors share an interesting asymmetrical relationship, where Davinci detectors generalize very well to ChatGPT generations, but not vice versa.
 This might also be explained in the context of the degree to which the model is close to the original concept of a general-purpose language model.
 Davinci, in essence GPT-3, can be used for all types of completions, whereas ChatGPT is optimized as a chatbot, and takes specialized input prompts as a result.
@@ -185,11 +185,11 @@ The picture painted by Table \ref{tab:generalization} is of a good balance betwe
 
 Since the final objective of this work with regards to the classifiers above is to use them as part of an ensemble, it would also make sense to verify how the recall changes when two models work together.
 Language features and TF-IDF are orders of magnitude lighter models than DistilBERT, and this shows in their generalization performance, but this property also makes them the most aligned with the mission of developing small but efficient detectors.
-For this reason, it would be interesting to verify how the two models perform when used in their intended setting, i.e. in tandem -- hence the naming of the models of the last four rows of Table \ref{tab:generalization}, "Statistical Tandem", where the two statistical models for each target generator are jointly evaluated.
+For this reason, it would be interesting to verify how the two models perform when used in their intended setting, i.e., in tandem -- hence the naming of the models of the last four rows of Table \ref{tab:generalization}, "Statistical Tandem", where the two statistical models for each target generator are jointly evaluated.
 If either model flags a text as positive, the text is counted as a machine-generated labelling by the joint system.
 The fact that combining the models shows superior performance is, of course, a natural consequence of the operation, since both models can only benefit from the presence of the other.
-What's noteworthy is the magnitude of the improvement, which is at times quite significant -- for example, Cohere over ChatGPT improves by 15 percentage points.
-As a rule of thumb, models benefit most from teamwork when performance wasn't high to begin with, though there are some outliers.
+What is noteworthy is the magnitude of the improvement, which is at times quite significant -- for example, Cohere over ChatGPT improves by 15 percentage points.
+As a rule of thumb, models benefit most from teamwork when performance was not high to begin with, though there are some outliers.
 In the better cases, there are improvements in the range of 10\%.
 When either component strategy already displays recall of above 70\%, improvements are often minimal, but sometimes still noticeable, for example Davinci over Cohere improves by 7\% despite an already high 87\% recall achieved by the feature-based classifier.
 The model that benefits the least from joint evaluation is Dolly, whose feature-based classifier seems to be almost completely dwarfed by the TF-IDF counterpart, contributing only a 1\% improvement in recall.
@@ -226,13 +226,13 @@ Table \ref{tab:ensemble-final} details the final ensemble solution, with various
     \label{tab:ensemble-final}
 \end{table}
 
-The final final solution proposed by this thesis for the task of machine-generated text detection, at least in the binary classification declination, is the model labelled "Full Model" in the table.
+The final solution proposed by this thesis for the task of machine-generated text detection, at least in the binary classification declination, is the model labelled "Full Model" in the table.
 This model makes use of all single-generator classifiers, with a feed-forward network containing three RelU-activated linear layers, and a hidden size of 64.
-It was trained on 5 epochs, with the fifth and last epoch resulting in the best model on the development set.
+It was trained for 5 epochs, with the fifth and last epoch resulting in the best model on the development set.
 On the test set, it achieves a convincing 97.10\% accuracy, a performance that beats the best-performing model submitted to the shared task, if only by a sliver.
 While it is right to acknowledge that this is a good result, and certainly a better one than anticipated even in the most rosy projections, it would be a great failure not to recognize that it was only possible with the power of hindsight.
 While it did not directly help the models, being able to see model performance on the test set made it possible to know for certain whether a good enough milestone had been achieved.
-This is unmistakably a departure from the spirit of the shared task, which aimed to present participants with a black-box exercise, where there war great emphasis on the final dataset being inscrutable.
+This is unmistakably a departure from the spirit of the shared task, which aimed to present participants with a black-box exercise, where there was great emphasis on the final dataset being inscrutable.
 At the same time, knowledge of how well top-performers scored clearly marked the horizon of possibilities.
 A lower than optimal result could not be mistaken for the best possible result, since others had clearly gotten farther.
 In summary, while there is no reason not to highlight the results of the \emph{Full Model}, it nonetheless remains necessary to interpret the model lineup in the correct light.
@@ -242,9 +242,9 @@ For example, the first three rows examine each strategy individually, with 5 cla
 Taken individually, none of the strategies match the baseline's 88\% accuracy on the test, despite outstanding results in development.
 In fact, looking at the development set only, one would be hard pressed judge the full model as markedly above its individual components.
 The ranking between these three smaller ensembles is also quite surprising.
-Before the fact, the expectation would have been for the fine-tuning approach, with the label DistilBERT in the table, would have been the highest achiever on the test set, but it is instead TF-IDF taking home that particular prize, with the feature-based model a close second.
+Before the fact, the expectation would have been for the fine-tuning approach, with the label DistilBERT in the table,to be the highest achiever on the test set, but it is instead TF-IDF taking home that particular prize, with the feature-based model a close second.
 Considering that DistilBERT appeared to be the best strategy in terms of its ability to generalize one generator's characteristics to other ones, the observed outcome should have been this ensemble being the best single-strategy model.
-One possible explanation as to why this wasn't what transpired in the end is that the property that makes a model a good team player is the ensemble might be specialization rather than generalization, or at least a skewed relationship towards the former.
+One possible explanation as to why this was not what transpired in the end is that the property that makes a model a good team player in the ensemble might be specialization rather than generalization, or at least a skewed relationship towards the former.
 It is true that all classifiers were near-perfect detectors against the generator they were trained on (see Table \ref{tab:generalization}), but the two statistical strategies are consistently less reliable on other generator models.
 As it turns out, this may not have been sign of weak models, but a characteristic to encourage.
 It is also possible that in another world, one in which the test set contained more unknown generators than just GPT-4, it would be the DistilBERT strategy's generalization ability to collect all the praises.
@@ -252,7 +252,7 @@ It is also possible that in another world, one in which the test set contained m
 Table \ref{tab:ensemble-final} contains one more ensemble constellation which was not yet touched upon, namely a model combining the 10 single-generator classifiers based on TF-IDF and language features.
 In the generalization study presented in Table \ref{tab:generalization} these model types were also evaluated in tandem.
 SOTA models often accept a tradeoff that provides a minimal improvement in performance at the cost of ballooning complexity.
-For this Master Thesis, built on the notion that this cost is not worth incurring, these statistical classifiers have special meaning.
+For this master thesis, built on the notion that this cost is not worth incurring, these statistical classifiers have special meaning.
 They are computationally much cheaper to obtain than the fine-tuned systems, and could run on virtually any end-user machine.
 On its own merit, the ensemble built on top of the combination of these strategies would have placed fourth in the shared task, lagging only 1.5 points behind the full model.
 In the context of the goals that this work set out to achieve, this is perhaps the result that merits the most attention.
@@ -294,4 +294,4 @@ The test set seems to be particularly punishing towards solutions that do not ge
 
 Compared to the binary classification setting, change point detection is the harder problem to tackle, which is reflected in the lower amount of literature of the subject.
 Finding an informative but efficient representation for texts in this task is in itself a challenge.
-Drawing from the lessons learned in subtask A, it's possible that the approach on subtask C lacked some out-of-the box thinking and creativity, which seem like they will be required to make progress in the subject, seeing that the best model still was still more than 15 positions off on average.
+Drawing from the lessons learned in subtask A, it is possible that the approach on subtask C lacked some out-of-the box thinking and creativity, which seem like they will be required to make progress in the subject, seeing that the best model still was still more than 15 positions off on average.

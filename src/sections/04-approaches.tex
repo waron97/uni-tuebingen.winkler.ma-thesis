@@ -24,11 +24,11 @@ One application is the simple count vectorization strategy \citep{wendland2021in
 A closely related, but more refined and widely applied method is the extraction of TF-IDF matrices over sets of documents \citep{ramos2003using}.
 If one only looks at word counts, then prepositions and other common elements will likely account for much of the information retrieved from the text.
 TF-IDF offers a fix by implementing the intuition that a text containing the words "geothermal" and "power-plant", even if only with a few occurrences, is more informative about its nature than it having hundreds of examples "the" and "of".
-As such, term frequencies in TF-IDF are weighted by how rare they are (i.e. in how many documents of the sample they appear), with rarer words gaining a proportional score boost.
+As such, term frequencies in TF-IDF are weighted by how rare they are (i.e., in how many documents of the sample they appear), with rarer words gaining a proportional score boost.
 
 TF-IDF has a rich history of successful usage in almost all fields of NLP, including information retrieval \citep{ramos2003using}, sentiment analysis \citep{cahyani2021performance}, and text-classification \citep{zhang2011comparative} among many others.
 Machine text detection has also tapped into this tradition.
-Recently, \citet{frohling2021feature} employed higher-dimensional TF-IDF both as a classification accuracy baseline and as an input to meta-learners, i.e. ensemble models that take predictions from multiple classifiers to produce a final label.
+Recently, \citet{frohling2021feature} employed higher-dimensional TF-IDF both as a classification accuracy baseline and as an input to meta-learners, i.e., ensemble models that take predictions from multiple classifiers to produce a final label.
 While falling short of state-of-the-art solutions that will be discussed later in this chapter, this methodical experiment still managed to build competitive systems by combining (computationally) simple approaches, in part by drawing upon the information captured by TF-IDF.
 
 Alongside n-gram frequency features, like the ones discussed so far, another common approach to text vectorization is represented by linguistic feature sets.
@@ -55,7 +55,7 @@ To make use of this property, another set of features measuring frequency of com
 
 Typically, generated text detection is a supervised task, which means that model training takes place with a labelled set of data.
 One interesting study explores the issue at hand with an unsupervised strategy: \citet{galle2021unsupervised} use repeated high-order n-grams (re-occurring multi-word expressions) to distinguish machine text from human productions.
-They find that \emph{supermaximal} substrings (i.e. the longest substrings that do not occur in any other substring of the collection) can be efficiently computed for a collection, and their presence in texts can be used as input for binary prediction.
+They find that \emph{supermaximal} substrings (i.e., the longest substrings that do not occur in any other substring of the collection) can be efficiently computed for a collection, and their presence in texts can be used as input for binary prediction.
 Specifically, they randomly select a subset of supermaximal repeats, and pre-label every document containing them as machine-generated. Then, these are used as positive examples to train a classifier, with an equal number of human texts as negative examples (they experiment with separate true human texts, as well as presumably human, picked at random from the same unannotated collection).
 This process is repeated a number of times with different selections of repeated substrings, and the results from each classifier is combined into a final ranking.
 The result is a list, where the top-scoring items are highly suspected to be machine-generated.
@@ -97,17 +97,17 @@ Perhaps unsurprisingly, the GROVER-based discriminators are best at detecting th
 Unfortunately, as is often the case in even very recent research, newer GPT variants are prohibitively expensive \citep{galle2021unsupervised} to employ on large benchmark datasets, which leads to few front-runner studies reporting results with them.
 
 To date, DetectGPT \citep{mitchell2023detectgptzeroshotmachinegeneratedtext} is the best zero-shot approach to detect generated text, and the best detection tool for out-of-domain classification in general, at least in the white box setting \citep{gehrmann2019gltrstatisticaldetectionvisualization}.
-This strategy leverages the observation that machine-generated text is much more susceptible to log probability perturbation (according to the source model) when edits are introduced to it, i.e. altering words or rewriting short passages of the text will cause the log probability to fall measurably.
+This strategy leverages the observation that machine-generated text is much more susceptible to log probability perturbation (according to the source model) when edits are introduced to it, i.e., altering words or rewriting short passages of the text will cause the log probability to fall measurably.
 On the contrary, human-written texts do not exhibit the same property, and their log probability may change in a variety of ways in response to perturbation, but edits that preserve the semantic meaning of the text will tend to cause no perturbation at all.
 Armed with this knowledge, DetectGPT introduces minor, sense-preserving edits (such as swapping words for synonyms or rewriting pieces with mask-filling) to a target text through an auxiliary model -- in this study, T5 \citep{raffel2023exploringlimitstransferlearning} -- end evaluates the difference in log probability between the original and altered versions.
 If the difference is above a certain threshold, the input is flagged as machine-generated.
 
 DetectGPT outperforms even RoBERTa-based models when the target text is outside of the domain of the fine-tuned transformers' training sets, while still maintaining near-top performance when in-distributed texts are classifier.
-The simpler task definition of the white box setting, i.e. that the generator model is known accessible, is however a limitation of the experiment.
+The simpler task definition of the white box setting, i.e., that the generator model is known accessible, is however a limitation of the experiment.
 Real-world scenarios can often include situations in which the generator model is unknown, therefore a proxy scorer needs to be used instead \citep{mireshghallah2023smaller}.
 Figure \ref{fig:detectgpt} offers an overview of DetectGPT performance across different scoring and generator models.
 Performance is predictably best when the scoring model is the same as the generator, but good-enough alternative models can be found -- perhaps smaller, efficient models can be found for detecting the prominent generators, contributing to a less resource-intensive solution landscape.
-Ensemble solutions may even cover against many potential generators, instead of relying on a single scoring model in the black box setting (i.e. when the generator model is not known).
+Ensemble solutions may even cover against many potential generators, instead of relying on a single scoring model in the black box setting (i.e., when the generator model is not known).
 
 \begin{figure}[ht]
     \centering
@@ -133,7 +133,7 @@ For example, \citet{rodriguez2022cross} experiment with detection tasks in the t
 The study successfully applies a RoBERTa-based classifier fine-tuned on the biomedical domain on the physics domain, with relatively few new examples obtained from human experts.
 While only relating to GPT-2, the results reported are encouraging in the sense that knowledge may be more easily transferable across similar domains, even if they are technical in nature.
 
-In the real of social media, Twitter has received consistently high research attention.
+In the realm of social media, Twitter has received consistently high research attention.
 \citet{fagni2021tweepfake} report on a number of different strategies that can help detect generated tweets, including some that are less commonly seen in research nowadays, such as TF-IDF and character-level models.
 Interestingly, character-encodings outperformed BERT-based approaches, and only lagged 0.05 percentage points behind RoBERTa, further underlining the validity of imperfect but computationally realistic solutions.
 \citet{tourille2022automatic} expand on this by introducing more training examples from GPT-2, which proved significantly harder to correctly classify in the original by \citet{fagni2021tweepfake}, and show that prediction accuracy can be boosted in this way, though globally this is hard to notice, since RoBERTa already had greater than 90\% accuracy.

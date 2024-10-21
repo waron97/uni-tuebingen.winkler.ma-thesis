@@ -9,7 +9,7 @@ During the active phase of SemEval-2024, which ended in February 2024, I underto
 The full report of our participation, carried out under the team name "TueCICL", can be viewed in \citet{stuhlinger-winkler-2024-tuecicl}.
 
 As team TueCICL, we submitted results for two of the subtasks to the leaderboards, namely subtask A and subtask C, which were the two subtasks involving classification between solely human and machine-generated texts, whereas subtask B focused more on inter-generator differentiation.
-For subtask A, consisting in binary classification over the whole texts, there were two phases development, one for shared task proper, and subsequent post-deadline experimenting in the context of this Master Thesis.
+For subtask A, consisting in binary classification over the whole texts, there were two phases development, one for shared task proper, and subsequent post-deadline experimenting in the context of this master thesis.
 Due to the more pronounced research interest in subtask A, as well as to better present the higher volume of material associated with it, this section shall first discuss subtask C, then dive deeper into subtask A later in this Chapter.
 
 \subsection{Change point detection}
@@ -25,7 +25,7 @@ Table \ref{fig:taskc_data} offers an overview of the data distribution across th
 Alongside the general scarcity of training and cross-validation data, one should also note that a relevant portion of the data is entirely machine-generated, meaning the change index is exactly 0.
 Though this of course preserves the objective of being able to reliably detect fully generated texts, it does cut into the already low amount of true change examples available for training.
 
-The evaluation metric by which the submitted solutions are measured is Mean Absolute Error (MAE), i.e. the average absolute difference in the predicted change-point index and the true value.
+The evaluation metric by which the submitted solutions are measured is Mean Absolute Error (MAE), i.e., the average absolute difference in the predicted change-point index and the true value.
 The baseline suggested by the organizers was based on Longformer \citep{beltagy2020longformerlongdocumenttransformer}, a fine-tuned RoBERTa checkpoint specialized in long texts.
 This baseline achieved an impressive 3.5 MAE on the development set -- a tough standard -- and a (much lower) 21.54 MAE on the test set, though the latter was of course not known at development time.
 
@@ -99,14 +99,12 @@ It offered both a monolingual and a multilingual track, both with their respecti
 
 As hinted at in the previous section, the training set provided for this subtask contained over 100.000 records, with 5000 more provided for validation, sourced from the M4 \citep{wang-etal-2024-m4} dataset.
 Table \ref{table:adata} offers an overview of the data distribution across the three partitions.
-All sets offer a balanced mix of generated and human texts, with the training set containing outputs from 4 different models: Davinci-003 (a GPT-3 variant), ChatGPT, Cohere \footnote{\url{https://cohere.com/}} and Dolly-v2 \citep{DatabricksBlog2023DollyV2}. The development set adds BLOOMz \citep{muennighoff2023crosslingualgeneralizationmultitaskfinetuning} to the collection, and the test set introduces GPT-4 on top.
-\footnote{The make-up of the test set was not known during the shared task, it was only made available after the submissions deadline.}
+All sets offer a balanced mix of generated and human texts, with the training set containing outputs from 4 different models: Davinci-003 (a GPT-3 variant), ChatGPT, Cohere \footnote{\url{https://cohere.com/}} and Dolly-v2 \citep{DatabricksBlog2023DollyV2}. The development set adds BLOOMz \citep{muennighoff2023crosslingualgeneralizationmultitaskfinetuning} to the collection, and the test set introduces GPT-4 on top.\footnote{The make-up of the test set was not known during the shared task, it was only made available after the submissions deadline.}
 The intent of the authors to enforce a black-box setting shines through in the way they built the partitions: the development set includes a model unknown to the train set, and the test set contains another model absent from the other splits.
 
 Alongside the partitioned dataset, the task organizers also provided a RoBERTa-based transformer baseline.
 The evaluation metric for this subtask was accuracy.
-The transformer baseline achieves an accuracy of 72\% on the development set and 88.47\% on the test set.
-\footnote{Baseline accuracy on the test set was only made public after the submissions deadline.}
+The transformer baseline achieves an accuracy of 72\% on the development set and 88.47\% on the test set.\footnote{Baseline accuracy on the test set was only made public after the submissions deadline.}
 
 \begin{table}[ht]
     \centering
@@ -193,7 +191,7 @@ Results obtained by \citet{frohling2021feature} in the multi-generator setting (
 This hypothesis is echoed by other studies as well, which observe a generally low transferability of a detector's ability to detect \emph{some} model's to generations to detecting generated text in general.
 For example, \citet{mitchell2023detectgpt} also observe a steep drop in detection performance in the black-box setting compared to the white-box setting, suggesting that ensemble solutions targeting different but \emph{particular} models might constitute a promising way forward in the field.
 
-The work put forward in the following pages of this Master Thesis is developed along the guidelines mentioned in these recent research approaches.
+The work put forward in the following pages of this master thesis is developed along the guidelines mentioned in these recent research approaches.
 These additions are made in the context of this thesis, and are distinct from the shared task at SemEval-2024 and do not steam from a team effort like TueCICL's submissions in the main event, discussed in the previous section.
 
 A first direction for the post-deadline work was provided by the realization that the models developed for the shared task did not fully utilize the information provided in training and validation.
@@ -205,7 +203,7 @@ Despite half of the previous approaches being discarded in this stage, it still 
 They appear to give valuable contributions to detectors in the relevant research \citep{frohling2021feature}, and they were perhaps not sufficiently explored for the shared task submissions.
 With linguistic features, it is possible to hand-pick a limited selection to ensure explainability of the results, but for pure performance it is generally preferred to aim for a higher quantity of metrics.
 For the shared task, we computed the feature vectors through the TextDescriptives pipeline \citep{Hansen_2023} for spaCy, which yield about 60 distinct measures per text.
-In the second stage, we swapped the extraction library to LFTK \citep{lee2023lftkhandcraftedfeaturescomputational}, a more recent and mature feature collection and framework, and also the largest off-the-shelf solution at the time of writing.
+In the post-deadline experiments, this library was swapped in favor of LFTK \citep{lee2023lftkhandcraftedfeaturescomputational}, a more recent and mature feature collection and framework, and also the largest off-the-shelf solution at the time of writing.
 
 In addition, since the best-performing model for the original task unexpectedly ended up being TF-IDF, it seems fair to conclude that the information captured by these document matrices can be fruitfully applied to the tasked at hand.
 \citet{frohling2021feature} also employ TF-IDF to successfully boost detection performance.
@@ -217,11 +215,11 @@ Since inference with DistilBERT is still manageable with the target end-user sys
 This work breaks down the problem of black-box machine-generated text detection into a set of smaller problems, consisting in detecting the output of one generator at a time.
 A number of classifiers are trained for each model contained in the train set: Davinci, ChatGPT, Dolly, and Cohere.
 Each individual classifier is trained with one of three general strategies and is only optimized to detect one model.
-To summarize the model strategies outline above, a detector model is trained for each generator model, sourcing its inputs either from linguistic features computed through LFTK, TF-IDF vectors, or DistilBERT.
+To summarize the model strategies outlined above, a detector model is trained for each generator model, sourcing its inputs either from linguistic features computed through LFTK, TF-IDF vectors, or DistilBERT.
 
 To achieve the training objective for each sub-classifier, a secondary development is derived from the training set, containing 3000 records for each generator, and an extra 12.000 human texts, which yields balanced classes.
 This is done both to set up a validation set that allows the best models to be selected only based on their ability to detect their own generations, as well as to maintain consistent train and development data for all the sub-classifiers.
-Instead of sampling a new development for each sub-classifier, this approach ensures that these isolated sulutions are comparable among one another, since they share a collection of texts none of them were trained on.
+Instead of sampling a new development for each sub-classifier, this approach ensures that these isolated solutions are comparable among one another, since they share a collection of texts none of them were trained on.
 Random state for every step is fixed at the same arbitrary constant value, but no searching for the optimal random seed took place.
 
 To train the TF-IDF and language feature-based classifiers, the process runs in a similar fashion.
@@ -261,6 +259,7 @@ Deeper discussion about the results can be found in Chapter \ref{sec:discussion}
         Classification accuracy by the individual classifiers on the various data partitions.
         The "Dev Set" is a split-off segment of the train set, the "True Dev Set" is the initial development set provided by the task organizers.
         "Lang" refers to the classifiers trained on linguistic features.
+        "DistilBERT" is contracted to "BERT" for spacing reasons.
     }
     \label{tab:subsolutions-initial}
 \end{table}
@@ -276,8 +275,8 @@ This inspires some initial confidence in the new approach.
 
 After obtaining the model classifiers, an ensemble model is trained sourcing the inputs from them.
 The data used for training the ensemble is the custom development set mentioned earlier, containing 3000 examples from each generator and 12.000 human texts.
-This is setup helps ensure that individual generator detectors haven't already seen the training example.
-In truth, training the ensemble on the full train set or on this split-off segment wasn't observed to result in a different outcome in terms of performance on the original validation set, which was used to select the best model in this stage.
+This is setup helps ensure that individual generator detectors have not already seen the training example.
+In truth, training the ensemble on the full train set or on this split-off segment was not observed to result in a different outcome in terms of performance on the original validation set, which was used to select the best model in this stage.
 Following \citet{frohling2021feature}, a probability is inferred with each classifier for each target document, resulting in a 12-length input vector, with each value referring to the probability associated to the positive label according to one classifier.
 Two model architectures are explored for the ensemble: a random forest classifier, trained with grid search in a similar fashion as the TF-IDF and language feature models, and a neural feed-forward network.
 Table \ref{tab:ensemble-initial} presents the resulting ensemble classifiers.
@@ -298,23 +297,23 @@ Table \ref{tab:ensemble-initial} presents the resulting ensemble classifiers.
     \label{tab:ensemble-initial}
 \end{table}
 
-The final ensemble classifiers do not represent a bad result in and of themselves -- in fact, submitting either for the shared task would be constitute a 30\% improvement in accuracy on the official submissions, and would have placed better in the final leaderboard.
+The final ensemble classifiers do not represent a bad result in and of themselves -- in fact, submitting either for the shared task would constitute a 30\% improvement in accuracy on the official submissions, and would have placed better in the final leaderboard.
 However, there is also reason to be disappointed.
 Firstly, neither ensemble performs better than the best individual classifier on the test set, where the Davinci-optimized TF-IDF classifier achieved 89\%.
 In addition, this second stage of experimentation also failed to produce a detector better or equalling the 90\% mark in classification performance.
-There is nothing inherently special about this threshold, other than that it is about the minimum value that beats the baseline, but literature analysis and earlier results would have suggested that reaching is not only possible, but, at least in theory, likely.
+There is nothing inherently special about this threshold, other than that it is about the minimum value that beats the baseline, but literature analysis and earlier results would have suggested that reaching it is not only possible, but, at least in theory, likely.
 Another important observation is that the best result ever observed on the development set, 89\% by the random forest ensemble, did not translate to a convincing result on the test set, again indicating that the development set acts more as an obstacle to overcome, rather than a true indication of performance, at least in the context of the shared task.
 
 As a final round of experiments to check whether swapping the development set would indeed improve performance on the shared task, all steps described above are done anew, with a few modifications to the data partitions.
 The original train and development sets, totalling a little more than 122000 documents combined, are merged, and a new development set is sampled from this combined partition.
 After this process, the new development set contains 13000 human texts, 3000 text from each of Cohere, ChatGPT, Davinci, Dolly, and finally 1000 BLOOMz generations.
-The new train set contains all remaining documents, i.e. 52851 human texts, 11343 from Davinci, 11339 from ChatGPT, 11046 from Dolly, 10.678 from Cohere, and finally 1500 from BLOOMz.
+The new train set contains all remaining documents, i.e., 52851 human texts, 11343 from Davinci, 11339 from ChatGPT, 11046 from Dolly, 10.678 from Cohere, and finally 1500 from BLOOMz.
 
 All single-generator classifiers were re-trained on these new data partitions.
 For most classifiers, this did not introduce any change, since they were still only trained and evaluated on a single generator, therefore, for example, the ChatGPT classifiers were still only seeing human and ChatGPT texts.
 A complete novelty compared to the earlier models are the three BLOOMz-based classifiers.
-These models do not have nearly as much to train and evaluate on as their siblings, but their contribute may still reveal itself to be valuable.
-It's worth mentioning that, just like in the earlier iteration of this experiment, the single-generator models' ability to detect their target model's generation is near-perfect across the board.
+These models do not have nearly as much to train and evaluate on as their siblings, but their contribution may still reveal itself to be valuable.
+It is worth mentioning that, just like in the earlier iteration of this experiment, the single-generator models' ability to detect their target model's generation is near-perfect across the board.
 
 After obtaining the single-generator detectors, a set of new ensemble models are trained.
 The ensemble inputs remain the probability of the positive label according to each single-generator classifier, since this was unlikely to be limiting factor in the earlier run.
