@@ -207,6 +207,7 @@ In the post-deadline experiments, this library was swapped in favor of LFTK \cit
 
 In addition, since the best-performing model for the original task unexpectedly ended up being TF-IDF, it seems fair to conclude that the information captured by these document matrices can be fruitfully applied to the tasked at hand.
 \citet{frohling2021feature} also employ TF-IDF to successfully boost detection performance.
+In the shared task, the TF-IDF model was not reported on, and some of its characteristics were therefore not formalized, but, in broad strokes, it operated up to 5-grams, and did not cut the feature set at all -- in the post-deadline iteration of this model, only unigram and bigram features are used, stopwords are removed, and only the top 100000 entries are kept.
 
 Lastly, large-scale transformer-based solutions such as RoBERTa are still off the table, but excluding all transformers altogether was perhaps overly hasty.
 DistilBERT \citep{sanh2020distilbertdistilledversionbert} is a BERT version that retains much of its larger siblings' language capability at a lower computational cost.
