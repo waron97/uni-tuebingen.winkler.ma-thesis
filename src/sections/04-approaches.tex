@@ -113,8 +113,11 @@ Ensemble solutions may even cover against many potential generators, instead of 
     \centering
     \includegraphics[width=0.5\textwidth]{assets/detectgpt_modelcomp.png}
     \caption{
-        Performance overview of DetectGPT \citep{mitchell2023detectgptzeroshotmachinegeneratedtext}, reporting AUROC \citep{bradley1997use} over the XSum, SQuAD, and WritingPrompts datasets.
+        Performance overview of DetectGPT \citep{mitchell2023detectgptzeroshotmachinegeneratedtext}, reporting Area Under the Receiver Operating Characteristic Curve (AUROC) \citep{bradley1997use} over the XSum, SQuAD, and WritingPrompts datasets.
         Same scorer-generator pairs show the best performance, but results show that some models may act as better proxies than others, inviting further research.
+        Typically in binary classification, prediction is \emph{1} if the output probability is above 0.5, and \emph{0} the other way around.
+        AUROC is a binary classification performance metric that evaluates the model under different classification thresholds, outputting a number between 0 and 1 - the higher the better.
+        The second number in brackets indicates standard error, i.e. the consistency of the results across samples.
     }
     \label{fig:detectgpt}
 \end{figure}
